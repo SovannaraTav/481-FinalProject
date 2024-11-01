@@ -1,0 +1,1 @@
+This is where all React components with JavaScript files will be placed apart from App.jsx and main.jsx.
