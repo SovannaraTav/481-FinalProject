@@ -15,6 +15,8 @@
 
 7. To run the development server to test and view your changes, execute ```npm run dev``` on the command line.
 
+## Hosted on Vercel
+
 ## React + Vite
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
