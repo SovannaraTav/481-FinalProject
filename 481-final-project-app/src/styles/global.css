@@ -78,6 +78,7 @@
   width: 100%;
   border: .5px solid grey;
   padding: 2px 5px;
+  max-height: 15px;
 }
 
 .filter {

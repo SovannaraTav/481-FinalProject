@@ -3,7 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <div class="navbar">
+    <div className="navbar">
       <Link to="/"><img id="logo"/></Link>
       <div class="navbar-right">
         <a><Link to="/">Explore</Link></a>
