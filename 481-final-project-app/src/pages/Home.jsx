@@ -1,9 +1,11 @@
 import React from 'react'
 import ProfileCard from '../components/ProfileCard';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
 
   const profile_list = ["Alice","Bob","Charlie","Diana","Ethan","Fiona","George","Hannah","Isaac","Julia"];
+  const navigate = useNavigate();
 
   return (
     <div className="container">
@@ -37,7 +39,11 @@ export default function Home() {
         </div>
         <div className="card-list">
           {profile_list.map(person => {
-            return <ProfileCard name={person}></ProfileCard>
+            return <div onClick={()=>{
+              navigate(`/profile/${person}`)
+              }}>
+              <ProfileCard name={person}></ProfileCard>
+            </div>
           })}
         </div>
       </div>

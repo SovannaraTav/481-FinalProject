@@ -1,16 +1,18 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
 
 export default function Profile() {
 
   const suggestions =  ["Alice", "Bob", "Charlie", "David", "Eva"]
+  const { name } = useParams();
 
   return (
-    <div>
+    <div style={{marginTop: '80px'}}>
       <img className="banner" />
       <img className="profile-picture" alt="pfp"/>
       <div className="profile-header">
         <div className="profile-name">
-          Tushar Tumopoorani
+          {name}
         </div>
         {/*<button className="connect-button">Connect</button>*/}
       </div>

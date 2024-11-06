@@ -6,6 +6,7 @@ import Connections from "./pages/Connections";
 import "./styles/global.css"
 import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
+import Profile from "./components/Profile";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="connections" element={<Connections />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="profile/:name" element={<Profile />} />
       </Routes>
       <Footer></Footer>
     </BrowserRouter>
