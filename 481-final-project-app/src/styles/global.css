@@ -78,7 +78,6 @@
   width: 100%;
   border: .5px solid grey;
   padding: 2px 5px;
-  max-height: 15px;
 }
 
 .filter {
@@ -128,4 +127,88 @@
   padding: 10px;
   color: black;
   margin: 0
+}
+
+.title-label{
+  background-color: var(--dark);
+  color: white;
+  font-size: 17px;
+  padding: 5px 10px;
+}
+
+.flex {
+  display: flex;
+  gap: 50px;
+}
+
+.message-box{
+  display: flex;
+}
+
+.message-list{
+  border: 1px solid var(--medium);
+}
+
+#message-area{
+  border: 1px solid var(--medium);
+  padding: 10px;
+  margin-left: .3px;
+}
+
+#grid-item1{
+  grid-area: image;
+}
+
+#grid-item2{
+  grid-area: name;
+}
+
+#grid-item3{
+  grid-area: date;
+}
+
+#grid-item4{
+  grid-area: message;
+}
+
+.message-grid{
+  padding: 10px 20px;
+  border-bottom: 1px solid lightgray;
+  /*display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 50% 50%;
+  grid-template-areas:
+  "image name date",
+  "image message message";*/
+}
+
+.message-grid:hover{
+  background-color: var(--medium-light);
+}
+
+.connections-box {
+  border: 1px solid black;
+  background-color: var(--medium-light);
+  color: black;
+}
+
+.connections-box > div {
+  padding: 10px;
+}
+
+.connection-filters {
+  text-align: center;
+}
+
+.connection {
+  display: flex;
+  gap: 10px;
+  background-color: var(--light);
+  color: black;
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
+}
+
+.connection:hover {
+  background-color: white;
 }

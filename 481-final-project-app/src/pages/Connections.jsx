@@ -37,11 +37,11 @@ export default function Connections() {
   return (
     <div className="container">
       <div className="title">Your Connections</div>
-      <div className="horizontal">
-        <div className="message-box">
-          <div>Messages</div>
-          <div className="horizontal">
-            <div>
+      <div className="flex">
+        <div> {/* here so "Messages" aren't rendered as a seperate child */}
+          <div className="message-box">
+            <div className="message-list">
+              <div className="title-label">Inbox</div>
               {messages.map(message => {
                 return <div onClick={()=>displayMessage({message})}>
                   <MessageCard message = {message}></MessageCard>
@@ -54,19 +54,25 @@ export default function Connections() {
             </div>
           </div>
         </div>
-        <div>
-          <div> Connections </div>
-          <input className = "search" type="text"></input>
-          <div>
+        <div className="connections-box">
+          <div className="title-label">Connections</div>
+          <div className="connection-filters">
             <div>Filters</div>
             <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
             <label for="placeholder">Placeholder</label><br />
             <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
             <label for="placeholder">Placeholder</label><br />
           </div>
-          <div>
+          <input className = "search" style={{
+            width: '80%',
+            margin: '10px'
+            }} type="text" placeholder="Search by name"></input>
+          <div className="connection-list">
             {connections.map(connection => {
-              return <div>{connection}</div>
+              return <div className="connection">
+                <img alt="pfp"></img>
+                {connection}
+              </div>
             })}
           </div>
         </div>
