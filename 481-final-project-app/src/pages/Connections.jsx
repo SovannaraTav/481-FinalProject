@@ -37,8 +37,8 @@ export default function Connections() {
   return (
     <div className="container">
       <div className="title">Your Connections</div>
-      <div className="flex">
-        <div> {/* here so "Messages" aren't rendered as a seperate child */}
+      <div className="flex connections-container">
+        <div>
           <div className="message-box">
             <div className="message-list">
               <div className="title-label">Inbox</div>

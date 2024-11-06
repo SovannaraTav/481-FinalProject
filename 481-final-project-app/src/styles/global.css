@@ -23,6 +23,7 @@
   position: fixed;
   top: 0px;
   width: 100%;
+  z-index: 9999;
 }
 
 .navbar a {
@@ -141,18 +142,27 @@
   gap: 50px;
 }
 
+.connections-container {
+  align-items: stretch;
+  justify-content: center;
+}
+
 .message-box{
   display: flex;
 }
 
 .message-list{
   border: 1px solid var(--medium);
+  min-height: 480px;
+  background-color: var(--medium-light)
 }
 
 #message-area{
   border: 1px solid var(--medium);
   padding: 10px;
   margin-left: .3px;
+  display: block;
+  width: 32vw;
 }
 
 #grid-item1{
@@ -174,6 +184,8 @@
 .message-grid{
   padding: 10px 20px;
   border-bottom: 1px solid lightgray;
+  background-color: white;
+  margin: 0 5px;
   /*display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: 50% 50%;
@@ -182,8 +194,9 @@
   "image message message";*/
 }
 
-.message-grid:hover{
-  background-color: var(--medium-light);
+.message-grid:hover, .connection:hover{
+  background-color: var(--medium);
+  color: var(--light);
 }
 
 .connections-box {
@@ -209,6 +222,55 @@
   border-bottom: 1px solid lightgray;
 }
 
-.connection:hover {
+.banner {
+  display: block;
+  width: 100%;
+  height: 200px;
+  background-color: var(--medium);
+}
+
+.profile-picture {
+  position: absolute;
+  top: 200px;
+  left: 200px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   background-color: white;
+  text-align: center;
+}
+
+.profile-header{
+  display: block;
+  width: 100%;
+  height: 100px;
+  background-color: var(--dark);
+  color: #ffffff;
+}
+
+.profile-name {
+  margin: 0 310px;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.profile-container {
+  display: flex;
+  align-items:stretch;
+  justify-content: center;
+  width: 100vw;
+}
+
+.profile-container > div {
+  padding: 50px 10%;
+}
+
+.profile-information {
+  border: 1px solid lightgray;
+}
+
+.similar-profiles {
+  background-color: var(--medium-light);
+  color: black;
 }
