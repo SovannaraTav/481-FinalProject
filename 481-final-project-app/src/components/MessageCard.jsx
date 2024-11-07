@@ -7,12 +7,14 @@ export default function MessageCard({message}) {
       <div className="horizontal">
         <img id="grid-item1" alt="pfp"></img>
         <div id="grid-item2">{message[0]}</div>
-        <div id="grid-item3">{message[2][message[1].length-1]}</div>
+        <div id="grid-item3">{message[1][message[1].length-1][2]}</div>
       </div>
       <div id="grid-item4">
         {message[1][message[1].length-1][1] ?
         <span>You: </span> :<span>{message[0]}: </span>}
-        {message[1][message[1].length-1][0]}
+        {message[1][message[1].length - 1][0].length > 25
+        ? message[1][message[1].length - 1][0].substring(0, 25) + "..."
+        : message[1][message[1].length - 1][0]}
       </div>
     </div>
   )

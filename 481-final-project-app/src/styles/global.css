@@ -148,12 +148,12 @@
 
 .message-box{
   display: flex;
+  height: 450px;
 }
 
 .message-list{
   border: 1px solid var(--medium);
-  min-height: 480px;
-  background-color: var(--medium-light)
+  background-color: var(--medium-light);
 }
 
 #message-area{
@@ -162,6 +162,7 @@
   margin-left: .3px;
   display: block;
   width: 32vw;
+  overflow-y: auto;
 }
 
 #grid-item1{

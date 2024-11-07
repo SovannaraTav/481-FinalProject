@@ -7,32 +7,14 @@ export default function Connections() {
   // dummy data
   const connections =  ["Alice", "Bob", "Charlie", "David", "Eva"]
   const messages = [
-  ["David", [["hello", true], ["Yo", false], ["thanks for connecting", true], ["Ok", false]],
-  ["11-5-2024", "11-5-2024", "11-5-2024", "11-5-2024"]],
-  ["Alice", [["hi", true], ["hello?", true], ["bruh", true]],
-  ["11-2-2024", "11-3-2024", "11-5-2024",]]]
+  ["David", [["hello", true, "11-5-2024"], ["Yo", false, "11-5-2024"],
+  ["thanks for connecting", true, "11-5-2024"], ["Ok", false, "11-5-2024"]]],
+  ["Alice", [["hi", true, "11-2-2024"], ["hello?", true, "11-3-2024"],
+  ["bruh", true, "11-5-2024"]]],
+  ["Test", [["testing a long message that would go onto the next line like this"
+    , false, "1-1-2000"
+  ], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"]]]]
   const [selectedMessage, setSelectedMessage] = useState(null)
-
-  // move this back to the message component once figured out
-  const displayMessage = (message) => {
-    const messageArea = document.getElementById("message-area")
-    messageArea.innerHTML =
-      <div>
-        <div>{message[0]}</div>
-          <div>
-            {message [1] && message[1].map(msg => {
-              <div
-                style={{
-                  backgroundColor: msg[1] ? "blue" : "grey",
-                  textAlign: msg[1] ? "right": "left"
-                }}
-              >
-                {msg[0]}
-              </div>
-              })}
-          </div>
-      </div>
-  }
 
   return (
     <div className="container">
@@ -43,14 +25,17 @@ export default function Connections() {
             <div className="message-list">
               <div className="title-label">Inbox</div>
               {messages.map(message => {
-                return <div onClick={()=>displayMessage({message})}>
+                return <div onClick={()=>setSelectedMessage({message})}>
                   <MessageCard message = {message}></MessageCard>
                 </div>
               })}
             </div>
             <div id="message-area">
-              No conversation selected
-                {/*<Message message = {selectedMessage}></Message>*/}
+              {selectedMessage == null ?
+              <p style={{textAlign: 'center'}}>No conversation selected</p>
+              :
+              <Message message = {selectedMessage}></Message>
+              }
             </div>
           </div>
         </div>
