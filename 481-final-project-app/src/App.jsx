@@ -7,6 +7,8 @@ import "./styles/global.css"
 import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
 import Profile from "./components/Profile";
+import SignIn from "./pages/SignIn";
+
 
 export default function App() {
   return (
@@ -17,8 +19,9 @@ export default function App() {
         <Route path="connections" element={<Connections />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="profile/:name" element={<Profile />} />
-      </Routes>
-      <Footer></Footer>
+        <Route path="signin" element={<SignIn />} /> 
+      </Routes>     
+      <Footer/>
     </BrowserRouter>
   );
 }

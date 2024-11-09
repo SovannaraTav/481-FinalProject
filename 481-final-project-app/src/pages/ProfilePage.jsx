@@ -4,7 +4,7 @@ import Profile from '../components/Profile'
 export default function ProfilePage() {
   return (
     <div>
-      <Profile name="Tushar Tumopoorani"></Profile>
+      <Profile name="Tushar T"></Profile>
     </div>
   )
 }
