@@ -1,6 +1,7 @@
 class Experience {
     // Private data attributes for the class
     #experienceId;
+    #alumniId;
     #jobTitle;
     #jobType;
     #field;
@@ -11,10 +12,11 @@ class Experience {
     #description;
 
     // Class constructor
-    constructor(experienceId, jobTitle, jobType, field, 
+    constructor(experienceId, alumniId, jobTitle, jobType, field, 
         company, location, startDate, endDate, description) {
         // Implicity calls the setter functions to avoid repeating validation logic twice
         this.experienceId = experienceId;
+        this.alumniId = alumniId;
         this.jobTitle = jobTitle;
         this.jobType = jobType;
         this.field = field;
@@ -31,6 +33,14 @@ class Experience {
     }
     set experienceId(experienceId) {
         this.#experienceId = experienceId;
+    }
+
+    // Getter and setter functions for alumniId private data attribute
+    get alumniId() {
+        return this.#alumniId;
+    }
+    set alumniId(alumniId) {
+        this.#alumniId = alumniId;
     }
 
     // Getter and setter functions for jobTitle private data attribute
@@ -95,6 +105,26 @@ class Experience {
     }
     set description(description) {
         this.#description = description;
+    }
+
+    /*
+    Returns a JavaScript object of the instance of the class to work with the 
+    Supabase Database service
+    */
+    toObject() {
+        // Implicity calls the getter functions
+        return {
+            experienceId: this.experienceId,
+            alumniId: this.alumniId,
+            jobTitle: this.jobTitle,
+            jobType: this.jobType,
+            field: this.field,
+            company: this.company,
+            location: this.location,
+            startDate: this.startDate,
+            endDate: this.endDate,
+            description: this.description
+        };
     }
 }
 

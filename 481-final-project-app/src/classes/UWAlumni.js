@@ -9,10 +9,9 @@ class UWAlumni extends Account {
     #skills; // Array of Skill objects
 
     // Class constructor
-    constructor(accountId, firstName, lastName, emailAddress, password, 
-        profilePicture, bio, currentJobTitle, currentField, currentCompany) {
-        super(accountId, firstName, lastName, 
-            emailAddress, password, profilePicture, bio);
+    constructor(accountId, firstName, lastName, profilePicture, 
+        bio, currentJobTitle, currentField, currentCompany) {
+        super(accountId, firstName, lastName, profilePicture, bio);
         // Implicity calls the setter functions to avoid repeating validation logic twice
         this.currentJobTitle = currentJobTitle;
         this.currentField = currentField;
@@ -67,6 +66,20 @@ class UWAlumni extends Account {
         if (skillObjectIndexToRemove !== -1) {
             this.#skills.splice(skillObjectIndexToRemove, 1);
         }
+    }
+
+    /*
+    Returns a JavaScript object of the instance of the class to work with the 
+    Supabase Database service
+    */
+    toObject() {
+        // Implicity calls the getter functions from Account and this class
+        return {
+            alumniId: this.accountId,
+            currentJobTitle: this.currentJobTitle,
+            currentField: this.currentField,
+            currentCompany: this.currentCompany
+        };
     }
 }
 

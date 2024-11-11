@@ -65,6 +65,22 @@ class Message {
     set isMarkAsRead(isMarkAsRead) {
         this.#isMarkAsRead = isMarkAsRead;
     }
+
+    /*
+    Returns a JavaScript object of the instance of the class to work with the 
+    Supabase Database service
+    */
+    toObject() {
+        // Implicity calls the getter functions
+        return {
+            messageId: this.messageId,
+            senderId: this.senderId,
+            receiverId: this.receiverId,
+            content: this.content,
+            dateTime: this.dateTime,
+            isMarkAsRead: this.isMarkAsRead
+        };
+    }
 }
 
 // Exporting this class to be imported and used in other files

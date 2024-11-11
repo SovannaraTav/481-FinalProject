@@ -6,10 +6,8 @@ class UWStudent extends Account {
     #interests = []; // Array of Interest objects
 
     // Class constructor
-    constructor(accountId, firstName, lastName, emailAddress, 
-        password, profilePicture, bio, major) {
-        super(accountId, firstName, lastName, 
-            emailAddress, password, profilePicture, bio);
+    constructor(accountId, firstName, lastName, profilePicture, bio, major) {
+        super(accountId, firstName, lastName, profilePicture, bio);
         // Implicity calls the setter functions to avoid repeating validation logic twice
         this.major = major;
     }
@@ -33,6 +31,18 @@ class UWStudent extends Account {
         if (interestObjectIndexToRemove !== -1) {
             this.#interests.splice(interestObjectIndexToRemove, 1);
         }
+    }
+
+    /*
+    Returns a JavaScript object of the instance of the class to work with the 
+    Supabase Database service
+    */
+    toObject() {
+        // Implicity calls the getter functions from Account and this class
+        return {
+            studentId: this.accountId,
+            major: this.major
+        };
     }
 }
 

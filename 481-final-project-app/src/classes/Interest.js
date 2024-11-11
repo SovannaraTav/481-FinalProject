@@ -1,13 +1,15 @@
 class Interest {
     // Private data attributes for the class
     #interestId;
+    #studentId;
     #interestType;
     #interest;
 
     // Class constructor
-    constructor(interestId, interestType, interest) {
+    constructor(interestId, studentId, interestType, interest) {
         // Implicity calls the setter functions to avoid repeating validation logic twice
         this.interestId = interestId;
+        this.studentId = studentId;
         this.interestType = interestType;
         this.interest = interest;
     }
@@ -18,6 +20,14 @@ class Interest {
     }
     set interestId(interestId) {
         this.#interestId = interestId;
+    }
+
+    // Getter and setter functions for studentId private data attribute
+    get studentId() {
+        return this.#studentId;
+    }
+    set studentId(studentId) {
+        this.#studentId = studentId;
     }
 
     // Getter and setter functions for interestType private data attribute
@@ -34,6 +44,20 @@ class Interest {
     }
     set interest(interest) {
         this.#interest = interest;
+    }
+
+    /*
+    Returns a JavaScript object of the instance of the class to work with the 
+    Supabase Database service
+    */
+    toObject() {
+        // Implicity calls the getter functions
+        return {
+            interestId: this.interestId,
+            studentId: this.studentId,
+            interestType: this.interestType,
+            interest: this.interest
+        };
     }
 }
 
