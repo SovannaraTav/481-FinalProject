@@ -1,0 +1,53 @@
+.enterInfoContainer {
+    margin: 0 auto;
+    margin-top: 50px;
+    max-width: 3000px;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    color: #333;
+    font-size: 1.2em;
+    margin-top: 20px;
+  }
+  
+  .textarea, .text-input, .date-input, .select-input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .user-type-container {
+    margin-bottom: 15px;
+  }
+  
+  .radio-label {
+    display: inline-block;
+    margin-right: 15px;
+    font-size: 0.95em;
+  }
+  
+  .label {
+    display: block;
+    margin-top: 10px;
+    color: #555;
+  }
+  
+  .select-input {
+    appearance: none;
+    background-color: #fff;
+    padding: 10px;
+  }
+  
+  .date-input:focus, .text-input:focus, .textarea:focus, .select-input:focus {
+    border-color: #0073e6;
+    box-shadow: 0 0 3px rgba(0, 115, 230, 0.3);
+  }
+  
