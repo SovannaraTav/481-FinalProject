@@ -8,6 +8,8 @@ import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
 import Profile from "./components/Profile";
 import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import EnterInfo from "./pages/EnterInfo";
 
 
 export default function App() {
@@ -20,6 +22,8 @@ export default function App() {
         <Route path="profile" element={<ProfilePage />} />
         <Route path="profile/:name" element={<Profile />} />
         <Route path="signin" element={<SignIn />} /> 
+        <Route path="signup" element={<SignUp />} />
+        <Route path="enterinfo" element = {<EnterInfo />} />
       </Routes>     
       <Footer/>
     </BrowserRouter>

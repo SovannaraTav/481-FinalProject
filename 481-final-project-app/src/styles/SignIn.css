@@ -17,11 +17,10 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    border: 5px solid purple;
+    border: 5px solid #4b207e;
     margin-top: 300px;
     margin-left: 600px;
     border-radius: 40px;
-    
   }
   
   .sign{

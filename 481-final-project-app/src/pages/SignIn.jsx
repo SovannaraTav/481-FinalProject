@@ -11,14 +11,14 @@ export default function SignIn() {
 
         <h6>Enter Credentials to login</h6>
         <div>
-            <input type="email" id="email" name="email" value="Email Address" required></input>
+            <input type="email" id="email" name="email" placeholder="Enter Email Address" required></input>
         </div>
         <div>
-            <input type="password" id="password" name="password" value="Password" required></input>
+            <input type="password" id="password" name="password" placeholder='Password' required></input>
         </div>
         <button>Sign In</button>
         <a> No Account, Sign up </a>
-      </form>
+      </form>        
     </div>
   )
 }
