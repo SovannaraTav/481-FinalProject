@@ -4,6 +4,16 @@ import "../styles/EnterInfo.css"
 export default function EnterInfo() {
   return (
     <div className="enterInfoContainer">
+      <div> 
+        <label htmlFor="firstname"  className="label">First Name </label>
+        <input type="text" id="firstname" name="firstname" value="FirstName" className="text-input" />
+
+      </div>
+      <div>
+        <label htmlFor="lastname" className="label" >Last Name</label>
+        <input type="text" id="lastname" name="lastname" value="lastname" className="text-input"/>
+      </div>
+
       <h2>About</h2>
       <textarea 
         id="about" 
