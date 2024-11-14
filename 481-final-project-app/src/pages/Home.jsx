@@ -12,10 +12,14 @@ export default function Home() {
       <div className="title">Make Connections</div>
       <div className="horizontal stacked-block">
         <input type="text" placeholder="Enter a name..." className="search" />
-        <input type="radio" id="alumni" name="people" value="alumni" />
-        <label for="alumni">Alumni</label>
-        <input type="radio" id="students" name="people" value="students" />
-        <label for="students">Students</label>
+        <div className="nowrap">
+          <input type="radio" id="alumni" name="people" value="alumni" />
+          <label for="alumni">Alumni</label>
+        </div>
+        <div className="nowrap">
+          <input type="radio" id="students" name="people" value="students" />
+          <label for="students">Students</label>
+        </div>
       </div>
       <div className="horizontal">
         <div className="filter">
