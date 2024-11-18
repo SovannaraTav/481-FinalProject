@@ -1,18 +1,31 @@
 import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import "../styles/SignIn.css"
+import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const auth = new SupabaseAuthentication(); 
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
   })
   function handleSubmit(event){
-    alert('sbutmit button works')
     event.preventDefault(); 
-    alert(`Email:  ${inputs.email}\n` + 
-           `Password: ${inputs.password}\n`
-    );
+    // alert(`Email:  ${inputs.email}\n` + 
+    //        `Password: ${inputs.password}\n`
+    // );
+    
+    auth.signIn(inputs.email, inputs.password)
+    .then(response => {
+      if (response.error) {
+        console.log("Error during signin", response.error);
+      } else {
+        console.log("User signin successfully", response.error);
+        navigate("../")
+      }
+    })
   }
   function handleChange(event) {
     const name = event.target.name;

@@ -1,7 +1,14 @@
 import React, {useState} from 'react'
-import "../styles/SignUp.css"
+import { useNavigate } from 'react-router-dom';
 
-export default function SignUp() {
+import "../styles/SignUp.css"
+import SupabaseAuthentication from '../classes/SupabaseAuthentication';
+
+export default function SignUp() { 
+  
+  const auth = new SupabaseAuthentication(); 
+  const navigate = useNavigate();
+  
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -12,12 +19,23 @@ export default function SignUp() {
   
   function handleSubmit(event){
     event.preventDefault(); 
-    alert(`Email:  ${inputs.email}\n` + 
-           `Password: ${inputs.password}\n` + 
-            `User Type: ${inputs.userType}\n`
-    );
-    
+    // alert(`Email:  ${inputs.email}\n` + 
+    //        `Password: ${inputs.password}\n` + 
+    //         `User Type: ${inputs.userType}\n`
+    // );
+
+    auth.signUp(inputs.email, inputs.password)
+    .then(response => {
+      if (response.error) {
+        console.log("Error during signup", response.error);
+      } else {
+        console.log("User signed up successfully", response.error);
+        navigate('../enterinfo');
+        //window.location.replace("EnterInfo.jsx"); 
+      }
+    })
   }
+  
 
   function handleChange(event) {
     const name = event.target.name;
