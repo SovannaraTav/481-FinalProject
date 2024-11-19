@@ -1,10 +1,20 @@
-import React from 'react'
-import ProfileCard from '../components/ProfileCard';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import ProfileCard from "../components/ProfileCard";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-
-  const profile_list = ["Alice","Bob","Charlie","Diana","Ethan","Fiona","George","Hannah","Isaac","Julia"];
+  const profile_list = [
+    "Alice",
+    "Bob",
+    "Charlie",
+    "Diana",
+    "Ethan",
+    "Fiona",
+    "George",
+    "Hannah",
+    "Isaac",
+    "Julia",
+  ];
   const navigate = useNavigate();
 
   return (
@@ -20,33 +30,84 @@ export default function Home() {
       <div className="horizontal">
         <div className="filter">
           <div>Filters</div>
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+          <input
+            type="checkbox"
+            id="placeholder"
+            name="placeholder"
+            value="placeholder"
+          />
+          <label for="placeholder">Placeholder</label>
+          <br />
+          <input
+            type="checkbox"
+            id="placeholder"
+            name="placeholder"
+            value="placeholder"
+          />
+          <label for="placeholder">Placeholder</label>
+          <br />
+          <input
+            type="checkbox"
+            id="placeholder"
+            name="placeholder"
+            value="placeholder"
+          />
+          <label for="placeholder">Placeholder</label>
+          <br />
+          <input
+            type="checkbox"
+            id="placeholder"
+            name="placeholder"
+            value="placeholder"
+          />
+          <label for="placeholder">Placeholder</label>
+          <br />
+          <input
+            type="checkbox"
+            id="placeholder"
+            name="placeholder"
+            value="placeholder"
+          />
+          <label for="placeholder">Placeholder</label>
+          <br />
+          <input
+            type="checkbox"
+            id="placeholder"
+            name="placeholder"
+            value="placeholder"
+          />
+          <label for="placeholder">Placeholder</label>
+          <br />
+          <input
+            type="checkbox"
+            id="placeholder"
+            name="placeholder"
+            value="placeholder"
+          />
+          <label for="placeholder">Placeholder</label>
+          <br />
+          <input
+            type="checkbox"
+            id="placeholder"
+            name="placeholder"
+            value="placeholder"
+          />
           <label for="placeholder">Placeholder</label>
         </div>
         <div className="card-list">
-          {profile_list.map(person => {
-            return <div onClick={()=>{
-              navigate(`/profile/${person}`)
-              }}>
-              <ProfileCard name={person}></ProfileCard>
-            </div>
+          {profile_list.map((person) => {
+            return (
+              <div
+                onClick={() => {
+                  navigate(`/profile/${person}`);
+                }}
+              >
+                <ProfileCard name={person}></ProfileCard>
+              </div>
+            );
           })}
         </div>
       </div>
     </div>
-  )
+  );
 }
