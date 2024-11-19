@@ -13,6 +13,7 @@ import EnterInfo from "./pages/EnterInfo";
 
 
 export default function App() {
+  
   return (
     <BrowserRouter>
       <Navbar/>

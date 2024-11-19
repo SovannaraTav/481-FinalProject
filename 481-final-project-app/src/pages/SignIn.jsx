@@ -7,6 +7,7 @@ import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 export default function SignIn() {
   const navigate = useNavigate();
   const auth = new SupabaseAuthentication(); 
+  const [signInResult, setSignInResult] = useState(true);
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
@@ -21,9 +22,13 @@ export default function SignIn() {
     .then(response => {
       if (response.error) {
         console.log("Error during signin", response.error);
+        setSignInResult(false);
+
       } else {
         console.log("User signin successfully", response.error);
-        navigate("../")
+        navigate("../");
+        setSignInResult(true);
+
       }
     })
   }
@@ -32,7 +37,6 @@ export default function SignIn() {
     const value = event.target.value;
     setInputs(values => ({...values, [name]: value}))  
   }
-
   return (
     <div>
       <form onSubmit ={handleSubmit}>
@@ -46,6 +50,13 @@ export default function SignIn() {
           <label htmlFor='password'></label>
           <input type="password" id ="password" name="password" placeholder="Password" value={inputs.password || ""} onChange={handleChange} ></input>
         </div> 
+        <div>
+          {signInResult !== true && (
+            <p style={{ color: 'red' }}>
+             Sign-in failed. Please check your email and password.
+            </p>
+          )}
+        </div>
         <div>
           <input type="submit" value="Sign In"></input>
         </div>

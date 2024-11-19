@@ -8,6 +8,7 @@ export default function SignUp() {
   
   const auth = new SupabaseAuthentication(); 
   const navigate = useNavigate();
+  const [signUpResult, setSignUpResult] = useState(true);
   
 
     const [inputs, setInputs] = useState({
@@ -28,10 +29,11 @@ export default function SignUp() {
     .then(response => {
       if (response.error) {
         console.log("Error during signup", response.error);
+        setSignUpResult(false);
       } else {
         console.log("User signed up successfully", response.error);
         navigate('../enterinfo');
-        //window.location.replace("EnterInfo.jsx"); 
+        setSignUpResult(true);
       }
     })
   }
@@ -73,6 +75,15 @@ export default function SignUp() {
         <input type="radio" id="studentType" name="userType" value="Student" checked={inputs.userType == "Student"} onChange={handleChange}/>
         <label for="studentType" class="radio-label">Student</label>
       </div>
+
+      <div>
+      {signUpResult === false && (
+        <p style={{ color: 'red' }}>
+          Sign-up failed. Please re-enter your email and password. 
+        </p>
+      )}
+    </div>
+
       <div>
         <input type="submit" value="Sign Up"></input>
       </div>
