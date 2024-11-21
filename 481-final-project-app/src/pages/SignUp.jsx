@@ -1,7 +1,15 @@
 import React, {useState} from 'react'
-import "../styles/SignUp.css"
+import { useNavigate } from 'react-router-dom';
 
-export default function SignUp() {
+import "../styles/SignUp.css"
+import SupabaseAuthentication from '../classes/SupabaseAuthentication';
+
+export default function SignUp() { 
+  
+  const auth = new SupabaseAuthentication(); 
+  const navigate = useNavigate();
+  const [signUpResult, setSignUpResult] = useState(true);
+  
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -12,12 +20,24 @@ export default function SignUp() {
   
   function handleSubmit(event){
     event.preventDefault(); 
-    alert(`Email:  ${inputs.email}\n` + 
-           `Password: ${inputs.password}\n` + 
-            `User Type: ${inputs.userType}\n`
-    );
-    
+    // alert(`Email:  ${inputs.email}\n` + 
+    //        `Password: ${inputs.password}\n` + 
+    //         `User Type: ${inputs.userType}\n`
+    // );
+
+    auth.signUp(inputs.email, inputs.password)
+    .then(response => {
+      if (response.error) {
+        console.log("Error during signup", response.error);
+        setSignUpResult(false);
+      } else {
+        console.log("User signed up successfully", response.error);
+        navigate('../enterinfo');
+        setSignUpResult(true);
+      }
+    })
   }
+  
 
   function handleChange(event) {
     const name = event.target.name;
@@ -55,6 +75,15 @@ export default function SignUp() {
         <input type="radio" id="studentType" name="userType" value="Student" checked={inputs.userType == "Student"} onChange={handleChange}/>
         <label for="studentType" class="radio-label">Student</label>
       </div>
+
+      <div>
+      {signUpResult === false && (
+        <p style={{ color: 'red' }}>
+          Sign-up failed. Please re-enter your email and password. 
+        </p>
+      )}
+    </div>
+
       <div>
         <input type="submit" value="Sign Up"></input>
       </div>

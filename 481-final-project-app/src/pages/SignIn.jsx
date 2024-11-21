@@ -1,25 +1,42 @@
 import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import "../styles/SignIn.css"
+import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const auth = new SupabaseAuthentication(); 
+  const [signInResult, setSignInResult] = useState(true);
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
   })
   function handleSubmit(event){
-    alert('sbutmit button works')
     event.preventDefault(); 
-    alert(`Email:  ${inputs.email}\n` + 
-           `Password: ${inputs.password}\n`
-    );
+    // alert(`Email:  ${inputs.email}\n` + 
+    //        `Password: ${inputs.password}\n`
+    // );
+    
+    auth.signIn(inputs.email, inputs.password)
+    .then(response => {
+      if (response.error) {
+        console.log("Error during signin", response.error);
+        setSignInResult(false);
+
+      } else {
+        console.log("User signin successfully", response.error);
+        navigate("../");
+        setSignInResult(true);
+
+      }
+    })
   }
   function handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
     setInputs(values => ({...values, [name]: value}))  
   }
-
   return (
     <div>
       <form onSubmit ={handleSubmit}>
@@ -33,6 +50,13 @@ export default function SignIn() {
           <label htmlFor='password'></label>
           <input type="password" id ="password" name="password" placeholder="Password" value={inputs.password || ""} onChange={handleChange} ></input>
         </div> 
+        <div>
+          {signInResult !== true && (
+            <p style={{ color: 'red' }}>
+             Sign-in failed. Please check your email and password.
+            </p>
+          )}
+        </div>
         <div>
           <input type="submit" value="Sign In"></input>
         </div>
