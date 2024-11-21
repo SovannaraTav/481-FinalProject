@@ -148,7 +148,7 @@
 
 .message-box{
   display: flex;
-  height: 450px;
+  height: 480px;
 }
 
 .message-list{
@@ -273,4 +273,8 @@
 .similar-profiles {
   background-color: var(--medium-light);
   color: black;
+}
+
+.nowrap {
+  white-space: nowrap;
 }

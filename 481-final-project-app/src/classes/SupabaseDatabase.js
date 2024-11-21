@@ -6,8 +6,8 @@ class SupabaseDatabase {
 
     // Class constructor
     constructor() {
-        this.#tables = 
-            ["accounts", "uw_students", "uw_alumni", "messages", 
+        this.#tables =
+            ["accounts", "uw_students", "uw_alumni", "messages",
             "interests", "experiences", "skills"];
     }
 
@@ -36,13 +36,13 @@ class SupabaseDatabase {
     /*
     Documentation - https://supabase.com/docs/reference/javascript/insert
 
-    Handles the process of creating a new record to the specified table from a 
-    JavaScript object that will automatically map to each table column and assign 
+    Handles the process of creating a new record to the specified table from a
+    JavaScript object that will automatically map to each table column and assign
     its corresponding value with the Supabase Database service
     */
     async createRecordToTable(tableName, dataObject) {
         /*
-        Ensuring the table exists in the tables list before creating a new record 
+        Ensuring the table exists in the tables list before creating a new record
         to the specified table
         */
         if (!this.#tables.includes(tableName)) {
@@ -55,7 +55,7 @@ class SupabaseDatabase {
             .insert([dataObject]);
 
         /*
-        Returns the error object and its associated information for an unsuccessful 
+        Returns the error object and its associated information for an unsuccessful
         creation of a new record process
         */
         if (error) {
@@ -65,7 +65,7 @@ class SupabaseDatabase {
         }
 
         /*
-        Returns the data object and its associated information for a successful 
+        Returns the data object and its associated information for a successful
         creation of a new record process
         */
         return { data };
@@ -74,13 +74,13 @@ class SupabaseDatabase {
     /*
     Documentation - https://supabase.com/docs/reference/javascript/select
 
-    Handles the process of reading an existing record in the specified table from 
-    the primary key's column and its corresponding value with the Supabase Database 
+    Handles the process of reading an existing record in the specified table from
+    the primary key's column and its corresponding value with the Supabase Database
     service
     */
     async readRecordFromTable(tableName, primaryKeyColumn, primaryKeyColumnValue) {
         /*
-        Ensuring the table exists in the tables list before reading an existing 
+        Ensuring the table exists in the tables list before reading an existing
         record from the specified table
         */
         if (!this.#tables.includes(tableName)) {
@@ -94,7 +94,7 @@ class SupabaseDatabase {
             .eq(primaryKeyColumn, primaryKeyColumnValue);
 
         /*
-        Returns the error object and its associated information for an unsuccessful 
+        Returns the error object and its associated information for an unsuccessful
         reading of an existing record process
         */
         if (error) {
@@ -104,7 +104,38 @@ class SupabaseDatabase {
         }
 
         /*
-        Returns the data object and its associated information for a successful 
+        Returns the data object and its associated information for a successful
+        reading of an existing record process
+        */
+        return { data };
+    }
+
+    async readTable(tableName) {
+        /*
+        Ensuring the table exists in the tables list before reading an existing
+        record from the specified table
+        */
+        if (!this.#tables.includes(tableName)) {
+            console.error(`${tableName} doesn't exist in the tables list`);
+            return false;
+        }
+
+        const { data, error } = await supabase
+            .from(tableName)
+            .select("*")
+
+        /*
+        Returns the error object and its associated information for an unsuccessful
+        reading of an existing record process
+        */
+        if (error) {
+            console.error(
+                `Reading record from ${tableName} unsuccessful: ${error.message}`);
+            return { error };
+        }
+
+        /*
+        Returns the data object and its associated information for a successful
         reading of an existing record process
         */
         return { data };
@@ -113,15 +144,15 @@ class SupabaseDatabase {
     /*
     Documentation - https://supabase.com/docs/reference/javascript/insert
 
-    Handles the process of updating an existing record in the specified table from 
-    a JavaScript object that will automatically map to each table column and assign 
-    its corresponding updated value alongside the primary key's column, and its 
+    Handles the process of updating an existing record in the specified table from
+    a JavaScript object that will automatically map to each table column and assign
+    its corresponding updated value alongside the primary key's column, and its
     corresponding value with the Supabase Database service
     */
     async updateRecordFromTable(
         tableName, dataObject, primaryKeyColumn, primaryKeyColumnValue) {
         /*
-        Ensuring the table exists in the tables list before updating an existing 
+        Ensuring the table exists in the tables list before updating an existing
         record in the specified table
         */
         if (!this.#tables.includes(tableName)) {
@@ -136,7 +167,7 @@ class SupabaseDatabase {
             .select();
 
         /*
-        Returns the error object and its associated information for an unsuccessful 
+        Returns the error object and its associated information for an unsuccessful
         update of an existing record process
         */
         if (error) {
@@ -146,7 +177,7 @@ class SupabaseDatabase {
         }
 
         /*
-        Returns the data object and its associated information for a successful 
+        Returns the data object and its associated information for a successful
         update of an existing record process
         */
         return { data };
@@ -155,13 +186,13 @@ class SupabaseDatabase {
     /*
     Documentation - https://supabase.com/docs/reference/javascript/delete
 
-    Handles the process of deleting an existing record from the specified table from 
-    the primary key's column and its corresponding value with the Supabase Database 
+    Handles the process of deleting an existing record from the specified table from
+    the primary key's column and its corresponding value with the Supabase Database
     service
     */
     async deleteRecordFromTable(tableName, primaryKeyColumn, primaryKeyColumnValue) {
         /*
-        Ensuring the table exists in the tables list before deleting an existing 
+        Ensuring the table exists in the tables list before deleting an existing
         record from the specified table
         */
         if (!this.#tables.includes(tableName)) {
@@ -173,7 +204,7 @@ class SupabaseDatabase {
             .from(tableName)
             .delete()
             .eq(primaryKeyColumn, primaryKeyColumnValue);
-        
+
         // Returns the response object and its associated information
         return response;
     }
