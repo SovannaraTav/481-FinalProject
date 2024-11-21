@@ -10,6 +10,8 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <></>
+    <div>
+      <Profile name="Tushar T"></Profile>
+    </div>
   )
 }

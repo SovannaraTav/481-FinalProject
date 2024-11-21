@@ -1,0 +1,51 @@
+.signUpContainer {
+    background-color: var(--light);
+    margin: 0;
+    margin-top: 80px;
+    width: 500px;
+    padding: 50px;
+    overflow: hidden;
+
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    border: 5px solid #4b207e;
+    margin-top: 300px;
+    margin-left: 600px;
+    border-radius: 40px;
+}
+
+.user-type-container {
+    display: flex;
+    gap: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  input[type="radio"] {
+    display: none;
+  }
+  
+  .radio-label {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  input[type="radio"]:checked + .radio-label {
+    background-color: var(--dark-medium); /* Change color when selected */
+    color: white;
+    border-color: var(--dark);
+  }
+  
+  .radio-label:hover {
+    background-color: #e0e0e0;
+  }
+  
+
+
