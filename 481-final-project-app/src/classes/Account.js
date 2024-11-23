@@ -5,15 +5,17 @@ class Account {
     #lastName;
     #profilePicture;
     #bio;
+    #account_type;
 
     // Class constructor
-    constructor(accountId, firstName, lastName, profilePicture, bio) {
+    constructor(accountId, firstName, lastName, profilePicture, bio, account_type) {
         // Implicity calls the setter functions to avoid repeating validation logic twice
         this.accountId = accountId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profilePicture = profilePicture;
         this.bio = bio;
+        this.account_type = account_type
     }
 
     // Getter and setter functions for accountId private data attribute
@@ -55,6 +57,14 @@ class Account {
     set bio(bio) {
         this.#bio = bio;
     }
+
+    // Getter and setter functions for bio account type attribute
+    get account_type() {
+        return this.#account_type;
+    }
+    set bio(bio) {
+        this.#account_type = account_type;
+    }
     
     /*
     Returns a JavaScript object of the instance of the class to work with the 
@@ -68,6 +78,7 @@ class Account {
             lastName: this.lastName,
             profilePicture: this.profilePicture,
             bio: this.bio
+            account_type: this.account_type
         };
     }
 }
