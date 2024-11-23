@@ -77,7 +77,7 @@ class Account {
             firstName: this.firstName,
             lastName: this.lastName,
             profilePicture: this.profilePicture,
-            bio: this.bio
+            bio: this.bio,
             account_type: this.account_type
         };
     }
