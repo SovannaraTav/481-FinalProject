@@ -3,6 +3,17 @@ import ProfileCard from '../components/ProfileCard';
 import { useNavigate } from 'react-router-dom';
 import SupabaseDatabase from '../classes/SupabaseDatabase'
 
+/*
+Todo -
+- filters (PRIO)
+  - search bar
+  - alumni v student
+  - make filters pop up and disappear depending on selected type
+  - implement filters
+- fix looks (LATER)
+  - fix images
+  - fix positioning css
+*/
 
 export default function Home() {
 
@@ -17,7 +28,6 @@ export default function Home() {
       const obj = await db.readTable("accounts")
       if (obj.data) {
         setAccounts(obj.data)
-        console.log(obj.data)
       } else if (obj.error) {
         console.log("There was an error in the Home page")
       }
@@ -40,7 +50,7 @@ export default function Home() {
           <label for="students">Students</label>
         </div>
       </div>
-      <div className="horizontal">
+      <div className="flex">
         <div className="filter">
           <div>Filters</div>
           <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
