@@ -14,7 +14,6 @@ export default function SignUp() {
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
-        userType: "userType"
     })
 
   
@@ -57,7 +56,7 @@ export default function SignUp() {
   
   return (
     <div>
-      <form onSubmit ={handleSubmit}>
+      <form className = 'formSignUp' onSubmit ={handleSubmit}>
       <label className='sign'>Sign Up</label>
       <h6>Create your account</h6>
       <div> 
@@ -68,13 +67,7 @@ export default function SignUp() {
         <label htmlFor='password'></label>
         <input type="password" id ="password" name="password" placeholder="Password" value={inputs.password || ""} onChange={handleChange} ></input>
       </div> 
-      <div>
-        <input type="radio" id="alumniType" name="userType" value="Alumni" checked={inputs.userType == "Alumni"} onChange={handleChange} />
-        <label for="alumniType" class="radio-label">Alumni</label>
-          
-        <input type="radio" id="studentType" name="userType" value="Student" checked={inputs.userType == "Student"} onChange={handleChange}/>
-        <label for="studentType" class="radio-label">Student</label>
-      </div>
+ 
 
       <div>
       {signUpResult === false && (

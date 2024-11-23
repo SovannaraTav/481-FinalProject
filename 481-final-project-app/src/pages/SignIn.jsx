@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import "../styles/SignIn.css"
 import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
@@ -26,7 +26,7 @@ export default function SignIn() {
 
       } else {
         console.log("User signin successfully", response.error);
-        navigate("../");
+        navigate("../Home");
         setSignInResult(true);
 
       }
@@ -39,7 +39,7 @@ export default function SignIn() {
   }
   return (
     <div>
-      <form onSubmit ={handleSubmit}>
+      <form  className='formSignIn' onSubmit ={handleSubmit}>
         <label className='sign'>Sign In</label>
         <h6>Enter Credentials to login</h6>
         <div> 
@@ -49,6 +49,9 @@ export default function SignIn() {
         <div> 
           <label htmlFor='password'></label>
           <input type="password" id ="password" name="password" placeholder="Password" value={inputs.password || ""} onChange={handleChange} ></input>
+        </div> 
+        <div> 
+          <p>If you want to create an account, <Link to={"/signup"}>Sign Up Here</Link></p>
         </div> 
         <div>
           {signInResult !== true && (
