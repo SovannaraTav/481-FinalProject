@@ -114,12 +114,14 @@
 .card {
   padding: 0;
   border-radius: 5px;
-  width: 100px;
+  width: 150px;
   background-color: var(--medium-light);
 }
 
 .card-image{
-  height: 100px;
+  height: 150px;
+  width: 150px;
+  background-color: var(--medium);
   margin: 0
 }
 
@@ -139,6 +141,7 @@
 .flex {
   display: flex;
   gap: 50px;
+  justify-content: center;
 }
 
 .connections-container {
@@ -148,7 +151,7 @@
 
 .message-box{
   display: flex;
-  height: 450px;
+  height: 480px;
 }
 
 .message-list{
@@ -273,4 +276,8 @@
 .similar-profiles {
   background-color: var(--medium-light);
   color: black;
+}
+
+.nowrap {
+  white-space: nowrap;
 }

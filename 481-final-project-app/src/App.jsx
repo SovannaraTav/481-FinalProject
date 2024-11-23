@@ -22,11 +22,11 @@ export default function App() {
         <Route path="home" element={<Home />} />
         <Route path="connections" element={<Connections />} />
         <Route path="profile" element={<ProfilePage />} />
-        <Route path="profile/:name" element={<Profile />} />
-        <Route path="signin" element={<SignIn />} /> 
+        <Route path="profile/:id" element={<Profile />} />
+        <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="enterinfo" element = {<EnterInfo />} />
-      </Routes>     
+      </Routes>
       <Footer/>
     </BrowserRouter>
   );
