@@ -21,6 +21,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const [accounts, setAccounts] = useState([])
+  const[search, setSearch] = useState("")
 
   useEffect(()=>{
     const fetchData = async () => {
@@ -36,11 +37,20 @@ export default function Home() {
     fetchData()
   }, []);
 
+  const filteredAccounts = accounts.filter((account) =>
+    `${account.firstName.toLowerCase()} ${account.lastName.toLowerCase()}`
+    .startsWith(search.toLowerCase()))
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <div className="container">
       <div className="title">Make Connections</div>
       <div className="horizontal stacked-block">
-        <input type="text" placeholder="Enter a name..." className="search" />
+        <input type="text" placeholder="Enter a name..." className="search"
+          onChange={handleSearch}
+        />
         <div className="nowrap">
           <input type="checkbox" id="alumni" name="people" value="alumni" checked/>
           <label for="alumni">Alumni</label>
@@ -71,7 +81,7 @@ export default function Home() {
           <label for="placeholder">Placeholder</label>
         </div>
         <div className="card-list">
-          {accounts.map(account => {
+          {filteredAccounts.map(account => {
             return <div
             key={account.accountId}
             onClick={()=>{
