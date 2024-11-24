@@ -22,6 +22,8 @@ export default function Home() {
 
   const [accounts, setAccounts] = useState([])
   const[search, setSearch] = useState("")
+  const[studentSearch, setStudentSearch] = useState(true)
+  const[alumniSearch, setAlumniSearch] = useState(true)
 
   useEffect(()=>{
     const fetchData = async () => {
@@ -39,9 +41,19 @@ export default function Home() {
 
   const filteredAccounts = accounts.filter((account) =>
     `${account.firstName.toLowerCase()} ${account.lastName.toLowerCase()}`
-    .startsWith(search.toLowerCase()))
+    .startsWith(search.toLowerCase())
+    && ((account.account_type === 'Student' && studentSearch)
+    || (account.account_type === 'Alumni' && alumniSearch))
+  )
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
+  };
+  const handleCheckStudent = (event) => {
+    setStudentSearch(!studentSearch);
+  };
+  const handleCheckAlumni = (event) => {
+    setAlumniSearch(!alumniSearch);
   };
 
   return (
@@ -52,11 +64,13 @@ export default function Home() {
           onChange={handleSearch}
         />
         <div className="nowrap">
-          <input type="checkbox" id="alumni" name="people" value="alumni" checked/>
+          <input type="checkbox" id="alumni" name="people" value="alumni"
+          checked={alumniSearch} onChange={handleCheckAlumni}/>
           <label for="alumni">Alumni</label>
         </div>
         <div className="nowrap">
-          <input type="checkbox" id="students" name="people" value="students" checked/>
+          <input type="checkbox" id="students" name="people" value="students"
+          checked={studentSearch} onChange={handleCheckStudent}/>
           <label for="students">Students</label>
         </div>
       </div>
