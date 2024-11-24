@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ProfileCard from '../components/ProfileCard';
 import { useNavigate } from 'react-router-dom';
 import SupabaseDatabase from '../classes/SupabaseDatabase'
@@ -21,18 +21,30 @@ export default function Home() {
   const navigate = useNavigate();
 
   const [accounts, setAccounts] = useState([])
+  const[students, setStudents] = useState([])
+  const[alumni, setAlumni] = useState([])
   const[search, setSearch] = useState("")
   const[studentSearch, setStudentSearch] = useState(true)
   const[alumniSearch, setAlumniSearch] = useState(true)
+  //const[seen, setSeen] = useState([])
 
   useEffect(()=>{
     const fetchData = async () => {
       const db = new SupabaseDatabase()
       const obj = await db.readTable("accounts")
+      console.log(db)
       if (obj.data) {
         setAccounts(obj.data)
       } else if (obj.error) {
         console.log("There was an error in the Home page")
+      }
+      const obj2 = await db.readTable("uw_students")
+      if (obj2.data) {
+        setStudents(obj2.data)
+      }
+      const obj3 = await db.readTable("uw_alumni")
+      if (obj3.data) {
+        setAlumni(obj3.data)
       }
     }
 
@@ -76,23 +88,42 @@ export default function Home() {
       </div>
       <div className="flex">
         <div className="filter">
-          <div>Filters</div>
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label><br />
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-          <label for="placeholder">Placeholder</label>
+          {
+            alumniSearch &&
+            <>
+              <div classname>Field: </div>
+              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+              <label for="placeholder">Placeholder</label><br />
+              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+              <label for="placeholder">Placeholder</label><br />
+
+              <div>Title: </div>
+              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+              <label for="placeholder">Placeholder</label><br />
+              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+              <label for="placeholder">Placeholder</label><br />
+
+              <div>Company: </div>
+              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+              <label for="placeholder">Placeholder</label><br />
+              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+              <label for="placeholder">Placeholder</label><br />
+
+            </>
+          }
+          {studentSearch &&
+          <>
+            <div>Major: </div>
+            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+            <label for="placeholder">Placeholder</label><br />
+            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
+            <label for="placeholder">Placeholder</label><br />
+          </>
+          }
+          <div style={{marginTop: "15px", fontSize: "17px"}}>
+          <label for="placeholder">Show connections:</label>
+          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" checked/>
+          </div>
         </div>
         <div className="card-list">
           {filteredAccounts.map(account => {

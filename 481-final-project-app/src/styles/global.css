@@ -87,7 +87,7 @@
   background-color: var(--dark);
   border-radius: 15px;
   /*border: .6px solid var(--dark);*/
-  padding: 20px 0;
+  padding: 30px 10px;
   text-align: center;
   color: var(--light);
 }
