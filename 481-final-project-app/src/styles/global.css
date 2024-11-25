@@ -49,8 +49,8 @@
 .container {
   background-color: var(--light);
   margin: 0;
-  margin-top: 80px;
-  width: calc(100vw - 217px);
+  margin-top: 50px;
+  width: calc(100vw - 237px);
   padding: 50px 100px;
 }
 
@@ -77,7 +77,7 @@
   border-radius: 5px;
   width: 100%;
   border: .5px solid grey;
-  padding: 2px 5px;
+  padding: 5px;
 }
 
 /* TODO: make width back to percentage */
@@ -109,6 +109,9 @@
   min-width: 100%;
   max-width: 100%;
   margin-bottom: 15px;
+  border-radius: 0px;
+  padding: 5px;
+  border: none
 }
 
 .stacked-block {
@@ -125,19 +128,19 @@
   padding: 0;
   border-radius: 5px;
   width: 150px;
-  background-color: var(--medium-light);
+  background-color: var(--medium);
 }
 
 .card-image{
   height: 150px;
   width: 150px;
-  background-color: var(--medium);
+  background-color: var(--medium-light);
   margin: 0
 }
 
 .card-description{
   padding: 10px;
-  color: black;
+  color: white;
   margin: 0
 }
 

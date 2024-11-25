@@ -180,7 +180,7 @@ export default function Home() {
               navigate(`/profile/${account.accountId}`)
               }}>
               <ProfileCard name={`${account.firstName} ${account.lastName}`}
-              picture={account.profilePicture}></ProfileCard>
+              /*picture={account.profilePicture}*/></ProfileCard>
             </div>
           })}
         </div>
