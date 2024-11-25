@@ -27,10 +27,10 @@ export default function Home() {
   const[selectedCompany, setSelectedCompany] = useState("")
   const[selectedMajor, setSelectedMajor] = useState("")
 
-  console.log(selectedField)
+  /*console.log(selectedField)
   console.log(selectedTitle)
   console.log(selectedCompany)
-  console.log(selectedMajor)
+  console.log(selectedMajor)*/
 
   const[search, setSearch] = useState("")
   const[studentSearch, setStudentSearch] = useState(true)
@@ -63,14 +63,22 @@ export default function Home() {
   const fields = [...new Set(alumni.map(alumn => alumn.currentField))];
   const titles = [...new Set(alumni.map(alumn => alumn.currentJobTitle))];
   const companies = [...new Set(alumni.map(alumn => alumn.currentCompany))];
-  const majors = [...new Set(students.map(alumn => alumn.major))];
+  const majors = [...new Set(students.map(student => student.major))];
 
-  const filteredAccounts = accounts.filter((account) =>
-    `${account.firstName.toLowerCase()} ${account.lastName.toLowerCase()}`
-    .startsWith(search.toLowerCase())
-    && ((account.account_type === 'Student' && studentSearch)
-    || (account.account_type === 'Alumni' && alumniSearch))
-  )
+  const filteredAccounts = accounts.filter((account) => {
+    const nameMatches = `${account.firstName.toLowerCase()} ${account.lastName.toLowerCase()}`
+      .startsWith(search.toLowerCase());
+    const accountTypeMatches = (account.account_type === 'Student' && studentSearch)
+      || (account.account_type === 'Alumni' && alumniSearch);
+    const studentData = students.find(student => student.studentId === account.accountId);
+    const alumniData = alumni.find(alumnus => alumnus.alumniId === account.accountId);
+    const majorMatches = studentData ? (selectedMajor ? studentData.major.startsWith(selectedMajor) : true) : true;
+    const fieldMatches = alumniData ? (selectedField ? alumniData.currentField.toLowerCase().startsWith(selectedField.toLowerCase()) : true) : true;
+    const titleMatches = alumniData ? (selectedTitle ? alumniData.currentJobTitle.toLowerCase().startsWith(selectedTitle.toLowerCase()) : true) : true;
+    const companyMatches = alumniData ? (selectedCompany ? alumniData.currentCompany.toLowerCase().startsWith(selectedCompany.toLowerCase()) : true) : true;
+    return nameMatches && accountTypeMatches && majorMatches && fieldMatches && titleMatches && companyMatches;
+  });
+
 
   const handleSearch = (event) => {
     setSearch(event.target.value);

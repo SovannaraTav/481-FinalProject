@@ -62,7 +62,7 @@ class Account {
     get account_type() {
         return this.#account_type;
     }
-    set bio(bio) {
+    set account_type(account_type) {
         this.#account_type = account_type;
     }
 
