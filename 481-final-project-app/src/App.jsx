@@ -18,7 +18,8 @@ export default function App() {
     <BrowserRouter>
       <Navbar/>
       <Routes>
-        <Route index element={<Home />} />
+        <Route index element={<SignIn />} />
+        <Route path="home" element={<Home />} />
         <Route path="connections" element={<Connections />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="profile/:id" element={<Profile />} />
