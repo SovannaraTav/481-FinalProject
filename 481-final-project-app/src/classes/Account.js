@@ -57,17 +57,9 @@ class Account {
     set bio(bio) {
         this.#bio = bio;
     }
-
-    // Getter and setter functions for bio account type attribute
-    get account_type() {
-        return this.#account_type;
-    }
-    set bio(bio) {
-        this.#account_type = account_type;
-    }
     
     /*
-    Returns a JavaScript object of the instance of the class to work with the 
+    Returns a JavaScript object of the instance of the class to work with the
     Supabase Database service
     */
     toObject() {
