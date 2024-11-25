@@ -80,10 +80,12 @@
   padding: 2px 5px;
 }
 
+/* TODO: make width back to percentage */
 .filter {
-  min-width: 175px;
-  width: 25%;
-  max-width: 200px;
+  width: 175px;
+  max-width: 175px;
+  /*width: 25%;
+  max-width: 200px;*/
   background-color: var(--dark);
   border-radius: 15px;
   /*border: .6px solid var(--dark);*/
@@ -91,6 +93,7 @@
   text-align: center;
   color: var(--light);
 }
+
 .filter div {
   margin-bottom: 10px;
   font-size: 18px;
@@ -100,8 +103,11 @@
   margin-bottom: 15px;
 }
 
+/* TODO: make width back to percentage */
 .filter-dropdown {
-  width: 100%;
+  width: 175px;
+  min-width: 100%;
+  max-width: 100%;
   margin-bottom: 15px;
 }
 

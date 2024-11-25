@@ -22,10 +22,19 @@ export default function Home() {
   const[students, setStudents] = useState([])
   const[alumni, setAlumni] = useState([])
 
+  const[selectedField, setSelectedField] = useState("")
+  const[selectedTitle, setSelectedTitle] = useState("")
+  const[selectedCompany, setSelectedCompany] = useState("")
+  const[selectedMajor, setSelectedMajor] = useState("")
+
+  console.log(selectedField)
+  console.log(selectedTitle)
+  console.log(selectedCompany)
+  console.log(selectedMajor)
+
   const[search, setSearch] = useState("")
   const[studentSearch, setStudentSearch] = useState(true)
   const[alumniSearch, setAlumniSearch] = useState(true)
-  //const[seen, setSeen] = useState([])
 
   useEffect(()=>{
     const fetchData = async () => {
@@ -72,6 +81,26 @@ export default function Home() {
   const handleCheckAlumni = (event) => {
     setAlumniSearch(!alumniSearch);
   };
+  const handleSelectField = (event) => {
+    event.target.value.startsWith("All ") ?
+    setSelectedField("") :
+    setSelectedField(event.target.value);
+  };
+  const handleSelectTitle = (event) => {
+    event.target.value.startsWith("All ") ?
+    setSelectedTitle("") :
+    setSelectedTitle(event.target.value);
+  };
+  const handleSelectCompany = (event) => {
+    event.target.value.startsWith("All ") ?
+    setSelectedCompany("") :
+    setSelectedCompany(event.target.value);
+  };
+  const handleSelectMajor = (event) => {
+    event.target.value.startsWith("All ") ?
+    setSelectedMajor("") :
+    setSelectedMajor(event.target.value);
+  };
 
   return (
     <div className="container">
@@ -97,21 +126,21 @@ export default function Home() {
             alumniSearch &&
             <>
               <div classname>Field: </div>
-              <select class="filter-dropdown">
+              <select class="filter-dropdown" onChange={handleSelectField}>
                 <option>All fields</option>
                 {fields.map(field => {
                   return <option>{field}</option>
                 })}
               </select>
               <div>Title: </div>
-              <select class="filter-dropdown">
+              <select class="filter-dropdown" onChange={handleSelectTitle}>
                 <option>All titles</option>
                   {titles.map(title => {
                     return <option>{title}</option>
                   })}
               </select>
               <div>Company: </div>
-              <select class="filter-dropdown">
+              <select class="filter-dropdown" onChange={handleSelectCompany}>
                 <option>All companies</option>
                 {companies.map(company => {
                   return <option>{company}</option>
@@ -122,7 +151,7 @@ export default function Home() {
           {studentSearch &&
           <>
             <div>Major: </div>
-            <select class="filter-dropdown">
+            <select class="filter-dropdown" onChange={handleSelectMajor}>
                 <option>All majors</option>
                 {majors.map(major => {
                   return <option>{major}</option>
