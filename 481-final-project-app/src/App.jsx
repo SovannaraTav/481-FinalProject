@@ -13,11 +13,13 @@ import EnterInfo from "./pages/EnterInfo";
 
 
 export default function App() {
+  
   return (
     <BrowserRouter>
       <Navbar/>
       <Routes>
-        <Route index element={<Home />} />
+        <Route index element={<SignIn />} />
+        <Route path="home" element={<Home />} />
         <Route path="connections" element={<Connections />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="profile/:id" element={<Profile />} />
