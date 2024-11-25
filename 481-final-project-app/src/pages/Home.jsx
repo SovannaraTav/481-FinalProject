@@ -6,9 +6,6 @@ import SupabaseDatabase from '../classes/SupabaseDatabase'
 /*
 Todo -
 - filters (PRIO)
-  - search bar
-  - alumni v student
-  - make filters pop up and disappear depending on selected type
   - implement filters
 - fix looks (LATER)
   - fix images
@@ -21,8 +18,10 @@ export default function Home() {
   const navigate = useNavigate();
 
   const [accounts, setAccounts] = useState([])
+
   const[students, setStudents] = useState([])
   const[alumni, setAlumni] = useState([])
+
   const[search, setSearch] = useState("")
   const[studentSearch, setStudentSearch] = useState(true)
   const[alumniSearch, setAlumniSearch] = useState(true)
@@ -32,7 +31,7 @@ export default function Home() {
     const fetchData = async () => {
       const db = new SupabaseDatabase()
       const obj = await db.readTable("accounts")
-      console.log(db)
+      //console.log(db)
       if (obj.data) {
         setAccounts(obj.data)
       } else if (obj.error) {
@@ -48,8 +47,14 @@ export default function Home() {
       }
     }
 
+
     fetchData()
   }, []);
+
+  const fields = [...new Set(alumni.map(alumn => alumn.currentField))];
+  const titles = [...new Set(alumni.map(alumn => alumn.currentJobTitle))];
+  const companies = [...new Set(alumni.map(alumn => alumn.currentCompany))];
+  const majors = [...new Set(students.map(alumn => alumn.major))];
 
   const filteredAccounts = accounts.filter((account) =>
     `${account.firstName.toLowerCase()} ${account.lastName.toLowerCase()}`
@@ -92,32 +97,37 @@ export default function Home() {
             alumniSearch &&
             <>
               <div classname>Field: </div>
-              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-              <label for="placeholder">Placeholder</label><br />
-              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-              <label for="placeholder">Placeholder</label><br />
-
+              <select class="filter-dropdown">
+                <option>All fields</option>
+                {fields.map(field => {
+                  return <option>{field}</option>
+                })}
+              </select>
               <div>Title: </div>
-              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-              <label for="placeholder">Placeholder</label><br />
-              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-              <label for="placeholder">Placeholder</label><br />
-
+              <select class="filter-dropdown">
+                <option>All titles</option>
+                  {titles.map(title => {
+                    return <option>{title}</option>
+                  })}
+              </select>
               <div>Company: </div>
-              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-              <label for="placeholder">Placeholder</label><br />
-              <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-              <label for="placeholder">Placeholder</label><br />
-
+              <select class="filter-dropdown">
+                <option>All companies</option>
+                {companies.map(company => {
+                  return <option>{company}</option>
+                })}
+              </select>
             </>
           }
           {studentSearch &&
           <>
             <div>Major: </div>
-            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-            <label for="placeholder">Placeholder</label><br />
-            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-            <label for="placeholder">Placeholder</label><br />
+            <select class="filter-dropdown">
+                <option>All majors</option>
+                {majors.map(major => {
+                  return <option>{major}</option>
+                })}
+              </select>
           </>
           }
           <div style={{marginTop: "15px", fontSize: "17px"}}>

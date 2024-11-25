@@ -50,8 +50,8 @@
   background-color: var(--light);
   margin: 0;
   margin-top: 80px;
-  width: calc(100vw - 100px);
-  padding: 50px;
+  width: calc(100vw - 217px);
+  padding: 50px 100px;
 }
 
 #footer {
@@ -81,7 +81,7 @@
 }
 
 .filter {
-  min-width: 150px;
+  min-width: 175px;
   width: 25%;
   max-width: 200px;
   background-color: var(--dark);
@@ -91,13 +91,17 @@
   text-align: center;
   color: var(--light);
 }
-
 .filter div {
-  margin-bottom: 15px;
-  font-size: 20px;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
 .filter input[type="checkbox"] {
+  margin-bottom: 15px;
+}
+
+.filter-dropdown {
+  width: 100%;
   margin-bottom: 15px;
 }
 

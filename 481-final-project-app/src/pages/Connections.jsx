@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import MessageCard from '../components/MessageCard'
 import Message from '../components/Message'
+import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
 export default function Connections() {
 
@@ -15,6 +16,16 @@ export default function Connections() {
     , false, "1-1-2000"
   ], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"]]]]
   const [selectedMessage, setSelectedMessage] = useState(null)
+
+  useEffect(()=>{
+    const getUser = async () => {
+      const auth = new SupabaseAuthentication();
+      const user = auth.retrieveUser();
+      console.log(user)
+    }
+
+    getUser()
+  }, []);
 
   return (
     <div className="container">
@@ -42,11 +53,10 @@ export default function Connections() {
         <div className="connections-box">
           <div className="title-label">Connections</div>
           <div className="connection-filters">
-            <div>Filters</div>
-            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-            <label for="placeholder">Placeholder</label><br />
-            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-            <label for="placeholder">Placeholder</label><br />
+            <input type="checkbox" id="alumni" name="alumni" value="alumni" />
+            <label for="placeholder">Alumni</label><br />
+            <input type="checkbox" id="student" name="student" value="student" />
+            <label for="placeholder">Student</label><br />
           </div>
           <input className = "search" style={{
             width: '80%',
