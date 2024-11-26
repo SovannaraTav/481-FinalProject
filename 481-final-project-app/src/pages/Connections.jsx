@@ -4,9 +4,7 @@ import Message from '../components/Message'
 import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
 export default function Connections() {
-
   // dummy data
-  const connections =  ["Alice", "Bob", "Charlie", "David", "Eva"]
   const messages = [
   ["David", [["hello", true, "11-5-2024"], ["Yo", false, "11-5-2024"],
   ["thanks for connecting", true, "11-5-2024"], ["Ok", false, "11-5-2024"]]],
@@ -17,13 +15,23 @@ export default function Connections() {
   ], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"]]]]
   const [selectedMessage, setSelectedMessage] = useState(null)
 
+  const[connections, setConnections] = useState([])
+  const[user, setUser] = useState(null)
+
   useEffect(()=>{
+    window.scrollTo(0, 0)
+
     const getUser = async () => {
       const auth = new SupabaseAuthentication();
-      const user = auth.retrieveUser();
+      setUser(await auth.retrieveUser());
+    }
+
+    const getConnections = async () => {
+      setConnections(user.connections)
     }
 
     getUser()
+    getConnections()
   }, []);
 
   return (
@@ -65,7 +73,7 @@ export default function Connections() {
             {connections.map(connection => {
               return <div className="connection">
                 <img alt="pfp"></img>
-                {connection}
+                {`${connection.firstName} ${connection.lastName}`}
               </div>
             })}
           </div>

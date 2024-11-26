@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import ProfileCard from '../components/ProfileCard';
 import { useNavigate } from 'react-router-dom';
 import SupabaseDatabase from '../classes/SupabaseDatabase'
+import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
 /*
 Todo -
@@ -25,14 +26,21 @@ export default function Home() {
   const[selectedTitle, setSelectedTitle] = useState("")
   const[selectedCompany, setSelectedCompany] = useState("")
   const[selectedMajor, setSelectedMajor] = useState("")
+  const[showConnections, setShowConnections] = useState(true)
 
   const[search, setSearch] = useState("")
   const[studentSearch, setStudentSearch] = useState(true)
   const[alumniSearch, setAlumniSearch] = useState(true)
 
+  const[connections, setConnections] = useState([])
+  const[user, setUser] = useState(null)
+
   useEffect(()=>{
+    window.scrollTo(0, 0)
+    const db = new SupabaseDatabase()
+    const auth = new SupabaseAuthentication();
+
     const fetchData = async () => {
-      const db = new SupabaseDatabase()
       const obj = await db.readTable("accounts")
       if (obj.data) {
         setAccounts(obj.data)
@@ -49,9 +57,22 @@ export default function Home() {
         setAlumni(obj3.data)
       }
     }
-
+    const getUser = async () => {
+      setUser(await auth.retrieveUser());
+    }
+    const getConnections = async () => {
+      if(user){
+        const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`)
+        if (obj.data) {
+          setConnections(obj.data[0].connections)
+        }
+      }
+    }
 
     fetchData()
+    getUser()
+    getConnections()
+
   }, []);
 
   const fields = [...new Set(alumni.map(alumn => alumn.currentField))];
@@ -60,6 +81,7 @@ export default function Home() {
   const majors = [...new Set(students.map(student => student.major))];
 
   const filteredAccounts = accounts.filter((account) => {
+    const notYou = account.accountId !== user.id;
     const nameMatches = `${account.firstName.toLowerCase()} ${account.lastName.toLowerCase()}`
       .startsWith(search.toLowerCase());
     const accountTypeMatches = (account.account_type === 'Student' && studentSearch)
@@ -70,7 +92,8 @@ export default function Home() {
     const fieldMatches = alumniData ? (selectedField ? alumniData.currentField.toLowerCase().startsWith(selectedField.toLowerCase()) : true) : selectedField == "";
     const titleMatches = alumniData ? (selectedTitle ? alumniData.currentJobTitle.toLowerCase().startsWith(selectedTitle.toLowerCase()) : true) : selectedTitle == "";
     const companyMatches = alumniData ? (selectedCompany ? alumniData.currentCompany.toLowerCase().startsWith(selectedCompany.toLowerCase()) : true) : selectedCompany == "";
-    return nameMatches && accountTypeMatches && majorMatches && fieldMatches && titleMatches && companyMatches;
+    const notConnection = showConnections ? true : !connections.includes(account.accountId);
+    return notYou && nameMatches && accountTypeMatches && majorMatches && fieldMatches && titleMatches && companyMatches && notConnection;
   });
 
   const handleSearch = (event) => {
@@ -101,6 +124,9 @@ export default function Home() {
     event.target.value.startsWith("All ") ?
     setSelectedMajor("") :
     setSelectedMajor(event.target.value);
+  };
+  const handleConnectionsChecked = (event) => {
+    setShowConnections(!showConnections);
   };
 
   return (
@@ -162,7 +188,8 @@ export default function Home() {
           }
           <div style={{marginTop: "15px", fontSize: "17px"}}>
           <label for="placeholder">Show connections:</label>
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" checked/>
+          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder"
+           onChange={handleConnectionsChecked} defaultChecked/>
           </div>
         </div>
         {

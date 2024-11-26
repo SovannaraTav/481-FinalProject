@@ -8,6 +8,8 @@ export default function ProfilePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+
     const auth = new SupabaseAuthentication();
     const fetchUser = async () => {
       const user = await auth.retrieveUser();
