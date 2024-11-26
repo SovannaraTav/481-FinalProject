@@ -9,8 +9,7 @@ export default function Navbar() {
     const auth = new SupabaseAuthentication();
     const fetchUser = async () => {
       const user = await auth.retrieveUser()
-      .then((user) => user ? setLoggedIn(true) : setLoggedIn(false));
-      console.log(loggedIn)
+      setLoggedIn(user)
     };
 
     fetchUser();

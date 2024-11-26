@@ -283,6 +283,18 @@
   margin: 10px 200px
 }
 
+.edit-button {
+  width: 100px;
+  background-color: gray;
+  margin: 10px 200px
+}
+
+.message-button {
+  width: 100px;
+  background-color: rgb(110, 218, 254);
+  margin: 10px 200px
+}
+
 .profile-container {
   display: flex;
   align-items:stretch;
