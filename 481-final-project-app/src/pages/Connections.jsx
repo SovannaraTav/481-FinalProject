@@ -21,7 +21,6 @@ export default function Connections() {
     const getUser = async () => {
       const auth = new SupabaseAuthentication();
       const user = auth.retrieveUser();
-      console.log(user)
     }
 
     getUser()

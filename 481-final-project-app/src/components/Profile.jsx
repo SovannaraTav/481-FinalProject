@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom';
 import SupabaseDatabase from '../classes/SupabaseDatabase'
+import defaultBanner from "../assets/banner_default.jpg"
+import defaultPic from "../assets/default.jpg"
 
 export default function Profile() {
 
@@ -10,12 +12,10 @@ export default function Profile() {
 
   useEffect(()=>{
     const fetchData = async () => {
-      console.log("id = ", {id})
       const db = new SupabaseDatabase()
       const obj = await db.readRecordFromTable("accounts", "accountId", `${id}`)
       if (obj.data) {
-        setUserInfo(obj.data)
-        console.log(userInfo)
+        setUserInfo(obj.data[0])
         /*
         userInfo is structured like this:
         accountId: "f4a7cb12-5fa6-4f7b-a788-fb6fa64491d5"
@@ -30,17 +30,23 @@ export default function Profile() {
     }
 
     fetchData()
-  }, [id, userInfo]);
+  }, []);
 
   return (
-    <div style={{marginTop: '80px'}}>
-      <img className="banner" />
-      <img className="profile-picture" alt="pfp"/>
+    <>
+    {userInfo &&
+      <div style={{marginTop: '50px'}}>
+      <img className="banner" src={defaultBanner}/>
+      <img className="profile-picture" alt="pfp" src={defaultPic}/>
       <div className="profile-header">
-        <div className="profile-name">
-          Tushar
+        <div className="profile-header-top-row">
+          <div className="profile-name">
+            {`${userInfo.firstName} ${userInfo.lastName}`}
+          </div>
+          {/* if user, make this an edit button, if the user is connected, make this a message button */}
+          <button className="connect-button">Connect</button>
         </div>
-        {/*<button className="connect-button">Connect</button>*/}
+        <div className="profile-bio">{userInfo.bio}</div>
       </div>
       <div className="profile-container">
         <div className="profile-information">
@@ -65,5 +71,7 @@ export default function Profile() {
         </div>
       </div>
     </div>
+    }
+    </>
   )
 }

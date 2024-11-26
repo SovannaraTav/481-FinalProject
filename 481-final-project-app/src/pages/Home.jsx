@@ -5,10 +5,7 @@ import SupabaseDatabase from '../classes/SupabaseDatabase'
 
 /*
 Todo -
-- filters (PRIO)
-  - implement filters
 - fix looks (LATER)
-  - fix images
   - fix positioning css
 */
 
@@ -27,10 +24,6 @@ export default function Home() {
   const[selectedCompany, setSelectedCompany] = useState("")
   const[selectedMajor, setSelectedMajor] = useState("")
 
-  /*console.log(selectedField)
-  console.log(selectedTitle)
-  console.log(selectedCompany)
-  console.log(selectedMajor)*/
 
   const[search, setSearch] = useState("")
   const[studentSearch, setStudentSearch] = useState(true)
@@ -40,7 +33,6 @@ export default function Home() {
     const fetchData = async () => {
       const db = new SupabaseDatabase()
       const obj = await db.readTable("accounts")
-      //console.log(db)
       if (obj.data) {
         setAccounts(obj.data)
       } else if (obj.error) {
