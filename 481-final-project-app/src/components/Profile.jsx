@@ -34,7 +34,7 @@ export default function Profile() {
 
   return (
     <>
-    {userInfo &&
+    {userInfo ? <>
       <div style={{marginTop: '50px'}}>
       <img className="banner" src={defaultBanner}/>
       <img className="profile-picture" alt="pfp" src={defaultPic}/>
@@ -71,7 +71,7 @@ export default function Profile() {
         </div>
       </div>
     </div>
-    }
+    </> : <div className="container">Loading profile information...</div>}
     </>
   )
 }

@@ -64,13 +64,12 @@ export default function Home() {
       || (account.account_type === 'Alumni' && alumniSearch);
     const studentData = students.find(student => student.studentId === account.accountId);
     const alumniData = alumni.find(alumnus => alumnus.alumniId === account.accountId);
-    const majorMatches = studentData ? (selectedMajor ? studentData.major.startsWith(selectedMajor) : true) : true;
-    const fieldMatches = alumniData ? (selectedField ? alumniData.currentField.toLowerCase().startsWith(selectedField.toLowerCase()) : true) : true;
-    const titleMatches = alumniData ? (selectedTitle ? alumniData.currentJobTitle.toLowerCase().startsWith(selectedTitle.toLowerCase()) : true) : true;
-    const companyMatches = alumniData ? (selectedCompany ? alumniData.currentCompany.toLowerCase().startsWith(selectedCompany.toLowerCase()) : true) : true;
+    const majorMatches = studentData ? (selectedMajor ? studentData.major.startsWith(selectedMajor) : true) : selectedMajor == "";
+    const fieldMatches = alumniData ? (selectedField ? alumniData.currentField.toLowerCase().startsWith(selectedField.toLowerCase()) : true) : selectedField == "";
+    const titleMatches = alumniData ? (selectedTitle ? alumniData.currentJobTitle.toLowerCase().startsWith(selectedTitle.toLowerCase()) : true) : selectedTitle == "";
+    const companyMatches = alumniData ? (selectedCompany ? alumniData.currentCompany.toLowerCase().startsWith(selectedCompany.toLowerCase()) : true) : selectedCompany == "";
     return nameMatches && accountTypeMatches && majorMatches && fieldMatches && titleMatches && companyMatches;
-  });
-
+  }); console.log(filteredAccounts)
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -164,18 +163,20 @@ export default function Home() {
           <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" checked/>
           </div>
         </div>
-        <div className="card-list">
-          {filteredAccounts.map(account => {
-            return <div
-            key={account.accountId}
-            onClick={()=>{
-              navigate(`/profile/${account.accountId}`)
-              }}>
-              <ProfileCard name={`${account.firstName} ${account.lastName}`}
-              /*picture={account.profilePicture}*/></ProfileCard>
-            </div>
-          })}
-        </div>
+        {
+          filteredAccounts.length == 0 ? <div>No accounts to show</div> :
+          <div className="card-list">
+            {filteredAccounts.map(account => {
+              return <div
+              key={account.accountId}
+              onClick={()=>{
+                navigate(`/profile/${account.accountId}`)
+                }}>
+                <ProfileCard name={`${account.firstName} ${account.lastName}`}
+                /*picture={account.profilePicture}*/></ProfileCard>
+              </div>
+            })}
+          </div>}
       </div>
     </div>
   )

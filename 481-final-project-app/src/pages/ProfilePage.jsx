@@ -6,12 +6,12 @@ export default function ProfilePage() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    navigate(`/profile/Tushar`);
+    navigate(`/profile/60f92924-3862-4cfb-b4e8-a58689610215`);
   }, []);
 
   return (
     <div>
-      <Profile name="Tushar T"></Profile>
+      <Profile></Profile>
     </div>
   )
 }
