@@ -19,11 +19,12 @@ export default function Home() {
   const[students, setStudents] = useState([])
   const[alumni, setAlumni] = useState([])
 
+  const[loaded, setLoaded] = useState(false)
+
   const[selectedField, setSelectedField] = useState("")
   const[selectedTitle, setSelectedTitle] = useState("")
   const[selectedCompany, setSelectedCompany] = useState("")
   const[selectedMajor, setSelectedMajor] = useState("")
-
 
   const[search, setSearch] = useState("")
   const[studentSearch, setStudentSearch] = useState(true)
@@ -35,6 +36,7 @@ export default function Home() {
       const obj = await db.readTable("accounts")
       if (obj.data) {
         setAccounts(obj.data)
+        setLoaded(true)
       } else if (obj.error) {
         console.log("There was an error in the Home page")
       }
@@ -69,7 +71,7 @@ export default function Home() {
     const titleMatches = alumniData ? (selectedTitle ? alumniData.currentJobTitle.toLowerCase().startsWith(selectedTitle.toLowerCase()) : true) : selectedTitle == "";
     const companyMatches = alumniData ? (selectedCompany ? alumniData.currentCompany.toLowerCase().startsWith(selectedCompany.toLowerCase()) : true) : selectedCompany == "";
     return nameMatches && accountTypeMatches && majorMatches && fieldMatches && titleMatches && companyMatches;
-  }); console.log(filteredAccounts)
+  });
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -164,7 +166,9 @@ export default function Home() {
           </div>
         </div>
         {
-          filteredAccounts.length == 0 ? <div>No accounts to show</div> :
+          filteredAccounts.length == 0 ?
+          (loaded ? <div>No accounts to show</div> : <div>Loading accounts...</div>)
+          :
           <div className="card-list">
             {filteredAccounts.map(account => {
               return <div
