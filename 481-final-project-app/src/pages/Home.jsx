@@ -36,7 +36,6 @@ export default function Home() {
   const[user, setUser] = useState(null)
 
   useEffect(()=>{
-    window.scrollTo(0, 0)
     const db = new SupabaseDatabase()
     const auth = new SupabaseAuthentication();
 
@@ -60,20 +59,28 @@ export default function Home() {
     const getUser = async () => {
       setUser(await auth.retrieveUser());
     }
+
+    fetchData()
+    getUser()
+
+  }, []);
+
+  useEffect(()=>{
     const getConnections = async () => {
+      const db = new SupabaseDatabase()
+
       if(user){
         const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`)
         if (obj.data) {
-          setConnections(obj.data[0].connections)
+          setConnections(obj.data[0].connections);
+          console.log("done");
         }
       }
     }
 
-    fetchData()
-    getUser()
     getConnections()
+  }, [user])
 
-  }, []);
 
   const fields = [...new Set(alumni.map(alumn => alumn.currentField))];
   const titles = [...new Set(alumni.map(alumn => alumn.currentJobTitle))];
