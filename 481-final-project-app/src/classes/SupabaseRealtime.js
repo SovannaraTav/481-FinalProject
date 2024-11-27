@@ -58,6 +58,42 @@ class SupabaseRealtime {
     }
 
     /*
+    Documentation - https://supabase.com/docs/reference/javascript/select
+
+    Handles the process of reading existing records from the Messages table to 
+    display the received messages of the current user based on their account id 
+    with Supabase Database service to serve as the functionality of displaying 
+    received messages
+    */
+    async displayReceivedMessages(accountId) {
+        const { data , error } = await supabase
+            .from("messages")
+            .select(`
+                messageId,
+                content,
+                dateTime,
+                isMarkAsRead,
+                accounts:senderId (firstName, lastName)
+            `)
+            .eq("receiverId", accountId);
+        
+        /*
+        Returns the error object and its associated information for an unsuccessful 
+        reading of existing records from the Messages table process
+        */
+        if (error) {
+            console.error(`Retrieving message was unsuccessful: ${error.message}`);
+            return { error };
+        }
+
+        /*
+        Returns the data object and its associated information for a successful 
+        reading of existing records from the Messages table process
+        */
+        return data;
+    }
+
+    /*
     Documentation - https://supabase.com/docs/reference/javascript/subscribe
 
     Handles the process of listening for received messages for the current user 
@@ -90,7 +126,7 @@ class SupabaseRealtime {
                 table: "messages",
                 filter: `receiverId=eq.${accountId}`
             }, (payload) => {
-                console.log(`Received message successfully: ${payload}`)
+                console.log(`Received message successfully: ${JSON.stringify(payload.new.content)}`)
             })
             .subscribe((status) => {
                 if (status === "SUBSCRIBED") {
