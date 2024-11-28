@@ -30,18 +30,6 @@ export default function Profile() {
       setLoggedInUser(user);
     };
 
-    const getConnections = async () => {
-      if (loggedInUser) {
-        const obj = await db.readRecordFromTable("accounts", "accountId", `${loggedInUser.id}`);
-        if (obj.data) {
-          const connections = obj.data[0].connections;
-          if (connections.includes(id)) {
-            setIsConnection(true);
-          }
-        }
-      }
-    };
-
     fetchData();
     getUser();
   }, []);
@@ -60,7 +48,7 @@ export default function Profile() {
       };
       getConnections();
     }
-  }, [loggedInUser, id]);
+  }, [loggedInUser]);
 
   if (!userInfo) {
     return <div className="container">Loading profile information...</div>;

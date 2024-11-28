@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
     <div className="navbar">
       <Link to={loggedIn ? '/home' : `/`}><img id="logo"/></Link>
-      <div class="navbar-right">
+      <div className="navbar-right">
         <a><Link to={loggedIn ? '/home' : `/`}>Explore</Link></a>
         <a><Link to={loggedIn ? '/connections' : "/"}>Connections</Link></a>
         <a><Link to={loggedIn ? '/profile' : "/"}><img id="profile-icon"/></Link></a>

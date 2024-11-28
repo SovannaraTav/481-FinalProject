@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import MessageCard from '../components/MessageCard'
 import Message from '../components/Message'
 import SupabaseAuthentication from '../classes/SupabaseAuthentication'
+import SupabaseDatabase from '../classes/SupabaseDatabase'
 
 export default function Connections() {
   // dummy data
@@ -26,13 +27,28 @@ export default function Connections() {
       setUser(await auth.retrieveUser());
     }
 
+    getUser()
+  }, []);
+
+  useEffect(()=>{
     const getConnections = async () => {
-      setConnections(user.connections)
+      const db = new SupabaseDatabase()
+
+      if(user){
+        const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`)
+        if (obj.data) {
+          setConnections(obj.data[0].connections);        }
+      }
     }
 
-    getUser()
     getConnections()
-  }, []);
+  }, [user])
+
+  const getName = async (id) => {
+    const db = new SupabaseDatabase()
+    const account = await db.readRecordFromTable("accounts", "accountId", `${id}`)
+    return `${account.data[0].firstName} + " " + ${account.data[0].lastName}`
+  }
 
   return (
     <div className="container">
@@ -42,8 +58,8 @@ export default function Connections() {
           <div className="message-box">
             <div className="message-list">
               <div className="title-label">Inbox</div>
-              {messages.map(message => {
-                return <div onClick={()=>setSelectedMessage({message})}>
+              {messages.map((message, index) => {
+                return <div key={index} className="message-card" onClick={()=>setSelectedMessage({message})}>
                   <MessageCard message = {message}></MessageCard>
                 </div>
               })}
@@ -70,10 +86,10 @@ export default function Connections() {
             margin: '10px'
             }} type="text" placeholder="Search by name"></input>
           <div className="connection-list">
-            {connections.map(connection => {
-              return <div className="connection">
+            {connections.map((connection, index) => {
+              return <div key={index} className="connection">
                 <img alt="pfp"></img>
-                {`${connection.firstName} ${connection.lastName}`}
+                {connection}
               </div>
             })}
           </div>

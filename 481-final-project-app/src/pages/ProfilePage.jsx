@@ -15,6 +15,7 @@ export default function ProfilePage() {
       const user = await auth.retrieveUser();
       if (user) {
         navigate(`/profile/${user.id}`);
+        console.log(user)
       } else {
         console.log("Profile page broke")
       }

@@ -37,7 +37,6 @@ export default function Home() {
 
   useEffect(()=>{
     const db = new SupabaseDatabase()
-    const auth = new SupabaseAuthentication();
 
     const fetchData = async () => {
       const obj = await db.readTable("accounts")
@@ -56,14 +55,20 @@ export default function Home() {
         setAlumni(obj3.data)
       }
     }
-    const getUser = async () => {
-      setUser(await auth.retrieveUser());
-    }
 
     fetchData()
-    getUser()
-
   }, []);
+
+  useEffect(()=>{
+    const auth = new SupabaseAuthentication();
+    const getUser = async () => {
+      setUser(await auth.retrieveUser());
+      console.log(user)
+    }
+
+    getUser()
+  }, [loaded])
+
 
   useEffect(()=>{
     const getConnections = async () => {
@@ -146,12 +151,12 @@ export default function Home() {
         <div className="nowrap">
           <input type="checkbox" id="alumni" name="people" value="alumni"
           checked={alumniSearch} onChange={handleCheckAlumni}/>
-          <label for="alumni">Alumni</label>
+          <label htmlFor="alumni">Alumni</label>
         </div>
         <div className="nowrap">
           <input type="checkbox" id="students" name="people" value="students"
           checked={studentSearch} onChange={handleCheckStudent}/>
-          <label for="students">Students</label>
+          <label htmlFor="students">Students</label>
         </div>
       </div>
       <div className="flex">
@@ -159,25 +164,25 @@ export default function Home() {
           {
             alumniSearch &&
             <>
-              <div classname>Field: </div>
-              <select class="filter-dropdown" onChange={handleSelectField}>
+              <div>Field: </div>
+              <select className="filter-dropdown" onChange={handleSelectField}>
                 <option>All fields</option>
-                {fields.map(field => {
-                  return <option>{field}</option>
+                {fields.map((field, index) => {
+                  return <option key={index}>{field}</option>
                 })}
               </select>
               <div>Title: </div>
-              <select class="filter-dropdown" onChange={handleSelectTitle}>
+              <select className="filter-dropdown" onChange={handleSelectTitle}>
                 <option>All titles</option>
-                  {titles.map(title => {
-                    return <option>{title}</option>
+                  {titles.map((title, index) => {
+                    return <option key={index}>{title}</option>
                   })}
               </select>
               <div>Company: </div>
-              <select class="filter-dropdown" onChange={handleSelectCompany}>
+              <select className="filter-dropdown" onChange={handleSelectCompany}>
                 <option>All companies</option>
-                {companies.map(company => {
-                  return <option>{company}</option>
+                {companies.map((company, index) => {
+                  return <option key={index}>{company}</option>
                 })}
               </select>
             </>
@@ -185,16 +190,16 @@ export default function Home() {
           {studentSearch &&
           <>
             <div>Major: </div>
-            <select class="filter-dropdown" onChange={handleSelectMajor}>
+            <select className="filter-dropdown" onChange={handleSelectMajor}>
                 <option>All majors</option>
-                {majors.map(major => {
-                  return <option>{major}</option>
+                {majors.map((major, index) => {
+                  return <option key={index}>{major}</option>
                 })}
               </select>
           </>
           }
           <div style={{marginTop: "15px", fontSize: "17px"}}>
-          <label for="placeholder">Show connections:</label>
+          <label htmlFor="placeholder">Show connections:</label>
           <input type="checkbox" id="placeholder" name="placeholder" value="placeholder"
            onChange={handleConnectionsChecked} defaultChecked/>
           </div>
@@ -204,7 +209,7 @@ export default function Home() {
           (loaded ? <div>No accounts to show</div> : <div>Loading accounts...</div>)
           :
           <div className="card-list">
-            {filteredAccounts.map(account => {
+            {filteredAccounts.map((account, index) => {
               return <div
               key={account.accountId}
               onClick={()=>{
