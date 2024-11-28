@@ -194,3 +194,32 @@ input[type="submit"]:hover {
   background-color: white;
   border-color: #4f46e5;
 }
+
+/* Styling for file input container */
+.file-input {
+  display: block;
+  padding: 10px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #1a1a1a;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Hover effect for file input */
+.file-input:hover {
+  border-color: #4f46e5;
+  background-color: white;
+}
+
+/* Focus effect for file input */
+.file-input:focus {
+  outline: none;
+  border-color: #4b207e;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+

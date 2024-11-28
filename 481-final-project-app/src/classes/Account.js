@@ -6,16 +6,18 @@ class Account {
     #profilePicture;
     #bio;
     #account_type;
+    #connections;
 
     // Class constructor
-    constructor(accountId, firstName, lastName, profilePicture, bio, account_type) {
+    constructor(accountId, firstName, lastName, profilePicture, bio, account_type, connections) {
         // Implicity calls the setter functions to avoid repeating validation logic twice
         this.accountId = accountId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profilePicture = profilePicture;
         this.bio = bio;
-        this.account_type = account_type
+        this.account_type = account_type;
+        this.connections = connections;
     }
 
     // Getter and setter functions for accountId private data attribute
@@ -58,14 +60,23 @@ class Account {
         this.#bio = bio;
     }
 
-    // Getter and setter functions for bio account type attribute
+    // Getter and setter functions for account_type private data attribute
     get account_type() {
         return this.#account_type;
     }
-    set bio(bio) {
+    set account_type(account_type) {
         this.#account_type = account_type;
     }
-    
+
+
+    // Getter and setter functions for connections private data attribute
+    get connections() {
+        return this.#connections;
+    }
+    set connections(connections) {
+        this.#connections = connections;
+    }
+
     /*
     Returns a JavaScript object of the instance of the class to work with the
     Supabase Database service
@@ -78,7 +89,8 @@ class Account {
             lastName: this.lastName,
             profilePicture: this.profilePicture,
             bio: this.bio,
-            account_type: this.account_type
+            account_type: this.account_type,
+            connections: this.connections
         };
     }
 }

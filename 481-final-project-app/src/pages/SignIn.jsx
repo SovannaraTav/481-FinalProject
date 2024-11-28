@@ -28,7 +28,6 @@ export default function SignIn() {
         console.log("User signin successfully", response.error);
         navigate("../Home");
         setSignInResult(true);
-
       }
     })
   }
