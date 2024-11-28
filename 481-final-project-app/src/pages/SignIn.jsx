@@ -67,13 +67,6 @@ export default function SignIn() {
           </p>
         </div>
         <div>
-          {signInResult !== true && (
-            <p style={{ color: "red" }}>
-              Sign-in failed. Please check your email and password.
-            </p>
-          )}
-        </div>
-        <div>
           <input type="submit" value="Sign In"></input>
         </div>
       </form>

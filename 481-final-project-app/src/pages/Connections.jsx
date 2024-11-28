@@ -1,11 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import MessageCard from '../components/MessageCard'
 import Message from '../components/Message'
+import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
 export default function Connections() {
-
   // dummy data
-  const connections =  ["Alice", "Bob", "Charlie", "David", "Eva"]
   const messages = [
   ["David", [["hello", true, "11-5-2024"], ["Yo", false, "11-5-2024"],
   ["thanks for connecting", true, "11-5-2024"], ["Ok", false, "11-5-2024"]]],
@@ -15,6 +14,25 @@ export default function Connections() {
     , false, "1-1-2000"
   ], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"]]]]
   const [selectedMessage, setSelectedMessage] = useState(null)
+
+  const[connections, setConnections] = useState([])
+  const[user, setUser] = useState(null)
+
+  useEffect(()=>{
+    window.scrollTo(0, 0)
+
+    const getUser = async () => {
+      const auth = new SupabaseAuthentication();
+      setUser(await auth.retrieveUser());
+    }
+
+    const getConnections = async () => {
+      setConnections(user.connections)
+    }
+
+    getUser()
+    getConnections()
+  }, []);
 
   return (
     <div className="container">
@@ -42,11 +60,10 @@ export default function Connections() {
         <div className="connections-box">
           <div className="title-label">Connections</div>
           <div className="connection-filters">
-            <div>Filters</div>
-            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-            <label for="placeholder">Placeholder</label><br />
-            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder" />
-            <label for="placeholder">Placeholder</label><br />
+            <input type="checkbox" id="alumni" name="alumni" value="alumni" />
+            <label for="placeholder">Alumni</label><br />
+            <input type="checkbox" id="student" name="student" value="student" />
+            <label for="placeholder">Student</label><br />
           </div>
           <input className = "search" style={{
             width: '80%',
@@ -56,7 +73,7 @@ export default function Connections() {
             {connections.map(connection => {
               return <div className="connection">
                 <img alt="pfp"></img>
-                {connection}
+                {`${connection.firstName} ${connection.lastName}`}
               </div>
             })}
           </div>
