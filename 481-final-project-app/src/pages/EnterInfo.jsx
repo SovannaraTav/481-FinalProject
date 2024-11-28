@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "../styles/EnterInfo.css";
-
+import SupabaseDatabase from "../classes/SupabaseDatabase";
 export default function EnterInfo() {
+  const database = new SupabaseDatabase();
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     firstName: "",
@@ -42,33 +43,66 @@ export default function EnterInfo() {
     console.log(inputs);
   };
 
-  
-  function handleSubmit(event){
-    event.preventDefault(); 
-    alert(
-      `First Name: ${inputs.firstName}` + 
-      `Last Name: ${inputs.lastName}` + 
-      `About: ${inputs.about}` + 
-      `Educatioon: ${inputs.education}` + 
-      `Grad Date: ${inputs.gradDate}` + 
-      `Company: ${inputs.company}`+ 
-      `Position: ${inputs.position}` + 
-      `Description: ${inputs.description}` +   
-      `Start Date: ${inputs.startDate}` + 
-      `End date: ${inputs.endDate}` + 
-      `User Type: ${inputs.userType}` + 
-      `Interests: ${inputs.interests}` +
-      `Skills: ${inputs.skills}`
+  function handleSubmit(event) {
+    event.preventDefault();
+    // alert(
+    //   `First Name: ${inputs.firstName}` +
+    //     `Last Name: ${inputs.lastName}` +
+    //     `About: ${inputs.about}` +
+    //     `Educatioon: ${inputs.education}` +
+    //     `Grad Date: ${inputs.gradDate}` +
+    //     `Company: ${inputs.company}` +
+    //     `Position: ${inputs.position}` +
+    //     `Description: ${inputs.description}` +
+    //     `Start Date: ${inputs.startDate}` +
+    //     `End date: ${inputs.endDate}` +
+    //     `User Type: ${inputs.userType}` +
+    //     `Interests: ${inputs.interests}` +
+    //     `Skills: ${inputs.skills}`
+    // );
+
+    const accountObject = {
+      firstName: inputs.firstName,
+      lastName: inputs.lastName,
+      profilePicture: "IMAGE 1",
+      bio: inputs.about,
+      account_type: inputs.userType,
+    };
+
+    /*
+       Major
+       field
+
+
+    */
+
+    // const alumniObject = {
+    //   currentJobTitle: inputs.position,
+    //   currentField: "Software Eng",
+    //   currentCompany: inputs.company,
+    // };
+
+    const accountResult = database.createRecordToTable(
+      "accounts",
+      accountObject
     );
-    navigate('../home');
+
+    // const alumniResult = database.createRecordToTable(
+    //   "uw_alumni",
+    //   alumniObject
+    // );
+
+    navigate("../home");
   }
 
   return (
     <div className="enterInfoContainer">
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         {/* First Name */}
         <div>
-          <label htmlFor="firstName" className="label">First Name</label>
+          <label htmlFor="firstName" className="label">
+            First Name
+          </label>
           <input
             type="text"
             id="firstName"
@@ -82,7 +116,9 @@ export default function EnterInfo() {
 
         {/* Last Name */}
         <div>
-          <label htmlFor="lastName" className="label">Last Name</label>
+          <label htmlFor="lastName" className="label">
+            Last Name
+          </label>
           <input
             type="text"
             id="lastName"
@@ -104,7 +140,9 @@ export default function EnterInfo() {
             checked={inputs.userType === "Alumni"}
             onChange={handleChange}
           />
-          <label htmlFor="alumniType" className="radio-label">Alumni</label>
+          <label htmlFor="alumniType" className="radio-label">
+            Alumni
+          </label>
 
           <input
             type="radio"
@@ -114,7 +152,9 @@ export default function EnterInfo() {
             checked={inputs.userType === "Student"}
             onChange={handleChange}
           />
-          <label htmlFor="studentType" className="radio-label">Student</label>
+          <label htmlFor="studentType" className="radio-label">
+            Student
+          </label>
         </div>
 
         {/* About */}
@@ -166,10 +206,12 @@ export default function EnterInfo() {
           <label htmlFor="tacoma" className="radio-label">
             University of Washington, Tacoma
           </label>
-          </div>
+        </div>
 
-          <div>
-          <label htmlFor="gradDate" className="label">Graduation Date</label>
+        <div>
+          <label htmlFor="gradDate" className="label">
+            Graduation Date
+          </label>
           <input
             type="date"
             id="gradDate"
@@ -179,11 +221,13 @@ export default function EnterInfo() {
             onChange={handleChange}
           />
         </div>
-        
+
         {/* Experience */}
         <h2>Experience</h2>
         <div className="experience-section">
-          <label htmlFor="company" className="label">Company</label>
+          <label htmlFor="company" className="label">
+            Company
+          </label>
           <input
             type="text"
             id="company"
@@ -193,7 +237,9 @@ export default function EnterInfo() {
             onChange={handleChange}
           />
 
-          <label htmlFor="position" className="label">Position</label>
+          <label htmlFor="position" className="label">
+            Position
+          </label>
           <input
             type="text"
             id="position"
@@ -203,7 +249,9 @@ export default function EnterInfo() {
             onChange={handleChange}
           />
 
-          <label htmlFor="description" className="label">Job Description</label>
+          <label htmlFor="description" className="label">
+            Job Description
+          </label>
           <textarea
             id="description"
             name="description"
@@ -213,7 +261,9 @@ export default function EnterInfo() {
             onChange={handleChange}
           ></textarea>
 
-          <label htmlFor="startDate" className="label">Start Date</label>
+          <label htmlFor="startDate" className="label">
+            Start Date
+          </label>
           <input
             type="date"
             id="startDate"
@@ -223,89 +273,94 @@ export default function EnterInfo() {
             onChange={handleChange}
           />
 
-        <div>
+          <div>
+            <label htmlFor="endDate" className="label">
+              End Date
+            </label>
+            <input
+              type="date"
+              id="endDate"
+              name="endDate"
+              className="date-input"
+              value={inputs.endDate}
+              onChange={handleChange}
+            />
+          </div>
 
-          <label htmlFor="endDate" className="label">End Date</label>
-          <input
-            type="date"
-            id="endDate"
-            name="endDate"
-            className="date-input"
-            value={inputs.endDate}
-            onChange={handleChange}
-          />
-        </div>
+          {/* Interests */}
+          <h2>Interests</h2>
+          <div className="interests-section">
+            <label htmlFor="interests" className="interests-label">
+              Choose Your Interests
+            </label>
+            <select
+              id="interests"
+              name="interests"
+              className="select-input"
+              value={inputs.interests}
+              onChange={handleChange}
+              multiple
+            >
+              <option value="">--Choose an interest--</option>
+              <option value="software-engineering">Software Engineering</option>
+              <option value="law">Law</option>
+              <option value="project-management">Project Management</option>
+              <option value="biology">Biology</option>
+              <option value="data-science">Data Science</option>
+              <option value="business">Business</option>
+              <option value="psychology">Psychology</option>
+              <option value="graphic-design">Graphic Design</option>
+              <option value="finance">Finance</option>
+              <option value="environmental-science">
+                Environmental Science
+              </option>
+              <option value="education">Education</option>
+              <option value="marketing">Marketing</option>
+              <option value="medicine">Medicine</option>
+              <option value="engineering">Engineering</option>
+              <option value="politics">Politics</option>
+              <option value="architecture">Architecture</option>
+            </select>
+          </div>
 
-        {/* Interests */}
-        <h2>Interests</h2>
-        <div className="interests-section">
-          <label htmlFor="interests" className="interests-label">
-            Choose Your Interests
-          </label>
-          <select
-            id="interests"
-            name="interests"
-            className="select-input"
-            value={inputs.interests}
-            onChange={handleChange}
-            multiple
-          >
-            <option value="">--Choose an interest--</option>
-            <option value="software-engineering">Software Engineering</option>
-            <option value="law">Law</option>
-            <option value="project-management">Project Management</option>
-            <option value="biology">Biology</option>
-            <option value="data-science">Data Science</option>
-            <option value="business">Business</option>
-            <option value="psychology">Psychology</option>
-            <option value="graphic-design">Graphic Design</option>
-            <option value="finance">Finance</option>
-            <option value="environmental-science">Environmental Science</option>
-            <option value="education">Education</option>
-            <option value="marketing">Marketing</option>
-            <option value="medicine">Medicine</option>
-            <option value="engineering">Engineering</option>
-            <option value="politics">Politics</option>
-            <option value="architecture">Architecture</option>
-          </select>
+          {/* Skills */}
+          <h2>Skills</h2>
+          <div className="skills-section">
+            <label htmlFor="skills" className="skills-label">
+              Choose Your Skills
+            </label>
+            <select
+              id="skills"
+              name="skills"
+              className="select-input"
+              value={inputs.skills}
+              onChange={handleChange}
+              multiple
+            >
+              <option value="">--Choose a skill--</option>
+              <option value="leadership">Leadership</option>
+              <option value="team-management">Team Management</option>
+              <option value="problem-solving">Problem Solving</option>
+              <option value="communication">Communication</option>
+              <option value="time-management">Time Management</option>
+              <option value="critical-thinking">Critical Thinking</option>
+              <option value="collaboration">Collaboration</option>
+              <option value="creativity">Creativity</option>
+              <option value="adaptability">Adaptability</option>
+              <option value="conflict-resolution">Conflict Resolution</option>
+              <option value="decision-making">Decision Making</option>
+              <option value="project-management">Project Management</option>
+              <option value="organizational-skills">
+                Organizational Skills
+              </option>
+              <option value="negotiation">Negotiation</option>
+              <option value="empathy">Empathy</option>
+            </select>
+          </div>
+          <div>
+            <input type="submit" value="Sign Up"></input>
+          </div>
         </div>
-
-        {/* Skills */}
-        <h2>Skills</h2>
-        <div className="skills-section">
-          <label htmlFor="skills" className="skills-label">
-            Choose Your Skills
-          </label>
-          <select
-            id="skills"
-            name="skills"
-            className="select-input"
-            value={inputs.skills}
-            onChange={handleChange}
-            multiple
-          >
-            <option value="">--Choose a skill--</option>
-            <option value="leadership">Leadership</option>
-            <option value="team-management">Team Management</option>
-            <option value="problem-solving">Problem Solving</option>
-            <option value="communication">Communication</option>
-            <option value="time-management">Time Management</option>
-            <option value="critical-thinking">Critical Thinking</option>
-            <option value="collaboration">Collaboration</option>
-            <option value="creativity">Creativity</option>
-            <option value="adaptability">Adaptability</option>
-            <option value="conflict-resolution">Conflict Resolution</option>
-            <option value="decision-making">Decision Making</option>
-            <option value="project-management">Project Management</option>
-            <option value="organizational-skills">Organizational Skills</option>
-            <option value="negotiation">Negotiation</option>
-            <option value="empathy">Empathy</option>
-          </select>
-        </div>
-        <div>
-          <input type="submit" value="Sign Up"></input>
-        </div>
-      </div>
       </form>
     </div>
   );

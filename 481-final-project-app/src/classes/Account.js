@@ -65,7 +65,7 @@ class Account {
     set bio(bio) {
         this.#account_type = account_type;
     }
-
+    
     /*
     Returns a JavaScript object of the instance of the class to work with the
     Supabase Database service
