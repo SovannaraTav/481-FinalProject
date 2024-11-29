@@ -14,7 +14,7 @@ import Messaging from "./pages/Messaging";
 
 
 export default function App() {
-  
+
   return (
     <BrowserRouter>
       <Navbar/>

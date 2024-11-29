@@ -49,9 +49,9 @@
 .container {
   background-color: var(--light);
   margin: 0;
-  margin-top: 80px;
-  width: calc(100vw - 100px);
-  padding: 50px;
+  margin-top: 50px;
+  width: calc(100vw - 237px);
+  padding: 50px 100px;
 }
 
 #footer {
@@ -77,13 +77,15 @@
   border-radius: 5px;
   width: 100%;
   border: .5px solid grey;
-  padding: 2px 5px;
+  padding: 5px;
 }
 
+/* TODO: make width back to percentage */
 .filter {
-  min-width: 150px;
-  width: 25%;
-  max-width: 200px;
+  width: 175px;
+  max-width: 175px;
+  /*width: 25%;
+  max-width: 200px;*/
   background-color: var(--dark);
   border-radius: 15px;
   /*border: .6px solid var(--dark);*/
@@ -93,12 +95,23 @@
 }
 
 .filter div {
-  margin-bottom: 15px;
-  font-size: 20px;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
 .filter input[type="checkbox"] {
   margin-bottom: 15px;
+}
+
+/* TODO: make width back to percentage */
+.filter-dropdown {
+  width: 175px;
+  min-width: 100%;
+  max-width: 100%;
+  margin-bottom: 15px;
+  border-radius: 0px;
+  padding: 5px;
+  border: none
 }
 
 .stacked-block {
@@ -115,19 +128,19 @@
   padding: 0;
   border-radius: 5px;
   width: 150px;
-  background-color: var(--medium-light);
+  background-color: var(--medium);
 }
 
 .card-image{
   height: 150px;
   width: 150px;
-  background-color: var(--medium);
+  background-color: var(--medium-light);
   margin: 0
 }
 
 .card-description{
   padding: 10px;
-  color: black;
+  color: white;
   margin: 0
 }
 
@@ -229,6 +242,7 @@
   width: 100%;
   height: 200px;
   background-color: var(--medium);
+  object-fit: cover;
 }
 
 .profile-picture {
@@ -245,9 +259,15 @@
 .profile-header{
   display: block;
   width: 100%;
-  height: 100px;
+  /*height: 100px;*/
   background-color: var(--dark);
   color: #ffffff;
+}
+
+.profile-header-top-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .profile-name {
@@ -257,15 +277,39 @@
   font-size: 20px;
 }
 
+.connect-button {
+  width: 100px;
+  background-color: rgb(79, 145, 185);
+  margin: 10px 200px
+}
+
+.edit-button {
+  width: 100px;
+  background-color: gray;
+  margin: 10px 200px
+}
+
+.message-button {
+  width: 100px;
+  background-color: rgb(110, 218, 254);
+  margin: 10px 200px
+}
+
 .profile-container {
   display: flex;
   align-items:stretch;
   justify-content: center;
-  width: 100vw;
+  width: calc(100vw - 36px);
+
 }
 
 .profile-container > div {
   padding: 50px 10%;
+}
+
+.profile-bio {
+  padding: 0px 200px 25px 200px;
+  font-size: 15px;
 }
 
 .profile-information {

@@ -9,7 +9,7 @@ class Account {
     #connections;
 
     // Class constructor
-    constructor(accountId, firstName, lastName, profilePicture, bio, account_type) {
+    constructor(accountId, firstName, lastName, profilePicture, bio, account_type, connections) {
         // Implicity calls the setter functions to avoid repeating validation logic twice
         this.accountId = accountId;
         this.firstName = firstName;
@@ -68,6 +68,7 @@ class Account {
         this.#account_type = account_type;
     }
 
+
     // Getter and setter functions for connections private data attribute
     get connections() {
         return this.#connections;
@@ -75,7 +76,7 @@ class Account {
     set connections(connections) {
         this.#connections = connections;
     }
-    
+
     /*
     Returns a JavaScript object of the instance of the class to work with the
     Supabase Database service
