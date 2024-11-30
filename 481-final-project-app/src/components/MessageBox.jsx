@@ -1,11 +1,22 @@
 import React, { useState } from 'react'
+import SupabaseRealtime from '../classes/SupabaseRealtime'
+import Message from '../classes/Message';
 
-export default function Message({ message }) {
-  const [newMessage, setNewMessage] = useState("");
+export default function MessageBox({ message }) {
+  const messaging = new SupabaseRealtime();
+  const [messageContent, setMessageContent] = useState("");
 
-  const handleSentMessage = () => {
-    console.log(`Message sent: ${newMessage}`);
-    setNewMessage("");
+  const handleSentMessage = (e) => {
+    e.preventDefault();
+    
+    if (messageContent.trim() !== "") {
+      const messageToSend = new Message(
+        "", message.message.receiverId, message.message.senderId,
+        messageContent, "", false
+      );
+      messaging.sendMessage(messageToSend.toObject());
+      setMessageContent("");
+    }
   }
 
   return (
@@ -57,8 +68,9 @@ export default function Message({ message }) {
 
       <div>
         <input
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)} 
+          value={messageContent}
+          placeholder="Enter message here to send"
+          onChange={(e) => setMessageContent(e.target.value)} 
           style={{
             position: "sticky",
             bottom: "0",
@@ -71,7 +83,7 @@ export default function Message({ message }) {
             marginTop: "150px",
         }}
         ></input>
-        <button onClick={handleSentMessage}>Send (Still in development)</button>
+        <button onClick={handleSentMessage}>Send</button>
       </div>
     </div>
   );

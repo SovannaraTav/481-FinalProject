@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import MessageCard from '../components/MessageCard'
-import Message from '../components/Message'
+import MessageBox from '../components/MessageBox'
 import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 import SupabaseDatabase from '../classes/SupabaseDatabase'
 import SupabaseRealtime from '../classes/SupabaseRealtime'
@@ -45,12 +45,14 @@ export default function Connections() {
       }
 
       fetchMessages();
-      setIsListening(true);
 
       messaging.listenForReceivedMessages(user.id);
+      setIsListening(true);
 
       return () => {
-        messaging.stopListeningForReceivedMessages();
+        if (isListening) {
+          messaging.stopListeningForReceivedMessages();
+        }
       }
     }
   }, [user, isListening]);
@@ -72,7 +74,7 @@ export default function Connections() {
               {messages.map(message => {
                 return (
                   <div key={message.messageId} className="message-card" onClick={()=>setSelectedMessage({message})}>
-                    <MessageCard message={message}></MessageCard>
+                    <MessageCard message={message} />
                   </div>
                 );
               })}
@@ -82,7 +84,7 @@ export default function Connections() {
               {selectedMessage == null ?
                 <p style={{textAlign: 'center'}}>No conversation selected</p>
                 :
-                <Message message={selectedMessage}></Message>
+                <MessageBox message={selectedMessage} />
               }
             </div>
           </div>

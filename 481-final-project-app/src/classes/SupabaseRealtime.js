@@ -68,14 +68,9 @@ class SupabaseRealtime {
     async displayReceivedMessages(accountId) {
         const { data , error } = await supabase
             .from("messages")
-            .select(`
-                messageId,
-                content,
-                dateTime,
-                isMarkAsRead,
-                accounts:senderId (firstName, lastName)
-            `)
-            .eq("receiverId", accountId);
+            .select(`*, accounts:senderId (firstName, lastName)`)
+            .eq("receiverId", accountId)
+            .order("dateTime", { ascending: false });
         
         /*
         Returns the error object and its associated information for an unsuccessful 
