@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-export default function Message({message}) {
-  // still needs to work on: input box positioning, name positioning, input box overflow
+export default function Message({ message }) {
+  const [newMessage, setNewMessage] = useState("");
+
+  const handleSentMessage = () => {
+    console.log(`Message sent: ${newMessage}`);
+    setNewMessage("");
+  }
+
   return (
     <div>
       <div style={{
@@ -10,51 +16,63 @@ export default function Message({message}) {
         borderBottom: "1px solid lightgray",
         fontSize: "20px",
         color: "#4b207e",
-      }}>
-        {message.message[0]}
+        }}
+      >
+        {message.message.accounts.firstName} {message.message.accounts.lastName}
       </div>
+
       <div>
-        {message.message[1].map(msg => {
-          return <div
+          <div
+            key={message.message.messageId}
             style={{
-              backgroundColor: msg[1] ? "#98dde2" : "#dad7e5",
+              backgroundColor: "#4b207e",
               color: "white",
               padding: "10px",
               marginBottom: "5px",
               borderRadius: "5px",
             }}
           >
-            <div style={{position: 'sticky',
-              top: '0',
-              left: '0'}}
+            <div style={{
+                position: "sticky",
+                top: "0",
+                left: "0",
+              }}
             >
-              {msg[0]}
+              {message.message.content}
             </div>
+
             <div style={{
               display: "block",
               fontSize: "12px",
-              color: "#f6f6f6"
-            }}>
-              {msg[1] ?
-              <span>You </span> :<span>{message.message[0]} </span>}
-              on&nbsp;
-              {msg[2]}
+              color: "#f6f6f6",
+              }}
+            >
+              <span>
+                {message.message.accounts.firstName} on&nbsp;
+                {new Date(message.message.dateTime).toLocaleString()}
+              </span>
             </div>
           </div>
-        })}
       </div>
-      <input style={{
-          position: 'sticky',
-          bottom: '0',
-          left: '0',
-          width: '98%',
-          height: '30px',
-          background: '#fff',
-          border: '1px solid lightgray',
-          borderRadius: '5px',
-          marginTop: '150px'
-      }}>
-      </input>
+
+      <div>
+        <input
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)} 
+          style={{
+            position: "sticky",
+            bottom: "0",
+            left: "0",
+            width: "98%",
+            height: "30px",
+            background: "#fff",
+            border: "1px solid lightgray",
+            borderRadius: "5px",
+            marginTop: "150px",
+        }}
+        ></input>
+        <button onClick={handleSentMessage}>Send (Still in development)</button>
+      </div>
     </div>
-  )
+  );
 }

@@ -3,25 +3,18 @@ import MessageCard from '../components/MessageCard'
 import Message from '../components/Message'
 import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 import SupabaseDatabase from '../classes/SupabaseDatabase'
+import SupabaseRealtime from '../classes/SupabaseRealtime'
 
 export default function Connections() {
-  // dummy data
-  const messages = [
-  ["David", [["hello", true, "11-5-2024"], ["Yo", false, "11-5-2024"],
-  ["thanks for connecting", true, "11-5-2024"], ["Ok", false, "11-5-2024"]]],
-  ["Alice", [["hi", true, "11-2-2024"], ["hello?", true, "11-3-2024"],
-  ["bruh", true, "11-5-2024"]]],
-  ["Test", [["testing a long message that would go onto the next line like this"
-    , false, "1-1-2000"
-  ], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"], ["a", false, "1-1-2000"]]]]
-  const [selectedMessage, setSelectedMessage] = useState(null)
+  const messaging = new SupabaseRealtime();
+  const [messages, setMessages] = useState([]);
+  const [isListening, setIsListening] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const[connections, setConnections] = useState([]);
+  const[user, setUser] = useState(null);
 
-  const[connections, setConnections] = useState([])
-  const[user, setUser] = useState(null)
-
-  useEffect(()=>{
+  useEffect(() => {
     window.scrollTo(0, 0)
-
     const getUser = async () => {
       const auth = new SupabaseAuthentication();
       setUser(await auth.retrieveUser());
@@ -30,19 +23,37 @@ export default function Connections() {
     getUser()
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const getConnections = async () => {
       const db = new SupabaseDatabase()
-
-      if(user){
+      if (user) {
         const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`)
         if (obj.data) {
-          setConnections(obj.data[0].connections);        }
+          setConnections(obj.data[0].connections);        
+        }
       }
     }
 
     getConnections()
   }, [user])
+
+  useEffect(() => {
+    if (user && !isListening) {
+      const fetchMessages = async () => {
+        let messages = await messaging.displayReceivedMessages(user.id);
+        setMessages(messages);
+      }
+
+      fetchMessages();
+      setIsListening(true);
+
+      messaging.listenForReceivedMessages(user.id);
+
+      return () => {
+        messaging.stopListeningForReceivedMessages();
+      }
+    }
+  }, [user, isListening]);
 
   const getName = async (id) => {
     const db = new SupabaseDatabase()
@@ -58,21 +69,25 @@ export default function Connections() {
           <div className="message-box">
             <div className="message-list">
               <div className="title-label">Inbox</div>
-              {messages.map((message, index) => {
-                return <div key={index} className="message-card" onClick={()=>setSelectedMessage({message})}>
-                  <MessageCard message = {message}></MessageCard>
-                </div>
+              {messages.map(message => {
+                return (
+                  <div key={message.messageId} className="message-card" onClick={()=>setSelectedMessage({message})}>
+                    <MessageCard message={message}></MessageCard>
+                  </div>
+                );
               })}
             </div>
+
             <div id="message-area">
               {selectedMessage == null ?
-              <p style={{textAlign: 'center'}}>No conversation selected</p>
-              :
-              <Message message = {selectedMessage}></Message>
+                <p style={{textAlign: 'center'}}>No conversation selected</p>
+                :
+                <Message message={selectedMessage}></Message>
               }
             </div>
           </div>
         </div>
+
         <div className="connections-box">
           <div className="title-label">Connections</div>
           <div className="connection-filters">
@@ -81,10 +96,14 @@ export default function Connections() {
             <input type="checkbox" id="student" name="student" value="student" />
             <label for="placeholder">Student</label><br />
           </div>
-          <input className = "search" style={{
-            width: '80%',
-            margin: '10px'
-            }} type="text" placeholder="Search by name"></input>
+
+          <input className = "search" 
+            style={{
+              width: "80%",
+              margin: "10px",
+            }} 
+            type="text" placeholder="Search by name"></input>
+          
           <div className="connection-list">
             {connections.map((connection, index) => {
               return <div key={index} className="connection">
@@ -96,6 +115,5 @@ export default function Connections() {
         </div>
       </div>
     </div>
-
   )
 }
