@@ -73,11 +73,15 @@ class Message {
     toObject() {
         // Implicity calls the getter functions
         return {
-            messageId: this.messageId,
+            /*
+            Supabase Database will automatically fill the other data attributes 
+            that are comment out
+            */
+            // messageId: this.messageId,
             senderId: this.senderId,
             receiverId: this.receiverId,
             content: this.content,
-            dateTime: this.dateTime,
+            // dateTime: this.dateTime,
             isMarkAsRead: this.isMarkAsRead
         };
     }

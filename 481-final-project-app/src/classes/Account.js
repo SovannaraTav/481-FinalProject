@@ -9,7 +9,7 @@ class Account {
     #connections;
 
     // Class constructor
-    constructor(accountId, firstName, lastName, profilePicture, bio, account_type) {
+    constructor(accountId, firstName, lastName, profilePicture, bio, account_type, connections) {
         // Implicity calls the setter functions to avoid repeating validation logic twice
         this.accountId = accountId;
         this.firstName = firstName;

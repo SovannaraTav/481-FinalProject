@@ -1,21 +1,21 @@
 import React from 'react'
 
-export default function MessageCard({message}) {
+export default function MessageCard({ message }) {
   return (
     <div className="message-grid">
-      {/* change layout of this once grid is fixed */}
       <div className="horizontal">
         <img id="grid-item1" alt="pfp"></img>
-        <div id="grid-item2">{message[0]}</div>
-        <div id="grid-item3">{message[1][message[1].length-1][2]}</div>
+        <div id="grid-item2">
+          {message.accounts.firstName} {message.accounts.lastName}
+        </div>
+        <div id="grid-item3">
+          {new Date(message.dateTime).toLocaleString()}
+        </div>
       </div>
+
       <div id="grid-item4">
-        {message[1][message[1].length-1][1] ?
-        <span>You: </span> :<span>{message[0]}: </span>}
-        {message[1][message[1].length - 1][0].length > 25
-        ? message[1][message[1].length - 1][0].substring(0, 25) + "..."
-        : message[1][message[1].length - 1][0]}
+        {message.accounts.firstName}: {message.content.length > 40 ? message.content.substring(0, 40) + "..." : message}
       </div>
     </div>
-  )
+  );
 }
