@@ -58,7 +58,7 @@ class SupabaseStorage {
             return { error: "User id unsuccessful for upload of file" };
         }
 
-        const filePath = `${this.bucketName}/${userId}/${fileName}`;
+        const filePath = `${userId}/${fileName}`;
         const { data, error } = 
             await supabase.storage.from(this.bucketName).upload(filePath, fileToUpload);
         
