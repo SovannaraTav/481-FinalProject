@@ -4,6 +4,7 @@ import MessageBox from '../components/MessageBox'
 import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 import SupabaseDatabase from '../classes/SupabaseDatabase'
 import SupabaseRealtime from '../classes/SupabaseRealtime'
+import defaultPic from '../assets/default.jpg'
 
 export default function Connections() {
   const messaging = new SupabaseRealtime();
@@ -11,6 +12,7 @@ export default function Connections() {
   const [isListening, setIsListening] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const[connections, setConnections] = useState([]);
+  const[connectionNames, setConnectionNames] = useState([]);
   const[user, setUser] = useState(null);
 
   useEffect(() => {
@@ -29,13 +31,28 @@ export default function Connections() {
       if (user) {
         const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`)
         if (obj.data) {
-          setConnections(obj.data[0].connections);        
+          setConnections(obj.data[0].connections);
         }
       }
     }
 
     getConnections()
   }, [user])
+
+  useEffect(()=>{
+    if(connections.length > 0){
+      const getConnectionNames = async () => {
+        const names = [];
+        for (let id of connections) {
+          const name = await getName(id);
+          names.push(name);
+        }
+        setConnectionNames(names);
+      }
+
+      getConnectionNames()
+    }
+    }, [connections])
 
   useEffect(() => {
     if (user && !isListening) {
@@ -60,7 +77,7 @@ export default function Connections() {
   const getName = async (id) => {
     const db = new SupabaseDatabase()
     const account = await db.readRecordFromTable("accounts", "accountId", `${id}`)
-    return `${account.data[0].firstName} + " " + ${account.data[0].lastName}`
+    return `${account.data[0].firstName} ${account.data[0].lastName}`
   }
 
   return (
@@ -71,13 +88,17 @@ export default function Connections() {
           <div className="message-box">
             <div className="message-list">
               <div className="title-label">Inbox</div>
-              {messages.map(message => {
-                return (
-                  <div key={message.messageId} className="message-card" onClick={()=>setSelectedMessage({message})}>
-                    <MessageCard message={message} />
-                  </div>
-                );
-              })}
+              {messages.length == 0 ? <div className="">No messages yet. Start a new one!</div> :
+                <>
+                  {messages.map(message => {
+                    return (
+                      <div key={message.messageId} className="message-card" onClick={()=>setSelectedMessage({message})}>
+                        <MessageCard message={message} />
+                      </div>
+                    );
+                  })}
+                </>
+              }
             </div>
 
             <div id="message-area">
@@ -99,17 +120,17 @@ export default function Connections() {
             <label for="placeholder">Student</label><br />
           </div>
 
-          <input className = "search" 
+          <input className = "search"
             style={{
               width: "80%",
               margin: "10px",
-            }} 
+            }}
             type="text" placeholder="Search by name"></input>
-          
+
           <div className="connection-list">
-            {connections.map((connection, index) => {
+            {connectionNames.map((connection, index) => {
               return <div key={index} className="connection">
-                <img alt="pfp"></img>
+                <img alt="pfp" id="profile-icon" src={defaultPic}></img>
                 {connection}
               </div>
             })}

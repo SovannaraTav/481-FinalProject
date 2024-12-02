@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 import SupabaseDatabase from '../classes/SupabaseDatabase';
 import SupabaseStorage from '../classes/SupabaseStorage';
@@ -24,8 +24,10 @@ export default function Navbar() {
           const profilePictureUrl = await storage
             .generatePublicProfilePictureUrl(obj.data[0].profilePicture);
           setProfilePicture(profilePictureUrl.data.publicUrl);
+        } else {
+          setProfilePicture(defaultPic);
         }
-      } 
+      }
     };
 
     fetchUser();

@@ -218,6 +218,7 @@
   border: 1px solid black;
   background-color: var(--medium-light);
   color: black;
+  width: 300px;
 }
 
 .connections-box > div {

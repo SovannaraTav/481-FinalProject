@@ -1,10 +1,11 @@
 import React from 'react'
+import defaultPic from '../assets/default.jpg'
 
 export default function MessageCard({ message }) {
   return (
     <div className="message-grid">
       <div className="horizontal">
-        <img id="grid-item1" alt="pfp"></img>
+        <img id="profile-icon" alt="pfp" src={defaultPic}></img>
         <div id="grid-item2">
           {message.accounts.firstName} {message.accounts.lastName}
         </div>
