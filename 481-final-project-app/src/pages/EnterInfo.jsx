@@ -7,14 +7,14 @@ import Account from "../classes/Account.js";
 import Skill from "../classes/Skill.js";
 import Interests from "../classes/Interest.js";
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
-
+import SupabaseStorage from '../classes/SupabaseStorage';
 
 export default function EnterInfo() {
   const database = new SupabaseDatabase();
   const auth = new SupabaseAuthentication();
+  const storage = new SupabaseStorage("profile_pictures");
   const navigate = useNavigate();
-  
-  
+
   const [inputs, setInputs] = useState({
     firstName: "",
     lastName: "", 
@@ -110,30 +110,31 @@ export default function EnterInfo() {
     let user = ""; 
     auth.retrieveUser().then(fetchedUser => {
       user = fetchedUser;
-      const account = new Account(
-        user.id,
-        inputs.firstName,
-        inputs.lastName,
-        inputs.profilePic,
-        inputs.about,
-        inputs.userType,
-        []
-      );
-      const accountResult = database.createRecordToTable(
-        "accounts",
-        account.toObject()
-      );
+
+      storage.uploadFileToBucket(inputs.profilePic.name, inputs.profilePic).
+        then(uploadResult => {
+          let profilePictureURL = uploadResult.data.fullPath;
+
+          const account = new Account(
+            user.id,
+            inputs.firstName,
+            inputs.lastName,
+            profilePictureURL,
+            inputs.about,
+            inputs.userType,
+            []
+          );
+
+          const accountResult = 
+            database.createRecordToTable("accounts", account.toObject());
+        });
     });
   
-
-
   // const { data: { user } } = await supabase.auth.getUser();
   // const userId = user.id; // Access the user's ID
   // console.log(userId);
     // console.log(currentUser.user.id);
 
-
-    
     if(inputs.userType === "Alumni") {
       const experienceObject = {
         alumniId:user.id,
@@ -176,10 +177,6 @@ export default function EnterInfo() {
     }
     // database.createRecordToTable("accounts", account.toObject());
 
-
-  
-
- 
     // database
     //   .createRecordToTable("accounts", acccount.toObject())
     //   .then((accountResult) => {
@@ -197,7 +194,6 @@ export default function EnterInfo() {
 
     navigate("../home");
   }
-
 
   return (
     <div className="enterInfoContainer">
@@ -233,7 +229,6 @@ export default function EnterInfo() {
             onChange={handleChange}
           />
         </div>
-
 
         {/* User Type */}
         <div>
@@ -298,6 +293,7 @@ export default function EnterInfo() {
             />
           </div>
         )}
+
         {inputs.userType === "Alumni" && (
           <div>
             <label htmlFor="currentJobTitle" className="label">
@@ -314,8 +310,6 @@ export default function EnterInfo() {
             />
           </div>
         )}
-        
-        
 
         {inputs.userType === "Alumni" && (
           <div>
@@ -347,8 +341,11 @@ export default function EnterInfo() {
         
         <div>
           <label for="myfile">Select a profile picture: </label>
-          <input type="file" id="profilePic" name="profilePic"  onChange={handleChange} className="file-input"/>
+          <input 
+            type="file" id="profilePic" name="profilePic" accept="image/jpeg" 
+            max={1} onChange={handleChange} className="file-input"/>
         </div>
+
         {/* Education */}
         <h2>Education</h2>
         <div className="user-type-container">

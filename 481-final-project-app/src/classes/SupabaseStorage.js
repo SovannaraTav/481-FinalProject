@@ -58,7 +58,7 @@ class SupabaseStorage {
             return { error: "User id unsuccessful for upload of file" };
         }
 
-        const filePath = `${this.bucketName}/${userId}/${fileName}`;
+        const filePath = `${userId}/${fileName}`;
         const { data, error } = 
             await supabase.storage.from(this.bucketName).upload(filePath, fileToUpload);
         
@@ -113,6 +113,41 @@ class SupabaseStorage {
         /*
         Returns the data object and its associated information for a successful 
         removal process
+        */
+        return { data };
+    }
+
+    /*
+    Documentation - https://supabase.com/docs/reference/javascript/storage-from-getpublicurl
+
+    Handles the process of generating a public profile picture URL to allow the 
+    front end to display the profile picture of the current user
+    */
+    async generatePublicProfilePictureUrl(filePath) {
+        // Ensuring a file path is provided
+        if (!filePath) {
+            console.error("A file path must be provided");
+            return { error: "A file path must be provided" };
+        }
+
+        // Excluding the profile_pictures/ prefix in the file path
+        const filePathPrefix = "profile_pictures/";
+        const { data, error } = await supabase.storage
+            .from(this.bucketName)
+            .getPublicUrl(filePath.substring(filePathPrefix.length));
+        
+        /*
+        Returns the error object and its associated information for an unsuccessful 
+        generation of the public profile picture URL 
+        */
+        if (error) {
+            console.error(`Unsuccessful generation of public URL: ${error.message}`);
+            return { error };
+        }
+
+        /*
+        Returns the data object and its associated information for a successful 
+        generation of the public profile picture URL
         */
         return { data };
     }

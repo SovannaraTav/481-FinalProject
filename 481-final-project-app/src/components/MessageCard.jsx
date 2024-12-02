@@ -14,7 +14,7 @@ export default function MessageCard({ message }) {
       </div>
 
       <div id="grid-item4">
-        {message.accounts.firstName}: {message.content.length > 40 ? message.content.substring(0, 40) + "..." : message}
+        {message.accounts.firstName}: {message.content.length > 40 ? message.content.substring(0, 40) + "..." : message.content}
       </div>
     </div>
   );
