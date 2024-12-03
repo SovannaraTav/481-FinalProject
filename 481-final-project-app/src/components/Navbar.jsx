@@ -31,13 +31,17 @@ export default function Navbar() {
     fetchUser();
   }, []);
 
+  // TODO: add back the bring to sign in page when not singed in, there was
+  // a bug that automatically navigated you to the sign in page even if you were
+  // logged in because it doesn't retrieve if you're logged in immediately but
+  // does navigate you immediately
   return (
     <div className="navbar">
-      <Link to={loggedIn ? '/home' : `/`}><img id="logo" src={logo}/></Link>
+      <Link to={'/home'}><img id="logo" src={logo}/></Link>
       <div className="navbar-right">
-        <a><Link to={loggedIn ? '/home' : `/`}>Explore</Link></a>
-        <a><Link to={loggedIn ? '/connections' : "/"}>Connections</Link></a>
-        <a><Link to={loggedIn ? '/profile' : "/"}><img id="profile-icon"
+        <a><Link to={'/home'}>Explore</Link></a>
+        <a><Link to={'/connections'}>Connections</Link></a>
+        <a><Link to={'/profile'}><img id="profile-icon"
         // TODO: replace with profile pic if logged in
         src={profilePicture}
         /></Link></a>

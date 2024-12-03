@@ -6,18 +6,18 @@ import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const auth = new SupabaseAuthentication(); 
+  const auth = new SupabaseAuthentication();
   const [signInResult, setSignInResult] = useState(true);
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
   })
   function handleSubmit(event){
-    event.preventDefault(); 
-    // alert(`Email:  ${inputs.email}\n` + 
+    event.preventDefault();
+    // alert(`Email:  ${inputs.email}\n` +
     //        `Password: ${inputs.password}\n`
     // );
-    
+
     auth.signIn(inputs.email, inputs.password)
     .then(response => {
       if (response.error) {
@@ -34,24 +34,24 @@ export default function SignIn() {
   function handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    setInputs(values => ({...values, [name]: value}))  
+    setInputs(values => ({...values, [name]: value}))
   }
   return (
-    <div>
+    <div style={{margin: 'auto'}}>
       <form  className='formSignIn' onSubmit ={handleSubmit}>
         <label className='sign'>Sign In</label>
         <h6>Enter Credentials to login</h6>
-        <div> 
+        <div>
           <label htmlFor='email'></label>
           <input type="email" id ="email" name="email" placeholder="Enter Email" value={inputs.email || ""} onChange={handleChange} ></input>
-        </div> 
-        <div> 
+        </div>
+        <div>
           <label htmlFor='password'></label>
           <input type="password" id ="password" name="password" placeholder="Password" value={inputs.password || ""} onChange={handleChange} ></input>
-        </div> 
-        <div> 
+        </div>
+        <div>
           <p>If you want to create an account, <Link to={"/signup"}>Sign Up Here</Link></p>
-        </div> 
+        </div>
         <div>
           {signInResult !== true && (
             <p style={{ color: 'red' }}>

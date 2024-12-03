@@ -2,13 +2,13 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  
+
   }
 
   .signInContainer{
     background-color: var(--light);
     margin: 50px;
-    margin-top: 80px; 
+    margin-top: 80px;
     width: calc(100vw - 100px);
     text-align: center;
     background-color: white;
@@ -22,7 +22,7 @@
     margin-left: 600px;
     border-radius: 40px;
   }
-  
+
   .sign{
     color: black;
     font-size: 2.3em;
@@ -65,7 +65,7 @@ input[type="email"], input[type="password"] {
     text-align: center;
     width: 200px;
     height: 30px;
-    
+
   }
 
   button{

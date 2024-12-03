@@ -29,7 +29,7 @@ export default function App() {
         <Route path="signup" element={<SignUp />} />
         <Route path="enterinfo" element = {<EnterInfo />} />
       </Routes>
-      <Footer/>
+      {/*<Footer/>*/}
     </BrowserRouter>
   );
 }
