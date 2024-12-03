@@ -7,6 +7,7 @@ import Account from "../classes/Account.js";
 import Alumni from "../classes/UWAlumni.js"
 import Skill from "../classes/Skill.js";
 import Interests from "../classes/Interest.js";
+import UWStudents from "../classes/UWStudent.js";
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 import SupabaseStorage from '../classes/SupabaseStorage';
 
@@ -162,36 +163,38 @@ export default function EnterInfo() {
           "uw_alumni",
           alumni.toObject()
         )
-
-
-        // for(let i = 0; i < inputs.skills.length; i++) {
-        //   const skills = new Skill(
-        //     457 + i,
-        //     user.id,
-        //     inputs.skills[i]
-        //   );
-        //   const skillResult = database.createRecordToTable(
-        //     "skills",
-        //     skills.toObject()
-        //   );
-        // }
+        for(let i = 0; i < inputs.skills.length; i++) {
+          const skills = new Skill(
+            457 + i,
+            user.id,
+            inputs.skills[i]
+          );
+          const skillResult = database.createRecordToTable(
+            "skills",
+            skills.toObject()
+          );
+        }
         
 
-        // if(inputs.userType === "Student") {
-        //   const interestObject = {
-        //     studentId:user.id,
-        //     interest: inputs.interests, 
-        //   };
+        if(inputs.userType === "Student") {
+          // const interestObject = {
+          //   studentId:user.id,
+          //   interest: inputs.interests, 
+          // };
     
-        //   const StudentObject = {
-        //     studentId:user.id,
-        //     studentMajor: inputs.studentMajor,
-        //   };
-        // } 
+          const student = new UWStudents(
+            user.id,
+            inputs.studentMajor,
+          )
+          
+          const studentResult = database.createRecordToTable(
+            "uw_students",
+            student.toObject()
+          );
+        } 
   
       }
       
-
     });
   
   // const { data: { user } } = await supabase.auth.getUser();
@@ -225,6 +228,7 @@ export default function EnterInfo() {
 
   return (
     <div className="enterInfoContainer">
+      <h2 className="enterInfoHeader" style={{ textAlign: "center" }}> Enter Information </h2>
       <form onSubmit={handleSubmit}>
         {/* First Name */}
         <div>
