@@ -5,8 +5,11 @@ import SupabaseDatabase from '../classes/SupabaseDatabase';
 import SupabaseStorage from '../classes/SupabaseStorage';
 import defaultBanner from '../assets/banner_default.jpg';
 import defaultPic from '../assets/default.jpg';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function Profile() {
+  const navigate = useNavigate();
   const auth = new SupabaseAuthentication();
   const db = new SupabaseDatabase();
   const storage = new SupabaseStorage("profile_pictures");
@@ -16,7 +19,7 @@ export default function Profile() {
   const [profilePicture, setProfilePicture] = useState(defaultPic);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isConnection, setIsConnection] = useState(false);
-
+  
   useEffect(() => {
     const fetchData = async () => {
       const obj = await db.readRecordFromTable("accounts", "accountId", `${id}`);
@@ -62,6 +65,33 @@ export default function Profile() {
     return <div className="container">Loading profile information...</div>;
   }
 
+  function handleSubmit(event){
+    alert("signout button slicked")
+    // event.preventDefault(); 
+      auth.signOut();
+      navigate('../signin')
+      // .then(response => {
+      //   if(response === null){
+      //     console.log("signout successfull")
+      //   } else {
+      //     console.log("error signup")
+      //   }
+      // }) 
+    }
+    // auth.signOut()
+    // .then(response => {
+    //   if (response.error) {
+    //     console.log("Error during signout", response.error);
+    //     setSignInResult(false);
+
+    //   } else {
+    //     console.log("User signout successfully", response.error);
+    //     navigate("../Home");
+    //     setSignInResult(true);
+    //   }
+    // })
+
+
   return (
     <div style={{ marginTop: '50px' }}>
       <img className="banner" src={defaultBanner} alt="banner" />
@@ -72,7 +102,10 @@ export default function Profile() {
             {`${userInfo.firstName} ${userInfo.lastName}`}
           </div>
           {loggedInUser?.id === id ? (
-            <button className="edit-button">Edit</button>
+            <div className="profile-buttons"> 
+              <button className="edit-button" onClick = {() => navigate("/enterinfo") }>Edit</button>
+              <button className="sign-out-button" onClick = {handleSubmit}>Sign Out</button>
+            </div>
           ) : (
             isConnection ? (
               <button className="message-button">Message</button>
