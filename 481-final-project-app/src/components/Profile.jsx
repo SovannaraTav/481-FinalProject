@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
 import SupabaseDatabase from '../classes/SupabaseDatabase';
 import SupabaseStorage from '../classes/SupabaseStorage';
 import defaultBanner from '../assets/banner_default.jpg';
 import defaultPic from '../assets/default.jpg';
+<<<<<<< HEAD
 
 export default function Profile() {
   const auth = new SupabaseAuthentication();
@@ -14,27 +18,36 @@ export default function Profile() {
 =======
 import defaultBanner from "../assets/banner_default.jpg";
 import defaultPic from "../assets/default.jpg";
+=======
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
 import { useNavigate } from 'react-router-dom';
 
 
 export default function Profile() {
   const navigate = useNavigate();
+<<<<<<< HEAD
 >>>>>>> 35d4a6b8c3f040b6c63002901b793f1a017d6f6c
+=======
+  const auth = new SupabaseAuthentication();
+  const db = new SupabaseDatabase();
+  const storage = new SupabaseStorage("profile_pictures");
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
   const suggestions = ["Alice", "Bob", "Charlie", "David", "Eva"];
   const { id } = useParams();
   const [userInfo, setUserInfo] = useState(null);
   const [profilePicture, setProfilePicture] = useState(defaultPic);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isConnection, setIsConnection] = useState(false);
-  const auth = new SupabaseAuthentication();
-
   
   useEffect(() => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
     const db = new SupabaseDatabase();
 
 >>>>>>> 35d4a6b8c3f040b6c63002901b793f1a017d6f6c
+=======
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
     const fetchData = async () => {
       const obj = await db.readRecordFromTable("accounts", "accountId", `${id}`);
       if (obj.data) {

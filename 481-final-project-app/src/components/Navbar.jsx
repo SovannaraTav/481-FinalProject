@@ -24,8 +24,6 @@ export default function Navbar() {
           const profilePictureUrl = await storage
             .generatePublicProfilePictureUrl(obj.data[0].profilePicture);
           setProfilePicture(profilePictureUrl.data.publicUrl);
-        } else {
-          setProfilePicture(defaultPic);
         }
       }
     };

@@ -113,6 +113,9 @@ export default function EnterInfo() {
     auth.retrieveUser().then(fetchedUser => {
       user = fetchedUser;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
 
       storage.uploadFileToBucket(inputs.profilePic.name, inputs.profilePic).
         then(uploadResult => {
@@ -131,6 +134,7 @@ export default function EnterInfo() {
           const accountResult = 
             database.createRecordToTable("accounts", account.toObject());
         });
+<<<<<<< HEAD
 =======
       const account = new Account(
         user.id,
@@ -148,6 +152,8 @@ export default function EnterInfo() {
         "accounts",
         account.toObject()
       );
+=======
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
 
       if(inputs.userType === "Alumni") {
         // const experienceObject = {
@@ -213,7 +219,10 @@ export default function EnterInfo() {
   
       }
       
+<<<<<<< HEAD
 >>>>>>> 35d4a6b8c3f040b6c63002901b793f1a017d6f6c
+=======
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
     });
   
   // const { data: { user } } = await supabase.auth.getUser();
@@ -221,6 +230,7 @@ export default function EnterInfo() {
   // console.log(userId);
     // console.log(currentUser.user.id);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     if(inputs.userType === "Alumni") {
       const experienceObject = {
@@ -239,15 +249,21 @@ export default function EnterInfo() {
 =======
     
 >>>>>>> 35d4a6b8c3f040b6c63002901b793f1a017d6f6c
+=======
+    
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
 
 
 
     // database.createRecordToTable("accounts", account.toObject());
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 35d4a6b8c3f040b6c63002901b793f1a017d6f6c
+=======
+>>>>>>> c55c86606c56430cec286311eb5a8f79844125b5
     // database
     //   .createRecordToTable("accounts", acccount.toObject())
     //   .then((accountResult) => {
