@@ -9,28 +9,28 @@ import Skill from "../classes/Skill.js";
 import Interests from "../classes/Interest.js";
 import UWStudents from "../classes/UWStudent.js";
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
-
+import SupabaseStorage from '../classes/SupabaseStorage';
 
 export default function EnterInfo() {
   const database = new SupabaseDatabase();
   const auth = new SupabaseAuthentication();
+  const storage = new SupabaseStorage("profile_pictures");
   const navigate = useNavigate();
-
 
   const [inputs, setInputs] = useState({
     firstName: "",
-    lastName: "",
-    about: "",
+    lastName: "", 
+    about: "", 
     education: "",
     gradDate: "",
     profilePic: "",
     company: "",
     jobTitle: "",
-    jobType: "",
-    location: "",
+    jobType: "", 
+    location: "", 
     description: "",
-    startDate: "",
-    endDate: "",
+    startDate: "", 
+    endDate: "", 
     userType: "",
     studentMajor: "",
     currentField: "",
@@ -57,7 +57,7 @@ export default function EnterInfo() {
       const file = files[0];
       setInputs((prevInputs) => ({
         ...prevInputs,
-        [name]: file,
+        [name]: file, 
       }));
     } else {
       setInputs((prevInputs) => ({
@@ -65,32 +65,32 @@ export default function EnterInfo() {
         [name]: value,
       }));
     }
-
+    
   };
 
   function handleSubmit(event) {
     event.preventDefault();
     // alert(
-    //     `First Name: ${inputs.firstName}` +
-    //     `Last Name: ${inputs.lastName}` +
-    //     `About: ${inputs.about}` +
-    //     `Education: ${inputs.education}` +
-    //     `Grad Date: ${inputs.gradDate}` +
+    //     `First Name: ${inputs.firstName}` + 
+    //     `Last Name: ${inputs.lastName}` +  
+    //     `About: ${inputs.about}` +   
+    //     `Education: ${inputs.education}` +  
+    //     `Grad Date: ${inputs.gradDate}` +  
     //     `Company: ${inputs.company}` +
-    //     `Position: ${inputs.jobTitle}` +
-    //     `Interests: ${inputs.interests}` +
-    //     `Skills: ${inputs.skills}` +
-    //     `Profile Picture: ${inputs.profilePic}` +
-    //     `Current Field: ${inputs.currentField}` +
-    //     `Current Company: ${inputs.currentCompany}` +
-    //     `Current Job Title: ${inputs.currentJobTitle}`  +
-    //     `Experience Field: ${inputs.experienceField}`  +
-    //     `Location: ${inputs.location}` +
-    //     `Job Type: ${inputs.jobType}` +
-    //     `Description: ${inputs.description}` +
-    //     `Start Date: ${inputs.startDate}` +
-    //     `End date: ${inputs.endDate}` +
-    //     `User Type: ${inputs.userType}` +
+    //     `Position: ${inputs.jobTitle}` + 
+    //     `Interests: ${inputs.interests}` + 
+    //     `Skills: ${inputs.skills}` + 
+    //     `Profile Picture: ${inputs.profilePic}` + 
+    //     `Current Field: ${inputs.currentField}` + 
+    //     `Current Company: ${inputs.currentCompany}` + 
+    //     `Current Job Title: ${inputs.currentJobTitle}`  +   
+    //     `Experience Field: ${inputs.experienceField}`  +  
+    //     `Location: ${inputs.location}` +  
+    //     `Job Type: ${inputs.jobType}` + 
+    //     `Description: ${inputs.description}` + 
+    //     `Start Date: ${inputs.startDate}` + 
+    //     `End date: ${inputs.endDate}` + 
+    //     `User Type: ${inputs.userType}` + 
     //     `Major: ${inputs.studentMajor}`
     // );
     // let currentUserID = "";
@@ -98,10 +98,10 @@ export default function EnterInfo() {
     //   const {data} = await supabase.auth.getUser();
     //   currentUserID = data.user.id;
     // }
-    // getUser();
+    // getUser(); 
     // console.log(currentUserID);
 
-    // let user = "";
+    // let user = ""; 
     // const fetchUser = async () => {
     //   user = await auth.retrieveUser();
     //   if(user) {
@@ -109,25 +109,27 @@ export default function EnterInfo() {
     //   }
     // };
     // fetchUser();
-    let user = "";
+    let user = ""; 
     auth.retrieveUser().then(fetchedUser => {
       user = fetchedUser;
-      const account = new Account(
-        user.id,
-        inputs.firstName,
-        inputs.lastName,
-        inputs.profilePic,
-        inputs.about,
-        inputs.userType,
-        []
-      );
 
-      // console.log("before submission to account")
-      // console.log(alumni)
-      const accountResult = database.createRecordToTable(
-        "accounts",
-        account.toObject()
-      );
+      storage.uploadFileToBucket(inputs.profilePic.name, inputs.profilePic).
+        then(uploadResult => {
+          let profilePictureURL = uploadResult.data.fullPath;
+
+          const account = new Account(
+            user.id,
+            inputs.firstName,
+            inputs.lastName,
+            profilePictureURL,
+            inputs.about,
+            inputs.userType,
+            []
+          );
+
+          const accountResult = 
+            database.createRecordToTable("accounts", account.toObject());
+        });
 
       if(inputs.userType === "Alumni") {
         // const experienceObject = {
@@ -172,42 +174,39 @@ export default function EnterInfo() {
             skills.toObject()
           );
         }
-
+        
 
         if(inputs.userType === "Student") {
           // const interestObject = {
           //   studentId:user.id,
-          //   interest: inputs.interests,
+          //   interest: inputs.interests, 
           // };
-
+    
           const student = new UWStudents(
             user.id,
             inputs.studentMajor,
           )
-
+          
           const studentResult = database.createRecordToTable(
             "uw_students",
             student.toObject()
           );
-        }
-
+        } 
+  
       }
-
+      
     });
-
-
-
+  
   // const { data: { user } } = await supabase.auth.getUser();
   // const userId = user.id; // Access the user's ID
   // console.log(userId);
     // console.log(currentUser.user.id);
 
-
+    
 
 
 
     // database.createRecordToTable("accounts", account.toObject());
-
 
     // database
     //   .createRecordToTable("accounts", acccount.toObject())
@@ -226,7 +225,6 @@ export default function EnterInfo() {
 
     navigate("../home");
   }
-
 
   return (
     <div className="enterInfoContainer">
@@ -263,7 +261,6 @@ export default function EnterInfo() {
             onChange={handleChange}
           />
         </div>
-
 
         {/* User Type */}
         <div>
@@ -328,6 +325,7 @@ export default function EnterInfo() {
             />
           </div>
         )}
+
         {inputs.userType === "Alumni" && (
           <div>
             <label htmlFor="currentJobTitle" className="label">
@@ -345,8 +343,6 @@ export default function EnterInfo() {
           </div>
         )}
 
-
-
         {inputs.userType === "Alumni" && (
           <div>
             <label htmlFor="currentCompany" className="label">
@@ -363,7 +359,7 @@ export default function EnterInfo() {
             />
           </div>
         )}
-
+        
         {/* About */}
         <h2>About</h2>
         <textarea
@@ -374,11 +370,14 @@ export default function EnterInfo() {
           value={inputs.about}
           onChange={handleChange}
         ></textarea>
-
+        
         <div>
           <label for="myfile">Select a profile picture: </label>
-          <input type="file" id="profilePic" name="profilePic"  onChange={handleChange} className="file-input"/>
+          <input 
+            type="file" id="profilePic" name="profilePic" accept="image/jpeg" 
+            max={1} onChange={handleChange} className="file-input"/>
         </div>
+
         {/* Education */}
         <h2>Education</h2>
         <div className="user-type-container">
@@ -435,7 +434,7 @@ export default function EnterInfo() {
 
         {/* Experience */}
         {inputs.userType === "Alumni" && (
-
+          
           <div>
             <h2>Experience</h2>
             <div className="experience-section">
@@ -462,7 +461,7 @@ export default function EnterInfo() {
                 value={inputs.jobTitle}
                 onChange={handleChange}
               />
-
+             
               <label htmlFor="experienceField" className="label">
                 Field
               </label>
@@ -474,7 +473,7 @@ export default function EnterInfo() {
                 value={inputs.experienceField}
                 onChange={handleChange}
               />
-
+          
               <label htmlFor="location" className="label">
                 Location
               </label>
@@ -499,7 +498,7 @@ export default function EnterInfo() {
               <label htmlFor="partTimeType" className="radio-label">
                 Part-Time
               </label>
-
+    
               <input
                 type="radio"
                 id="fullTimeType"
@@ -524,7 +523,7 @@ export default function EnterInfo() {
                 Internship
               </label>
             </div>
-
+            
               <label htmlFor="description" className="label">
                 Job Description
               </label>
@@ -563,9 +562,9 @@ export default function EnterInfo() {
                 />
               </div>
             </div>
-          </div>
-        )}
-
+          </div>    
+        )}       
+        
           {/* Interests */}
           {/* Conditionally render Interests section for Students */}
           {inputs.userType === "Student" && (
