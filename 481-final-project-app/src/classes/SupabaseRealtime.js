@@ -89,6 +89,34 @@ class SupabaseRealtime {
     }
 
     /*
+    Documentation - https://supabase.com/docs/reference/javascript/select
+
+    Handles the process of retrieving all existing records from the Messages table 
+    alongside the associated information for each record with the Supabase Database 
+    service
+    */
+    async retrieveAllMessages() {
+        const { data , error } = await supabase
+            .from("messages")
+            .select("*");
+        
+        /*
+        Returns the error object and its associated information for an unsuccessful 
+        retrieval of all of the existing records from the Messages table process
+        */
+        if (error) {
+            console.error(`Retrieving all messages was unsuccessful: ${error.message}`);
+            return { error };
+        }
+
+        /*
+        Returns the data object and its associated information for a successful 
+        retrieval of all of the existing records from the Messages table process
+        */
+        return data;
+    }
+
+    /*
     Documentation - https://supabase.com/docs/reference/javascript/subscribe
 
     Handles the process of listening for received messages for the current user 
