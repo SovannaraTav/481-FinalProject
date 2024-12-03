@@ -4,8 +4,10 @@ import "../styles/EnterInfo.css";
 import SupabaseDatabase from "../classes/SupabaseDatabase";
 import supabase from "../../supabaseConfig.js";
 import Account from "../classes/Account.js";
+import Alumni from "../classes/UWAlumni.js"
 import Skill from "../classes/Skill.js";
 import Interests from "../classes/Interest.js";
+import UWStudents from "../classes/UWStudent.js";
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 import SupabaseStorage from '../classes/SupabaseStorage';
 
@@ -110,6 +112,7 @@ export default function EnterInfo() {
     let user = ""; 
     auth.retrieveUser().then(fetchedUser => {
       user = fetchedUser;
+<<<<<<< HEAD
 
       storage.uploadFileToBucket(inputs.profilePic.name, inputs.profilePic).
         then(uploadResult => {
@@ -128,6 +131,89 @@ export default function EnterInfo() {
           const accountResult = 
             database.createRecordToTable("accounts", account.toObject());
         });
+=======
+      const account = new Account(
+        user.id,
+        inputs.firstName,
+        inputs.lastName,
+        inputs.profilePic,
+        inputs.about,
+        inputs.userType,
+        []
+      );
+      
+      // console.log("before submission to account")
+      // console.log(alumni)
+      const accountResult = database.createRecordToTable(
+        "accounts",
+        account.toObject()
+      );
+
+      if(inputs.userType === "Alumni") {
+        // const experienceObject = {
+        //   alumniId:user.id,
+        //   experienceField: inputs.experienceField,
+        //   location: inputs.location,
+        //   jobType: inputs.jobType,
+        //   description: inputs.description,
+        //   startDate: inputs.startDate,
+        //   endDate: inputs.endDate,
+        // };
+        // const experience = database.createRecordToTable(
+        //   "accounts",
+        //   account.toObject()
+        // );
+
+        // console.log("after submission to account")
+        // console.log(alumni)
+        const alumni = new Alumni(
+          user.id,
+          inputs.firstName,
+          inputs.lastName,
+          inputs.profilePic,
+          inputs.about,
+          inputs.currentJobTitle,
+          inputs.currentField,
+          inputs.currentCompany
+        )
+
+        const alumniResult = database.createRecordToTable(
+          "uw_alumni",
+          alumni.toObject()
+        )
+        for(let i = 0; i < inputs.skills.length; i++) {
+          const skills = new Skill(
+            457 + i,
+            user.id,
+            inputs.skills[i]
+          );
+          const skillResult = database.createRecordToTable(
+            "skills",
+            skills.toObject()
+          );
+        }
+        
+
+        if(inputs.userType === "Student") {
+          // const interestObject = {
+          //   studentId:user.id,
+          //   interest: inputs.interests, 
+          // };
+    
+          const student = new UWStudents(
+            user.id,
+            inputs.studentMajor,
+          )
+          
+          const studentResult = database.createRecordToTable(
+            "uw_students",
+            student.toObject()
+          );
+        } 
+  
+      }
+      
+>>>>>>> 35d4a6b8c3f040b6c63002901b793f1a017d6f6c
     });
   
   // const { data: { user } } = await supabase.auth.getUser();
@@ -135,6 +221,7 @@ export default function EnterInfo() {
   // console.log(userId);
     // console.log(currentUser.user.id);
 
+<<<<<<< HEAD
     if(inputs.userType === "Alumni") {
       const experienceObject = {
         alumniId:user.id,
@@ -149,34 +236,18 @@ export default function EnterInfo() {
       //   "accounts",
       //   account.toObject()
       // );
+=======
+    
+>>>>>>> 35d4a6b8c3f040b6c63002901b793f1a017d6f6c
 
-      const alumniObject = {
-        alumniId:user.id,
-        currentJobTitle: inputs.currentJobTitle,
-        currentField: inputs.currentField,
-        currentCompany: inputs.currentCompany,
-      };
 
-      const skillObject = {
-        alumniId:user.id,
-        skill: inputs.skills,
-      };
 
-    }
-
-    if(inputs.userType === "Student") {
-      const interestObject = {
-        studentId:user.id,
-        interest: inputs.interests, 
-      };
-
-      const StudentObject = {
-        studentId:user.id,
-        studentMajor: inputs.studentMajor,
-      };
-    }
     // database.createRecordToTable("accounts", account.toObject());
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 35d4a6b8c3f040b6c63002901b793f1a017d6f6c
     // database
     //   .createRecordToTable("accounts", acccount.toObject())
     //   .then((accountResult) => {
@@ -197,6 +268,7 @@ export default function EnterInfo() {
 
   return (
     <div className="enterInfoContainer">
+      <h2 className="enterInfoHeader" style={{ textAlign: "center" }}> Enter Information </h2>
       <form onSubmit={handleSubmit}>
         {/* First Name */}
         <div>

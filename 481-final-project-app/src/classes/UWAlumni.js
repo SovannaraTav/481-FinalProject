@@ -17,6 +17,12 @@ class UWAlumni extends Account {
         this.currentField = currentField;
         this.currentCompany = currentCompany;
     }
+    // constructor(accountId, currentJobTitle, currentField, currentCompany) {
+    //     this.accountId = accountId;
+    //     this.currentJobTitle = currentJobTitle;
+    //     this.currentField = currentField;
+    //     this.currentCompany = currentCompany;
+    // }
 
     // Getter and setter functions for currentJobTitle private data attribute
     get currentJobTitle() {
