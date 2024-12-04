@@ -112,6 +112,7 @@ export default function Profile() {
     const db = new SupabaseDatabase()
     db.updateRecordFromTable("accounts", {connections: [...connections, id]}, "accountId", loggedInUser.id)
     setIsConnection(true)
+    db.updateRecordFromTable("accounts", {connections: [...connections, loggedInUser.id]}, "accountId", id)
   };
 
 
@@ -131,7 +132,7 @@ export default function Profile() {
             </div>
           ) : (
             isConnection ? (
-              <button className="message-button" onClick = {() => navigate("/connections") }>Message</button>
+              <button className="message-button" onClick = {() => navigate("/connections", { state: { id } }) }>Message</button>
             ) : (
               <button className="connect-button" onClick={handleConnect}>Connect</button>
             )
@@ -150,7 +151,7 @@ export default function Profile() {
                   return (
                     <div key={experience.experienceId}>
                       <p>
-                        <strong>[{index + 1}] {experience.jobTitle} @ {experience.company}</strong> 
+                        <strong>[{index + 1}] {experience.jobTitle} @ {experience.company}</strong>
                         &nbsp;| {experience.jobType} | {experience.field} | {experience.location}
                       </p>
                       <ul>
@@ -172,7 +173,7 @@ export default function Profile() {
                   </ul>
                   );
                 })}
-              </div> 
+              </div>
             )}
           </div>
         </div>

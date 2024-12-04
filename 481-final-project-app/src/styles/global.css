@@ -325,15 +325,16 @@ display: none;
 
 
 .edit-button {
-  width: 200px;
+  width: 100px;
   background-color: gray;
   margin: 10px 200px
 }
 
 .sign-out-button {
-  width: 200px;
+  width: 100px;
   background-color: gray;
-  margin: 10px 200px
+  margin: 10px 200px;
+  white-space: nowrap;
 }
 
 .message-button {

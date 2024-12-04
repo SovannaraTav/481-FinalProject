@@ -6,6 +6,7 @@ import SupabaseDatabase from '../classes/SupabaseDatabase'
 import SupabaseRealtime from '../classes/SupabaseRealtime'
 import defaultPic from '../assets/default.jpg'
 import chatIcon from '../assets/msg.png'
+import { useLocation } from 'react-router-dom';
 
 export default function Connections({ userFrom = null }) {
   const messaging = new SupabaseRealtime();
@@ -17,6 +18,8 @@ export default function Connections({ userFrom = null }) {
   const [connectionNames, setConnectionNames] = useState({});
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState("");
+  const location = useLocation();
+  const { id } = location.state || {};
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -86,8 +89,9 @@ export default function Connections({ userFrom = null }) {
   }, [user, isListening]);
 
   useEffect(() => {
-    if (userFrom && messages) {
-      setSelectedMessage(messages[userFrom]);
+    if (id && messages) {
+      setSelectedMessage(messages[id]);
+      setSelectedMessageId(id);
     }
   }, [messages]);
 
@@ -112,10 +116,10 @@ export default function Connections({ userFrom = null }) {
     return `${account.data[0].firstName} ${account.data[0].lastName}`;
   };
 
-  if (selectedMessage) {
+  /*if (selectedMessage) {
     console.log("test2", selectedMessage);
     console.log("test", selectedMessage[selectedMessage.length - 1]);
-  }
+  }*/
 
   return (
     <div className="container" style={{ paddingTop: "75px", paddingBottom: "75px", overflowY: "hidden"}}>
