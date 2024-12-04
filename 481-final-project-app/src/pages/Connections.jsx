@@ -157,8 +157,11 @@ export default function Connections({userFrom = null}) {
             type="text" placeholder="Search by name"></input>
 
           <div className="connection-list">
-            {connections.map((connection, index) => {
-              const connectionName = connectionNames[connection]  // Use cached name or fallback to "Loading..."
+          {connections.map((connection, index) => {
+            const connectionName = connectionNames[connection]
+              ? (connectionNames[connection].length < 27
+                  ? connectionNames[connection]
+                  : connectionNames[connection].substring(0, 26) + "..."):""
               return (
                 <div key={index} className="connection" onClick={() => {
                   (setSelectedMessage(messages[connection] ? messages[connection] : []))

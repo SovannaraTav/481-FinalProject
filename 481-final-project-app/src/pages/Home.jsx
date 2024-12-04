@@ -144,8 +144,8 @@ export default function Home() {
 
   return (
     <div className="container">
-      <div className="title">Make Connections</div>
-      <div className="horizontal stacked-block">
+      {/*<div className="title">Make Connections</div>*/}
+      <div className="horizontal stacked-block" style={{paddingTop: "20px"}}>
         <input type="text" placeholder="Enter a name..." className="search"
           onChange={handleSearch}
         />

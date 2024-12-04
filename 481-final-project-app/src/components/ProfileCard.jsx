@@ -21,7 +21,8 @@ export default function ProfileCard({name, picture, role=null}) {
   return (
     <div className="card">
       <img className="card-image" src={profilePicture}></img>
-      <div className="card-description">{name}</div>
+      <div className="card-description">{name.length < 16 ? name :
+      name.substring(0, 15) + '...'}</div>
     </div>
   )
 }
