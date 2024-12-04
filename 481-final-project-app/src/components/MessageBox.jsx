@@ -9,6 +9,8 @@ export default function MessageBox({ id, thread }) {
   const [messageContent, setMessageContent] = useState("");
   const [user, setUser] = useState(null);
   const[talkingTo, setTalkingTo] = useState(null);
+  // TODO: make it so that it actually listens for new messages from the database
+  const [updatedThread, setUpdatedThread] = useState(thread);
 
   useEffect(()=>{
     const auth = new SupabaseAuthentication();
@@ -20,6 +22,8 @@ export default function MessageBox({ id, thread }) {
   }, [])
 
   useEffect(() => {
+    setUpdatedThread(thread);
+
     const db = new SupabaseDatabase();
     const getTalkingTo = async () => {
       const obj2 = await db.readRecordFromTable("accounts", "accountId", id)
@@ -31,6 +35,7 @@ export default function MessageBox({ id, thread }) {
     getTalkingTo()
   }, [id])
 
+  console.log(updatedThread)
   const handleSentMessage = (e) => {
     e.preventDefault();
 
@@ -39,8 +44,16 @@ export default function MessageBox({ id, thread }) {
         "", user.id, id,
         messageContent, "", false
       );
-      messaging.sendMessage(messageToSend.toObject());
-      setMessageContent("");
+      messaging.sendMessage(messageToSend.toObject()).then(() => {
+        const newMessage = {
+          ...messageToSend,
+          content: messageContent,
+          dateTime: new Date().toISOString(),
+          senderId: user.id
+        };
+        setUpdatedThread((prevThread) => [...prevThread, newMessage]);
+        setMessageContent("");
+      });
     }
   }
 
@@ -59,7 +72,7 @@ export default function MessageBox({ id, thread }) {
         {talkingTo.firstName} {talkingTo.lastName}
       </div>
       <div>
-        {thread.map(msg => {
+        {updatedThread.map(msg => {
           return <div
             style={{
               backgroundColor: msg.senderId === user.id ? "#98dde2" : "#dad7e5",
