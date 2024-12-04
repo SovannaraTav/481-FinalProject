@@ -75,8 +75,8 @@ export default function Home() {
       const db = new SupabaseDatabase()
 
       if(user){
-        const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`)
-        if (obj.data) {
+        const obj = await db.readRecordFromTable("accounts", "accountId", user.id)
+        if (obj.data[0]) {
           setConnections(obj.data[0].connections);
         }
       }

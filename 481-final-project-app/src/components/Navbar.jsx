@@ -19,7 +19,7 @@ export default function Navbar() {
       setLoggedIn(user);
 
       const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`);
-      if (obj.data) {
+      if (obj.data[0]) {
         if (obj.data[0].profilePicture !== "") {
           const profilePictureUrl = await storage
             .generatePublicProfilePictureUrl(obj.data[0].profilePicture);

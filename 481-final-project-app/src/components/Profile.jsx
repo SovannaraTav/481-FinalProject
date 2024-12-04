@@ -22,6 +22,7 @@ export default function Profile() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isConnection, setIsConnection] = useState(false);
   const [connections, setConnections] = useState([]);
+  const [accounts, setAccounts] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,8 +57,16 @@ export default function Profile() {
       setLoggedInUser(user);
     };
 
+    const getAccounts = async () => {
+      const obj2 = await db.readTable("accounts")
+      if (obj2.data) {
+        setAccounts(obj2.data)
+      }
+    };
+
     fetchData();
     getUser();
+    getAccounts();
   }, []);
 
   useEffect(() => {
@@ -77,6 +86,24 @@ export default function Profile() {
       setIsConnection(true);
     }
   }, [connections])
+
+
+  useEffect(() => {
+    if(accounts){
+      let filteredAccounts = []
+      if(userInfo){
+        if (userInfo.account_type === "Alumni") {
+          filteredAccounts = accounts.filter((account) => {
+            return account.accountType == "Alumni"
+          })
+        } else if (userInfo.account_type === "Student") {
+          filteredAccounts = accounts.filter((account) => {
+            return account.accountType == "Student"
+          })
+        } console.log(filteredAccounts)
+      }
+    }
+  }, [accounts])
 
   if (!userInfo) {
     return <div className="container">Loading profile information...</div>;
