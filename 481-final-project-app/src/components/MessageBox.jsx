@@ -11,6 +11,7 @@ export default function MessageBox({ id, thread }) {
   const [talkingTo, setTalkingTo] = useState(null);
   const [updatedThread, setUpdatedThread] = useState(thread);
 
+  // TODO: automatically scroll to the bottom of each message thread
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -34,12 +35,11 @@ export default function MessageBox({ id, thread }) {
     getTalkingTo();
   }, [id]);
 
-  useEffect(() => {
-    // Scroll to the bottom whenever the message thread is updated
+  /*useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView();
     }
-  }, [updatedThread]); // Trigger when updatedThread changes
+  }, [updatedThread]);*/
 
   const handleSentMessage = (e) => {
     e.preventDefault();
@@ -117,13 +117,13 @@ export default function MessageBox({ id, thread }) {
                 color: "#f6f6f6",
               }}>
                 {msg.senderId === user.id ? <span>You</span> : <span>{talkingTo.firstName}</span>}
-                on {msg.dateTime}
+                &nbsp;on {msg.dateTime.substring(0, 10) + " " + msg.dateTime.substring(11, 16)}
               </div>
             </div>
           )
         })}
-        <div ref={messagesEndRef} />  {/* This div will act as the target for scrolling */}
       </div>
+      {/* <div ref={messagesEndRef} />  {/* This div will act as the target for scrolling */}
       <div style={{
         position: "absolute",
         bottom: "0",

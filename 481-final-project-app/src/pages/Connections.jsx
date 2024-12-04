@@ -118,7 +118,7 @@ export default function Connections({ userFrom = null }) {
   }
 
   return (
-    <div className="container" style={{ paddingTop: "100px" }}>
+    <div className="container" style={{ paddingTop: "75px", paddingBottom: "75px", overflowY: "hidden"}}>
       <div className="flex connections-container">
         <div>
           <div className="message-box">
