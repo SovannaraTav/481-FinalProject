@@ -88,6 +88,7 @@ export default function Connections({ userFrom = null }) {
     }
   }, [user, isListening]);
 
+  console.log("location.state", location.state);
   console.log(idFrom)
   useEffect(() => {
     if (idFrom && messages) {

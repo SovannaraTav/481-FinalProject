@@ -160,7 +160,7 @@ export default function Profile() {
             </div>
           ) : (
             isConnection ? (
-              <button className="message-button" onClick = {() => navigate("/connections", { state: { id } }) }>Message</button>
+              <button className="message-button" onClick = {() => navigate("/connections", { state: { idFrom: id } }) }>Message</button>
             ) : (
               <button className="connect-button" onClick={handleConnect}>Connect</button>
             )
