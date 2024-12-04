@@ -23,6 +23,7 @@ export default function Profile() {
   const [isConnection, setIsConnection] = useState(false);
   const [connections, setConnections] = useState([]);
   const [accounts, setAccounts] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +74,7 @@ export default function Profile() {
     if (loggedInUser) {
       const getConnections = async () => {
         const obj = await db.readRecordFromTable("accounts", "accountId", `${loggedInUser.id}`);
-        if (obj.data) {
+        if (obj.data[0]) {
           setConnections(obj.data[0].connections)
         }
       };
@@ -94,13 +95,13 @@ export default function Profile() {
       if(userInfo){
         if (userInfo.account_type === "Alumni") {
           filteredAccounts = accounts.filter((account) => {
-            return account.accountType == "Alumni"
+            return account.account_type == "Alumni"
           })
         } else if (userInfo.account_type === "Student") {
           filteredAccounts = accounts.filter((account) => {
-            return account.accountType == "Student"
+            return account.account_type == "Student"
           })
-        } console.log(filteredAccounts)
+        } setRecommendations(filteredAccounts.slice(0, 5))
       }
     }
   }, [accounts])
@@ -205,10 +206,14 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className="similar-profiles">
-          <div>Similar profiles</div>
-          {suggestions.map((profile, index) => (
-            <div key={index}>{profile}</div>
+        <div className="similar-profiles" style={{padding: "auto 30px auto 20px",}}>
+          <div className="similar-profiles-header">Similar profiles</div>
+          {recommendations.length > 0 && recommendations.map((profile, index) => (
+            <div className="recommendation"
+            onClick={() => {navigate(`../profile/${profile.accountId}`)}}>
+              <img alt="recommendation" id="profile-icon" src={defaultPic}></img>
+              <div key={index}>{profile.firstName} {profile.lastName}</div>
+            </div>
           ))}
         </div>
       </div>

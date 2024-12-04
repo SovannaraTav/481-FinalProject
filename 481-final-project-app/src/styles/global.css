@@ -240,7 +240,7 @@ display: none;
   "image message message";*/
 }
 
-.message-grid:hover, .connection:hover{
+.message-grid:hover, .connection:hover, .recommendation:hover{
   background-color: var(--medium);
   color: var(--light);
 }
@@ -367,9 +367,26 @@ display: none;
 .similar-profiles {
   background-color: var(--medium-light);
   color: black;
+  padding: 0px;
+}
+
+.similar-profiles-header {
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.recommendation {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  background-color: var(--light);
+  color: black;
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
+  margin-top: 10px;
 }
 
 .nowrap {
   white-space: nowrap;
 }
-

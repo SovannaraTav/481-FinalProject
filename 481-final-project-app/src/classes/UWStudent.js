@@ -25,7 +25,7 @@ class UWStudent extends Account {
         this.#interests.push(interestObject);
     }
     removeFromInterests(interestId) {
-        let interestObjectIndexToRemove = 
+        let interestObjectIndexToRemove =
             this.#interests.findIndex(interest => interestId === interest.interestId);
 
         if (interestObjectIndexToRemove !== -1) {
@@ -34,7 +34,7 @@ class UWStudent extends Account {
     }
 
     /*
-    Returns a JavaScript object of the instance of the class to work with the 
+    Returns a JavaScript object of the instance of the class to work with the
     Supabase Database service
     */
     toObject() {

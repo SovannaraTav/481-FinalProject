@@ -6,8 +6,8 @@ import supabase from "../../supabaseConfig.js";
 import Account from "../classes/Account.js";
 import Alumni from "../classes/UWAlumni.js"
 import Skill from "../classes/Skill.js";
-import Interests from "../classes/Interest.js";
-import UWStudents from "../classes/UWStudent.js";
+import Interest from "../classes/Interest.js";
+import UWStudent from "../classes/UWStudent.js";
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 import SupabaseStorage from '../classes/SupabaseStorage';
 
@@ -115,7 +115,6 @@ export default function EnterInfo() {
 
       storage.uploadFileToBucket(inputs.profilePic.name, inputs.profilePic).
         then(uploadResult => {
-          console.log("UPLOAD RESULT", uploadResult);
           // console.log(uploadResult);
           let profilePictureURL = uploadResult.data.fullPath;
 
@@ -128,6 +127,7 @@ export default function EnterInfo() {
             inputs.userType,
             []
           );
+          console.log("account", account)
 
           const accountResult =
             database.createRecordToTable("accounts", account.toObject());
@@ -180,20 +180,7 @@ export default function EnterInfo() {
       }
       if(inputs.userType === "Student") {
 
-        for(let i = 0; i < inputs.interests.length; i++) {
-          const interest = new Interests(
-            user.id,
-            "Interest Type",
-            inputs.interests[i]
-          );
-          console.log("INTEREST",interest);
-          const interestResult = database.createRecordToTable(
-            "interests",
-            interest.toObject()
-          );
-        }
-
-        const student = new UWStudents(
+        const student = new UWStudent(
           user.id,
           inputs.studentMajor,
         )
@@ -202,6 +189,22 @@ export default function EnterInfo() {
           "uw_students",
           student.toObject()
         );
+        console.log("student", student)
+
+        for(let i = 0; i < inputs.interests.length; i++) {
+          const interest = new Interest(
+            "",
+            user.id,
+            "Interest Type",
+            inputs.interests[i]
+          );
+          const interestResult = database.createRecordToTable(
+            "interests",
+            interest.toObject()
+          );
+          console.log("interest", interest)
+          console.log("interest result", interestResult);
+        }
 
       }
 

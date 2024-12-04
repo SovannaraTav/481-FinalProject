@@ -47,16 +47,16 @@ class Interest {
     }
 
     /*
-    Returns a JavaScript object of the instance of the class to work with the 
+    Returns a JavaScript object of the instance of the class to work with the
     Supabase Database service
     */
     toObject() {
         // Implicity calls the getter functions
         return {
-            interestId: this.interestId,
-            studentId: this.studentId,
+            //interestId: this.interestId,
             interestType: this.interestType,
-            interest: this.interest
+            interest: this.#interest,
+            studentId: this.studentId
         };
     }
 }
