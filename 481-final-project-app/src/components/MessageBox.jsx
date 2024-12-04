@@ -62,6 +62,12 @@ export default function MessageBox({ id, thread }) {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSentMessage(e);
+    }
+  };
+
   if (!user || !talkingTo) {
     return <div></div>;
   }
@@ -139,6 +145,7 @@ export default function MessageBox({ id, thread }) {
           value={messageContent}
           placeholder="Enter message here to send"
           onChange={(e) => setMessageContent(e.target.value)}
+          onKeyDown={handleKeyPress}
           style={{
             width: "85%",
             padding: "8px",

@@ -19,7 +19,7 @@ export default function Connections({ userFrom = null }) {
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState("");
   const location = useLocation();
-  const { id } = location.state || {};
+  const { idFrom } = location.state || {};
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -88,12 +88,13 @@ export default function Connections({ userFrom = null }) {
     }
   }, [user, isListening]);
 
+  console.log(idFrom)
   useEffect(() => {
-    if (id && messages) {
-      setSelectedMessage(messages[id]);
-      setSelectedMessageId(id);
+    if (idFrom && messages) {
+      setSelectedMessage(messages[idFrom]);
+      setSelectedMessageId(idFrom);
     }
-  }, [messages]);
+  }, [messages, idFrom]);
 
   useEffect(() => {
     if (user) {
