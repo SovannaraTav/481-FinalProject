@@ -113,6 +113,11 @@ export default function Connections({userFrom = null}) {
     return `${account.data[0].firstName} ${account.data[0].lastName}`
   }
 
+  if(selectedMessage){
+    console.log("test2", selectedMessage)
+    console.log("test", selectedMessage[selectedMessage.length-1])
+  }
+
   return (
     <div className="container" style={{paddingTop: "100px"}}>
       {/*<div className="title">Your Connections</div>*/}
@@ -121,7 +126,7 @@ export default function Connections({userFrom = null}) {
           <div className="message-box">
             <div className="message-list">
               <div className="title-label">Inbox</div>
-              {Object.keys(messages).length === 0 ? <div className="">No messages yet. Start a new one!</div> :
+              {Object.keys(messages).length === 0 ? <div className="no-messages">No messages yet. Start a new one!</div> :
                 <>
                   {Object.keys(messages).map((talkingWith) => {
                     return (
@@ -129,7 +134,9 @@ export default function Connections({userFrom = null}) {
                       {setSelectedMessage(messages[talkingWith])
                         setSelectedMessageId(talkingWith)
                       }}>
-                        <MessageCard talkingTo={talkingWith} />
+                        <MessageCard latestMessage={messages[talkingWith] ?
+                          messages[talkingWith][messages[talkingWith].length - 1]:
+                          null} talkingTo={talkingWith} />
                       </div>
                     );
                   })}

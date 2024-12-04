@@ -67,14 +67,14 @@ class Message {
     }
 
     /*
-    Returns a JavaScript object of the instance of the class to work with the 
+    Returns a JavaScript object of the instance of the class to work with the
     Supabase Database service
     */
     toObject() {
         // Implicity calls the getter functions
         return {
             /*
-            Supabase Database will automatically fill the other data attributes 
+            Supabase Database will automatically fill the other data attributes
             that are comment out
             */
             // messageId: this.messageId,

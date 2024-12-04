@@ -185,6 +185,13 @@ display: none;
 .message-list{
   border: 1px solid var(--medium);
   background-color: var(--medium-light);
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-width: 335px;
+}
+
+.connection-list::-webkit-scrollbar {
+  display: none;
 }
 
 #message-area{
@@ -206,17 +213,25 @@ display: none;
 
 #grid-item3{
   grid-area: date;
+  size: 10px;
+  display: flex;
+  flex-direction: right;
 }
 
 #grid-item4{
   grid-area: message;
 }
 
+.no-messages{
+  text-align: center;
+  color: white;
+  margin-top: 20px;
+}
+
 .message-grid{
   padding: 10px 20px;
   border-bottom: 1px solid lightgray;
   background-color: white;
-  margin: 0 5px;
   /*display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: 50% 50%;
@@ -228,6 +243,10 @@ display: none;
 .message-grid:hover, .connection:hover{
   background-color: var(--medium);
   color: var(--light);
+}
+
+.grid-top {
+  display: flex;
 }
 
 .connection > *{

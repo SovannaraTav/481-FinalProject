@@ -3,7 +3,7 @@ import SupabaseDatabase from '../classes/SupabaseDatabase';
 import SupabaseStorage from '../classes/SupabaseStorage';
 import defaultPic from '../assets/default.jpg'
 
-export default function MessageCard({talkingTo}) {
+export default function MessageCard({latestMessage = null, talkingTo}) {
   const db = new SupabaseDatabase();
   const storage = new SupabaseStorage("profile_pictures");
   const [profilePicture, setProfilePicture] = useState(defaultPic);
@@ -11,7 +11,7 @@ export default function MessageCard({talkingTo}) {
 
   useEffect(() => {
     const getUser = async () => {
-      const obj = await db.readRecordFromTable("accounts", "accountId", `${talkingTo}`);
+      const obj = await db.readRecordFromTable("accounts", "accountId", talkingTo);
       if (obj.data) {
         setUser(obj.data[0]);
       }
@@ -37,13 +37,17 @@ export default function MessageCard({talkingTo}) {
   }
   return (
     <div className="message-grid">
-      <div className="horizontal">
+      <div className="grid-top">
         <img id="profile-icon" alt="pfp" src={profilePicture}></img>
-        <div id="grid-item2">
-          {user.firstName} {user.lastName}
+        <div id="grid-item2" style={{marginLeft: "25px"}}>
+          {(user.firstName + " " + user.lastName).length < 20
+            ? (user.firstName + " " + user.lastName)
+            : (user.firstName + " " + user.lastName).substring(0, 19) + "..."}
         </div>
         <div id="grid-item3">
-          {/*new Date(message.dateTime).toLocaleString()*/}
+          {/*
+          TODO: incorporate latest message display
+          latestMessage && latestMessage.dateTime.substring(0, 10)*/}
         </div>
       </div>
 

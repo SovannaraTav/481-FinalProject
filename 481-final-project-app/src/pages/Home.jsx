@@ -64,7 +64,6 @@ export default function Home() {
     const auth = new SupabaseAuthentication();
     const getUser = async () => {
       setUser(await auth.retrieveUser());
-      console.log(user)
     }
 
     getUser()
@@ -79,7 +78,6 @@ export default function Home() {
         const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`)
         if (obj.data) {
           setConnections(obj.data[0].connections);
-          console.log("done");
         }
       }
     }

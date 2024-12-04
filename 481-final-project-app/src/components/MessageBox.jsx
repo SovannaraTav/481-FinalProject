@@ -35,7 +35,6 @@ export default function MessageBox({ id, thread }) {
     getTalkingTo()
   }, [id])
 
-  console.log(updatedThread)
   const handleSentMessage = (e) => {
     e.preventDefault();
 
