@@ -11,6 +11,7 @@ export default function Connections({userFrom = null}) {
   const [messages, setMessages] = useState([]);
   const [isListening, setIsListening] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [selectedMessageId, setSelectedMessageId] = useState(null);
   const[connections, setConnections] = useState([]);
   const[connectionNames, setConnectionNames] = useState([]);
   const[user, setUser] = useState(null);
@@ -131,7 +132,10 @@ export default function Connections({userFrom = null}) {
                 <>
                   {Object.keys(messages).map((talkingWith) => {
                     return (
-                      <div key={talkingWith} className="message-card" onClick={() => setSelectedMessage(messages[talkingWith])}>
+                      <div key={talkingWith} className="message-card" onClick={() =>
+                      {setSelectedMessage(messages[talkingWith])
+                        setSelectedMessageId(talkingWith)
+                      }}>
                         <MessageCard talkingTo={talkingWith} />
                       </div>
                     );
@@ -141,10 +145,10 @@ export default function Connections({userFrom = null}) {
             </div>
 
             <div id="message-area">
-              {selectedMessage == null ?
+              {(selectedMessage == null || selectedMessageId == null)?
                 <p style={{textAlign: 'center'}}>No conversation selected</p>
                 :
-                <MessageBox thread={selectedMessage} />
+                <MessageBox id={selectedMessageId} thread={selectedMessage} />
               }
             </div>
           </div>
