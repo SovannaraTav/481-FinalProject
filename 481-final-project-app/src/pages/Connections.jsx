@@ -5,6 +5,7 @@ import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 import SupabaseDatabase from '../classes/SupabaseDatabase'
 import SupabaseRealtime from '../classes/SupabaseRealtime'
 import defaultPic from '../assets/default.jpg'
+import chatIcon from '../assets/msg.png'
 
 export default function Connections({userFrom = null}) {
   const messaging = new SupabaseRealtime();
@@ -55,21 +56,6 @@ export default function Connections({userFrom = null}) {
     getConnections()
   }, [user])
 
-  useEffect(()=>{
-    if(connections.length > 0){
-      const getConnectionNames = async () => {
-        const names = [];
-        for (let id of connections) {
-          const name = await getName(id);
-          names.push(name);
-        }
-        setConnectionNames(names);
-      }
-
-      getConnectionNames()
-    }
-  }, [connections])
-
   useEffect(() => {
     if (user && !isListening) {
       const fetchMessages = async () => {
@@ -96,13 +82,20 @@ export default function Connections({userFrom = null}) {
     }
   }, [messages]);
 
-  /*useEffect(() => {
-    if(messages){
-      if(!messages[selectedMessage]){
-        setMessages({...messages}.selectedMessage = null)
+  useEffect(() => {
+    if (user) {
+      const fetchNames = async () => {
+        const names = {};
+        for (const connectionId of connections) {
+          const name = await getName(connectionId);
+          names[connectionId] = name;
+        }
+        setConnectionNames(names);
       }
+
+      fetchNames();
     }
-  }, [selectedMessage])
+  }, [connections, user]);
 
   /*
   Message plan:
@@ -116,13 +109,13 @@ export default function Connections({userFrom = null}) {
 
   const getName = async (id) => {
     const db = new SupabaseDatabase()
-    const account = await db.readRecordFromTable("accounts", "accountId", `${id}`)
+    const account = await db.readRecordFromTable("accounts", "accountId", id)
     return `${account.data[0].firstName} ${account.data[0].lastName}`
   }
 
   return (
-    <div className="container">
-      <div className="title">Your Connections</div>
+    <div className="container" style={{paddingTop: "100px"}}>
+      {/*<div className="title">Your Connections</div>*/}
       <div className="flex connections-container">
         <div>
           <div className="message-box">
@@ -156,26 +149,28 @@ export default function Connections({userFrom = null}) {
 
         <div className="connections-box">
           <div className="title-label">Connections</div>
-          <div className="connection-filters">
-            <input type="checkbox" id="alumni" name="alumni" value="alumni" />
-            <label for="placeholder">Alumni</label><br />
-            <input type="checkbox" id="student" name="student" value="student" />
-            <label for="placeholder">Student</label><br />
-          </div>
-
           <input className = "search"
             style={{
-              width: "80%",
-              margin: "10px",
+              width: "90%",
+              margin: "20px 10px 10px 10px",
             }}
             type="text" placeholder="Search by name"></input>
 
           <div className="connection-list">
-            {connectionNames.map((connection, index) => {
-              return <div key={index} className="connection">
-                <img alt="pfp" id="profile-icon" src={defaultPic}></img>
-                {connection}
-              </div>
+            {connections.map((connection, index) => {
+              const connectionName = connectionNames[connection]  // Use cached name or fallback to "Loading..."
+              return (
+                <div key={index} className="connection" onClick={() => {
+                  (setSelectedMessage(messages[connection] ? messages[connection] : []))
+                  setSelectedMessageId(connection)
+                }}>
+                  <><img alt="pfp" id="profile-icon" src={defaultPic}></img>
+                  {connectionName}</>
+                  {/*
+                  TODO: add a chat button for more clarity
+                  <img alt="chat" style={{width: "20px", height: "20px"}} src={chatIcon}></img>*/}
+                </div>
+              );
             })}
           </div>
         </div>
