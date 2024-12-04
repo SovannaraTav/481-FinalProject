@@ -17,6 +17,8 @@ export default function Profile() {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useState(null);
   const [profilePicture, setProfilePicture] = useState(defaultPic);
+  const [experiences, setExperiences] = useState([]);
+  const [interests, setInterests] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isConnection, setIsConnection] = useState(false);
   const [connections, setConnections] = useState([]);
@@ -31,6 +33,17 @@ export default function Profile() {
           const profilePictureUrl = await storage
             .generatePublicProfilePictureUrl(obj.data[0].profilePicture);
           setProfilePicture(profilePictureUrl.data.publicUrl);
+        }
+
+        if (obj.data[0].account_type === "Alumni") {
+          const experiencesData = await db
+            .readRecordFromTable("experiences", "alumniId", `${id}`);
+          setExperiences(experiencesData.data);
+        }
+        else {
+          const interestsData = await db
+            .readRecordFromTable("interests", "studentId", `${id}`);
+          setInterests(interestsData.data);
         }
       }
       else if (obj.error) {
@@ -130,18 +143,38 @@ export default function Profile() {
       <div className="profile-container">
         <div className="profile-information">
           <div>
-            <div>Experience</div>
-            <ul>
-              <li>Example place 1</li>
-              <li>Example place 2</li>
-            </ul>
+            {userInfo.account_type === "Alumni" ? (
+              <div>
+                <p><strong>Experiences:</strong></p>
+                {experiences.map((experience, index) => {
+                  return (
+                    <div key={experience.experienceId}>
+                      <p>
+                        <strong>[{index + 1}] {experience.jobTitle} @ {experience.company}</strong> 
+                        &nbsp;| {experience.jobType} | {experience.field} | {experience.location}
+                      </p>
+                      <ul>
+                        <li><strong>Start date:</strong> {experience.startDate}</li>
+                        <li><strong>End date:</strong> {experience.endDate}</li>
+                        <li><strong>Description:</strong> {experience.description}</li>
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div>
+                <p><strong>Interests:</strong></p>
+                {interests.map((interestInfo) => {
+                  return (
+                  <ul>
+                    <li key={interestInfo.interestId}>{interestInfo.interest}</li>
+                  </ul>
+                  );
+                })}
+              </div> 
+            )}
           </div>
-
-          <div>Education</div>
-          <ul>
-            <li>Example school 1</li>
-            <li>Example school 2</li>
-          </ul>
         </div>
 
         <div className="similar-profiles">
