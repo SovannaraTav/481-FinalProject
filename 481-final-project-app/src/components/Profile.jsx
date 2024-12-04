@@ -68,7 +68,7 @@ export default function Profile() {
     fetchData();
     getUser();
     getAccounts();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (loggedInUser) {
@@ -95,11 +95,11 @@ export default function Profile() {
       if(userInfo){
         if (userInfo.account_type === "Alumni") {
           filteredAccounts = accounts.filter((account) => {
-            return account.account_type == "Alumni"
+            return account.account_type == "Alumni" && account.accountId != userInfo.accountId
           })
         } else if (userInfo.account_type === "Student") {
           filteredAccounts = accounts.filter((account) => {
-            return account.account_type == "Student"
+            return account.account_type == "Student" && account.accountId != userInfo.accountId
           })
         } setRecommendations(filteredAccounts.slice(0, 5))
       }
@@ -206,7 +206,7 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className="similar-profiles" style={{padding: "auto 30px auto 20px",}}>
+        <div className="similar-profiles" style={{padding: "50px",}}>
           <div className="similar-profiles-header">Similar profiles</div>
           {recommendations.length > 0 && recommendations.map((profile, index) => (
             <div className="recommendation"

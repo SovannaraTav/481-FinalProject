@@ -131,7 +131,7 @@ export default function EnterInfo() {
 
           const accountResult =
             database.createRecordToTable("accounts", account.toObject());
-        });
+        }).then(()=> {
 
       if(inputs.userType === "Alumni") {
         // const experienceObject = {
@@ -182,14 +182,17 @@ export default function EnterInfo() {
 
         const student = new UWStudent(
           user.id,
+          inputs.firstName,
+          inputs.lastName,
+          "",
+          "Hey there",
           inputs.studentMajor,
         )
 
         const studentResult = database.createRecordToTable(
           "uw_students",
           student.toObject()
-        );
-        console.log("student", student)
+        )
 
         for(let i = 0; i < inputs.interests.length; i++) {
           const interest = new Interest(
@@ -209,10 +212,11 @@ export default function EnterInfo() {
       }
 
     });
+  });
 
   // const { data: { user } } = await supabase.auth.getUser();
   // const userId = user.id; // Access the user's ID
-  // console.log(userId);
+  // console.log(userId);`
     // console.log(currentUser.user.id);
 
 
