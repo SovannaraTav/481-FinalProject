@@ -22,10 +22,6 @@ export default function Connections({userFrom = null}) {
       setUser(await auth.retrieveUser());
     }
 
-    if (userFrom) {
-      setSelectedMessage(userFrom);
-    }
-
     getUser()
   }, []);
 
@@ -50,7 +46,7 @@ export default function Connections({userFrom = null}) {
                 allMessages[talkingTo] = [message]
               }
             }
-          }setMessages(allMessages)
+          } setMessages(allMessages)
         }
       }
     }
@@ -71,7 +67,7 @@ export default function Connections({userFrom = null}) {
 
       getConnectionNames()
     }
-    }, [connections])
+  }, [connections])
 
   useEffect(() => {
     if (user && !isListening) {
@@ -93,6 +89,19 @@ export default function Connections({userFrom = null}) {
     }
   }, [user, isListening]);
 
+  useEffect(() => {
+    if (userFrom && messages) {
+      setSelectedMessage(messages[userFrom]);
+    }
+  }, [messages]);
+
+  /*useEffect(() => {
+    if(messages){
+      if(!messages[selectedMessage]){
+        setMessages({...messages}.selectedMessage = null)
+      }
+    }
+  }, [selectedMessage])
 
   /*
   Message plan:
@@ -122,7 +131,7 @@ export default function Connections({userFrom = null}) {
                 <>
                   {Object.keys(messages).map((talkingWith) => {
                     return (
-                      <div key={talkingWith} className="message-card" onClick={() => setSelectedMessage(talkingWith)}>
+                      <div key={talkingWith} className="message-card" onClick={() => setSelectedMessage(messages[talkingWith])}>
                         <MessageCard talkingTo={talkingWith} />
                       </div>
                     );
@@ -135,8 +144,7 @@ export default function Connections({userFrom = null}) {
               {selectedMessage == null ?
                 <p style={{textAlign: 'center'}}>No conversation selected</p>
                 :
-                /*<MessageBox message={selectedMessage} />*/
-                <div>Talking with {getName(selectedMessage)}</div>
+                <MessageBox thread={selectedMessage} />
               }
             </div>
           </div>
