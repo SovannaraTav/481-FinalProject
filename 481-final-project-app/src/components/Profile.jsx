@@ -118,7 +118,7 @@ export default function Profile() {
             </div>
           ) : (
             isConnection ? (
-              <button className="message-button">Message</button>
+              <button className="message-button" onClick = {() => navigate("/connections") }>Message</button>
             ) : (
               <button className="connect-button" onClick={handleConnect}>Connect</button>
             )

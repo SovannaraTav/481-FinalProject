@@ -36,6 +36,7 @@ export default function Home() {
   const[user, setUser] = useState(null)
 
   useEffect(()=>{
+    window.scrollTo(0, 0)
     const db = new SupabaseDatabase()
 
     const fetchData = async () => {
@@ -114,6 +115,13 @@ export default function Home() {
   const handleCheckStudent = (event) => {
     setStudentSearch(!studentSearch);
   };
+/*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Toggles the state of the alumni checkbox
+   * @param {Object} event the event triggered by the user
+   * @returns {undefined}
+   */
+/******  1aa82cf0-d8f9-418a-bbbf-3916d909856f  *******/
   const handleCheckAlumni = (event) => {
     setAlumniSearch(!alumniSearch);
   };

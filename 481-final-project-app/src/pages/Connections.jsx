@@ -6,7 +6,7 @@ import SupabaseDatabase from '../classes/SupabaseDatabase'
 import SupabaseRealtime from '../classes/SupabaseRealtime'
 import defaultPic from '../assets/default.jpg'
 
-export default function Connections() {
+export default function Connections({userFrom = null}) {
   const messaging = new SupabaseRealtime();
   const [messages, setMessages] = useState([]);
   const [isListening, setIsListening] = useState(false);
@@ -22,16 +22,35 @@ export default function Connections() {
       setUser(await auth.retrieveUser());
     }
 
+    if (userFrom) {
+      setSelectedMessage(userFrom);
+    }
+
     getUser()
   }, []);
 
   useEffect(() => {
     const getConnections = async () => {
       const db = new SupabaseDatabase()
+      const msg = new SupabaseRealtime()
       if (user) {
-        const obj = await db.readRecordFromTable("accounts", "accountId", `${user.id}`)
+        const obj = await db.readRecordFromTable("accounts", "accountId", user.id)
         if (obj.data) {
-          setConnections(obj.data[0].connections);
+          setConnections(obj.data[0].connections)
+        }
+        const obj2 = await msg.retrieveAllMessages()
+        if (obj2) {
+          const allMessages = {}
+          for (let message of obj2) {
+            if (message.senderId == user.id || message.receiverId == user.id) {
+              let talkingTo = message.senderId == user.id ? message.receiverId : message.senderId
+              if (allMessages[talkingTo]) {
+                allMessages[talkingTo].push(message)
+              } else {
+                allMessages[talkingTo] = [message]
+              }
+            }
+          }setMessages(allMessages)
         }
       }
     }
@@ -74,6 +93,17 @@ export default function Connections() {
     }
   }, [user, isListening]);
 
+
+  /*
+  Message plan:
+  - check for selected user
+    - create a case if there is a selected user but no message from the user
+    - display the message if there is a user
+  - on the inbox side, list all of the current conversations
+  - in the message area, display the selected conversation
+  - on the connections side, add a button by each connection that will select the user
+  */
+
   const getName = async (id) => {
     const db = new SupabaseDatabase()
     const account = await db.readRecordFromTable("accounts", "accountId", `${id}`)
@@ -88,12 +118,12 @@ export default function Connections() {
           <div className="message-box">
             <div className="message-list">
               <div className="title-label">Inbox</div>
-              {messages.length == 0 ? <div className="">No messages yet. Start a new one!</div> :
+              {Object.keys(messages).length === 0 ? <div className="">No messages yet. Start a new one!</div> :
                 <>
-                  {messages.map(message => {
+                  {Object.keys(messages).map((talkingWith) => {
                     return (
-                      <div key={message.messageId} className="message-card" onClick={()=>setSelectedMessage({message})}>
-                        <MessageCard message={message} />
+                      <div key={talkingWith} className="message-card" onClick={() => setSelectedMessage(talkingWith)}>
+                        <MessageCard talkingTo={talkingWith} />
                       </div>
                     );
                   })}
@@ -105,7 +135,8 @@ export default function Connections() {
               {selectedMessage == null ?
                 <p style={{textAlign: 'center'}}>No conversation selected</p>
                 :
-                <MessageBox message={selectedMessage} />
+                /*<MessageBox message={selectedMessage} />*/
+                <div>Talking with {getName(selectedMessage)}</div>
               }
             </div>
           </div>
