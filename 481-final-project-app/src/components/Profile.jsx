@@ -24,6 +24,7 @@ export default function Profile() {
   const [connections, setConnections] = useState([]);
   const [accounts, setAccounts] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
+  const [recommendationProfilePictures, setRecommendationProfilePictures] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +36,9 @@ export default function Profile() {
           const profilePictureUrl = await storage
             .generatePublicProfilePictureUrl(obj.data[0].profilePicture);
           setProfilePicture(profilePictureUrl.data.publicUrl);
+        }
+        else {
+          setProfilePicture(defaultPic);
         }
 
         if (obj.data[0].account_type === "Alumni") {
@@ -101,10 +105,36 @@ export default function Profile() {
           filteredAccounts = accounts.filter((account) => {
             return account.account_type == "Student" && account.accountId != userInfo.accountId
           })
-        } setRecommendations(filteredAccounts.slice(0, 5))
+        } 
+        setRecommendations(filteredAccounts.slice(0, 5));
       }
     }
   }, [accounts])
+
+  useEffect(() => {
+    const fetchRecommendationProfilePictures = async () => {
+      const profilePictures = {}
+      for(let i = 0; i < recommendations.length; i++) {
+        const profilePicture = 
+          await getRecommendationProfilePicture(recommendations[i].profilePicture);
+        profilePictures[i] = profilePicture;
+      }
+      setRecommendationProfilePictures(profilePictures);
+    };
+
+    fetchRecommendationProfilePictures();
+  }, [recommendations]);
+
+  const getRecommendationProfilePicture = async (profilePicture) => {
+    if (profilePicture !== "") {
+      const recommendationProfilePicture = await storage
+        .generatePublicProfilePictureUrl(profilePicture);
+      return recommendationProfilePicture.data.publicUrl;
+    }
+    else {
+      return defaultPic;
+    }
+  }
 
   if (!userInfo) {
     return <div className="container">Loading profile information...</div>;
@@ -211,7 +241,7 @@ export default function Profile() {
           {recommendations.length > 0 && recommendations.map((profile, index) => (
             <div className="recommendation"
             onClick={() => {navigate(`../profile/${profile.accountId}`)}}>
-              <img alt="recommendation" id="profile-icon" src={defaultPic}></img>
+              <img alt="recommendation" id="profile-icon" src={recommendationProfilePictures[index]}></img>
               <div key={index}>{profile.firstName} {profile.lastName}</div>
             </div>
           ))}
