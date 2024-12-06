@@ -4,18 +4,22 @@ import MessageBox from '../components/MessageBox'
 import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 import SupabaseDatabase from '../classes/SupabaseDatabase'
 import SupabaseRealtime from '../classes/SupabaseRealtime'
+import SupabaseStorage from '../classes/SupabaseStorage'
 import defaultPic from '../assets/default.jpg'
 import chatIcon from '../assets/msg.png'
 import { useLocation } from 'react-router-dom';
 
 export default function Connections({ userFrom = null }) {
+  const db = new SupabaseDatabase();
   const messaging = new SupabaseRealtime();
+  const storage = new SupabaseStorage("profile_pictures");
   const [messages, setMessages] = useState({});
   const [isListening, setIsListening] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [selectedMessageId, setSelectedMessageId] = useState(null);
   const [connections, setConnections] = useState([]);
   const [connectionNames, setConnectionNames] = useState({});
+  const [connectionProfilePictures, setConnectionProfilePictures] = useState([]);
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState("");
   const location = useLocation();
@@ -42,7 +46,6 @@ export default function Connections({ userFrom = null }) {
 
   useEffect(() => {
     const getConnections = async () => {
-      const db = new SupabaseDatabase();
       const msg = new SupabaseRealtime();
       if (user) {
         const obj = await db.readRecordFromTable("accounts", "accountId", user.id);
@@ -101,11 +104,15 @@ export default function Connections({ userFrom = null }) {
     if (user) {
       const fetchNames = async () => {
         const names = {};
+        const profilePictures = {}
         for (const connectionId of connections) {
           const name = await getName(connectionId);
+          const profilePicture = await getConnectionProfilePicture(connectionId);
           names[connectionId] = name;
+          profilePictures[connectionId] = profilePicture;
         }
         setConnectionNames(names);
+        setConnectionProfilePictures(profilePictures);
       };
 
       fetchNames();
@@ -113,10 +120,27 @@ export default function Connections({ userFrom = null }) {
   }, [connections, user]);
 
   const getName = async (id) => {
-    const db = new SupabaseDatabase();
     const account = await db.readRecordFromTable("accounts", "accountId", id);
     return `${account.data[0].firstName} ${account.data[0].lastName}`;
   };
+
+  const getConnectionProfilePicture = async (id) => {
+    const connectionAcount = 
+      await db.readRecordFromTable("accounts", "accountId", id);
+    if (connectionAcount.data) {
+      if (connectionAcount.data[0].profilePicture !== "") {
+        const connectionProfilePicture = await storage
+          .generatePublicProfilePictureUrl(connectionAcount.data[0].profilePicture);
+        return connectionProfilePicture.data.publicUrl;
+      }
+      else {
+        return defaultPic;
+      }
+    }
+    else {
+      return defaultPic;
+    }
+  }
 
   /*if (selectedMessage) {
     console.log("test2", selectedMessage);
@@ -199,7 +223,7 @@ export default function Connections({ userFrom = null }) {
                       setSelectedMessageId(connectionId);
                     }}
                   >
-                    <img alt="pfp" id="profile-icon" src={defaultPic}></img>
+                    <img alt="pfp" id="profile-icon" src={connectionProfilePictures[connectionId]}></img>
                     {connectionName}
                     {/* Optional: add a chat button */}
                     {/* <img alt="chat" style={{ width: "20px", height: "20px" }} src={chatIcon}></img> */}
