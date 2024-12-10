@@ -110,10 +110,16 @@ class SupabaseDatabase {
         return { data };
     }
 
+    /*
+    Documentation - https://supabase.com/docs/reference/javascript/select
+
+    Handles the process of reading all existing records from the specified table 
+    with the Supabase Database service.
+    */
     async readTable(tableName) {
         /*
-        Ensuring the table exists in the tables list before reading an existing
-        record from the specified table
+        Ensuring the table exists in the tables list before reading all existing
+        records from the specified table
         */
         if (!this.#tables.includes(tableName)) {
             console.error(`${tableName} doesn't exist in the tables list`);
@@ -126,7 +132,7 @@ class SupabaseDatabase {
 
         /*
         Returns the error object and its associated information for an unsuccessful
-        reading of an existing record process
+        reading of all existing records from the specified table process
         */
         if (error) {
             console.error(
@@ -136,7 +142,7 @@ class SupabaseDatabase {
 
         /*
         Returns the data object and its associated information for a successful
-        reading of an existing record process
+        reading of all existing records from the specified table process
         */
         return { data };
     }

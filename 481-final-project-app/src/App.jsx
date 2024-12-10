@@ -10,7 +10,6 @@ import Profile from "./components/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import EnterInfo from "./pages/EnterInfo";
-import Messaging from "./pages/Messaging";
 
 
 export default function App() {
@@ -21,7 +20,6 @@ export default function App() {
       <Routes>
         <Route index element={<SignIn />} />
         <Route path="home" element={<Home />} />
-        <Route path="messaging" element={<Messaging />} />
         <Route path="connections" element={<Connections />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="profile/:id" element={<Profile />} />
