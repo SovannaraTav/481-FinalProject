@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 import SupabaseDatabase from '../classes/SupabaseDatabase';
 import SupabaseStorage from '../classes/SupabaseStorage';
 import defaultBanner from '../assets/banner_default.jpg';
 import defaultPic from '../assets/default.jpg';
-import { useNavigate } from 'react-router-dom';
 
-
+/*
+Profile React component to display further information of the current user as 
+well as a similar profiles list and the ability to edit the current profile info 
+and sign out. If the current user is viewing the profile of another user, it will 
+display the other user's info and the abilty to connect with them or message them 
+if they are already connected
+*/
 export default function Profile() {
   const navigate = useNavigate();
   const auth = new SupabaseAuthentication();
@@ -32,6 +37,11 @@ export default function Profile() {
       if (obj.data) {
         setUserInfo(obj.data[0]);
 
+        /*
+        Fetches the profile picture of the user on display and sets it in state based 
+        on their profile picture field. If it is empty, then a default profile picture 
+        is used instead
+        */
         if (obj.data[0].profilePicture !== "") {
           const profilePictureUrl = await storage
             .generatePublicProfilePictureUrl(obj.data[0].profilePicture);
@@ -41,6 +51,11 @@ export default function Profile() {
           setProfilePicture(defaultPic);
         }
 
+        /*
+        If the user on display is a UW alumni, it fetches their experiences and sets 
+        it in state. Otherwise, it fetches the interests and sets it in state if the
+        user on display is a current UW student
+        */
         if (obj.data[0].account_type === "Alumni") {
           const experiencesData = await db
             .readRecordFromTable("experiences", "alumniId", `${id}`);
@@ -53,19 +68,24 @@ export default function Profile() {
         }
       }
       else if (obj.error) {
-        console.log("There was an error with the Profile page");
+        // Testing/debugging code
+        // console.log("There was an error with the Profile page");
       }
     };
 
+    // Fetches the current logged in user and sets it in the state
     const getUser = async () => {
       const user = await auth.retrieveUser();
       setLoggedInUser(user);
     };
 
+    /*
+    Fetches all existing records from the accounts table and sets it in the state
+    */
     const getAccounts = async () => {
-      const obj2 = await db.readTable("accounts")
+      const obj2 = await db.readTable("accounts");
       if (obj2.data) {
-        setAccounts(obj2.data)
+        setAccounts(obj2.data);
       }
     };
 
@@ -74,25 +94,38 @@ export default function Profile() {
     getAccounts();
   }, [id]);
 
+  /*
+  Fetches the connections of the current logged in user and sets it in the state
+  */
   useEffect(() => {
     if (loggedInUser) {
       const getConnections = async () => {
         const obj = await db.readRecordFromTable("accounts", "accountId", `${loggedInUser.id}`);
         if (obj.data[0]) {
-          setConnections(obj.data[0].connections)
+          setConnections(obj.data[0].connections);
         }
       };
       getConnections();
     }
   }, [loggedInUser]);
 
+  /*
+  If the current logged in user is viewing the profile page of another user and 
+  that user is a connection, this is set in the state
+  */
   useEffect(() => {
     if (connections.includes(id)) {
       setIsConnection(true);
     }
-  }, [connections])
+  }, [connections]);
 
 
+  /*
+  If the user on display for the profile picture is a UW alumni, this will return 
+  other similar UW alumni profiles and set in the state. Otherwise, this will 
+  return other similar current UW students profiles and set in the state if the 
+  user on display is a current UW student
+  */
   useEffect(() => {
     if(accounts){
       let filteredAccounts = []
@@ -109,8 +142,12 @@ export default function Profile() {
         setRecommendations(filteredAccounts.slice(0, 5));
       }
     }
-  }, [accounts])
+  }, [accounts]);
 
+  /*
+  Fetches the profile picture for each user set in the recommendations state and 
+  sets each one in the state to be stored
+  */
   useEffect(() => {
     const fetchRecommendationProfilePictures = async () => {
       const profilePictures = {}
@@ -125,6 +162,11 @@ export default function Profile() {
     fetchRecommendationProfilePictures();
   }, [recommendations]);
 
+  /*
+  Function to retrieve the profile picture of an user and return it to where the 
+  function was invoked. If the retrieve profile picture is empty, a default picture
+  is returned instead
+  */
   const getRecommendationProfilePicture = async (profilePicture) => {
     if (profilePicture !== "") {
       const recommendationProfilePicture = await storage
@@ -140,19 +182,25 @@ export default function Profile() {
     return <div className="container">Loading profile information...</div>;
   }
 
-  function handleSubmit(event){
-    alert("signout button slicked")
+  /*
+  Event handler function for when the current logged in user signs out, thus is 
+  redirected to the sign in page
+  */
+  function handleSubmit(event) {
+    alert("You have signed out!");
     // event.preventDefault();
-      auth.signOut();
-      navigate('../signin')
-      // .then(response => {
-      //   if(response === null){
-      //     console.log("signout successfull")
-      //   } else {
-      //     console.log("error signup")
-      //   }
-      // })
-    }
+    auth.signOut();
+    navigate('../signin');
+
+    // Testing/debugging code
+    // .then(response => {
+    //   if(response === null){
+    //     console.log("signout successfull")
+    //   } else {
+    //     console.log("error signup")
+    //   }
+    // })
+
     // auth.signOut()
     // .then(response => {
     //   if (response.error) {
@@ -165,17 +213,24 @@ export default function Profile() {
     //     setSignInResult(true);
     //   }
     // })
+  }
 
+  /*
+  Event handler function for when the current logged in user connects with another 
+  user, thus updates both of their connections list
+  */
   const handleConnect = () => {
-    const db = new SupabaseDatabase()
-    db.updateRecordFromTable("accounts", {connections: [...connections, id]}, "accountId", loggedInUser.id)
-    setIsConnection(true)
-    db.updateRecordFromTable("accounts", {connections: [...connections, loggedInUser.id]}, "accountId", id)
+    db.updateRecordFromTable(
+      "accounts", {connections: [...connections, id]}, "accountId", loggedInUser.id);
+    setIsConnection(true);
+    db.updateRecordFromTable(
+      "accounts", {connections: [...connections, loggedInUser.id]}, "accountId", id);
   };
-
 
   return (
     <div style={{ marginTop: '50px' }}>
+      {/* Displays the default banner, profile picture, and full name of the user 
+      on display for the profile page */}
       <img className="banner" src={defaultBanner} alt="banner" />
       <img className="profile-picture" alt="pfp" src={profilePicture} />
       <div className="profile-header">
@@ -183,6 +238,11 @@ export default function Profile() {
           <div className="profile-name">
             {`${userInfo.firstName} ${userInfo.lastName}`}
           </div>
+
+          {/* If the profile page display is the current logged in user, then it 
+          displays the abilty to edit their info and sign out. Otherwise, if the 
+          profile page display is another user, then it displays the ability to 
+          connect and message if already connected */}
           {loggedInUser?.id === id ? (
             <div className="profile-buttons">
               <button className="edit-button" onClick = {() => navigate("/enterinfo") }>Edit</button>
@@ -190,12 +250,19 @@ export default function Profile() {
             </div>
           ) : (
             isConnection ? (
-              <button className="message-button" onClick = {() => navigate("/connections", { state: { idFrom: id } }) }>Message</button>
+              <button 
+                className="message-button" 
+                onClick={() => navigate("/connections", { state: { idFrom: id } })}
+              >
+                Message
+              </button>
             ) : (
               <button className="connect-button" onClick={handleConnect}>Connect</button>
             )
           )}
         </div>
+
+        {/* Displays the bio of the user on display for the profile page */}
         <div className="profile-bio">{userInfo.bio}</div>
       </div>
 
@@ -204,6 +271,8 @@ export default function Profile() {
           <div>
             {userInfo.account_type === "Alumni" ? (
               <div>
+                {/* If the profile page display is a UW alumni, it will display each 
+                each of their experiences and relevant information */}
                 <p><strong>Experiences:</strong></p>
                 {experiences.map((experience, index) => {
                   return (
@@ -223,6 +292,8 @@ export default function Profile() {
               </div>
             ) : (
               <div>
+                {/* If the profile page display is a current UW student, it will 
+                display each each of their interests */}
                 <p><strong>Interests:</strong></p>
                 {interests.map((interestInfo) => {
                   return (
@@ -236,11 +307,13 @@ export default function Profile() {
           </div>
         </div>
 
+        {/* Displays the profile picture and full name for each user in the similar 
+        profiles section */}
         <div className="similar-profiles" style={{padding: "50px",}}>
           <div className="similar-profiles-header">Similar profiles</div>
           {recommendations.length > 0 && recommendations.map((profile, index) => (
             <div className="recommendation"
-            onClick={() => {navigate(`../profile/${profile.accountId}`)}}>
+              onClick={() => {navigate(`../profile/${profile.accountId}`)}}>
               <img alt="recommendation" id="profile-icon" src={recommendationProfilePictures[index]}></img>
               <div key={index}>{profile.firstName} {profile.lastName}</div>
             </div>
