@@ -8,6 +8,7 @@ import Alumni from "../classes/UWAlumni.js"
 import Skill from "../classes/Skill.js";
 import Interest from "../classes/Interest.js";
 import UWStudent from "../classes/UWStudent.js";
+import Experience from "../classes/Experience.js";
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 import SupabaseStorage from '../classes/SupabaseStorage';
 
@@ -131,25 +132,10 @@ export default function EnterInfo() {
 
           const accountResult =
             database.createRecordToTable("accounts", account.toObject());
-        }).then(()=> {
+        }).then(() => {
 
-      if(inputs.userType === "Alumni") {
-        // const experienceObject = {
-        //   alumniId:user.id,
-        //   experienceField: inputs.experienceField,
-        //   location: inputs.location,
-        //   jobType: inputs.jobType,
-        //   description: inputs.description,
-        //   startDate: inputs.startDate,
-        //   endDate: inputs.endDate,
-        // };
-        // const experience = database.createRecordToTable(
-        //   "accounts",
-        //   account.toObject()
-        // );
-
-        // console.log("after submission to account")
-        // console.log(alumni)
+        
+       if(inputs.userType === "Alumni") {
         const alumni = new Alumni(
           user.id,
           inputs.firstName,
@@ -177,18 +163,37 @@ export default function EnterInfo() {
           );
         }
 
+        const experience = new Experience(
+          4567, 
+          user.id,
+          inputs.jobTitle,
+          inputs.jobType,
+          inputs.experienceField,
+          inputs.company,
+          inputs.location,
+          inputs.startDate,
+          inputs.endDate,
+          inputs.description
+        )
+
+        const experienceResult = database.createRecordToTable(
+          "experiences",
+          experience.toObject()
+        )
+
       }
+
       if(inputs.userType === "Student") {
 
         const student = new UWStudent(
           user.id,
           inputs.firstName,
           inputs.lastName,
-          "",
-          "Hey there",
-          inputs.studentMajor,
+          inputs.profilePic,
+          inputs.about,
+          inputs.studentMajor
         )
-
+      
         const studentResult = database.createRecordToTable(
           "uw_students",
           student.toObject()
@@ -196,9 +201,9 @@ export default function EnterInfo() {
 
         for(let i = 0; i < inputs.interests.length; i++) {
           const interest = new Interest(
-            "",
+            7834 + i,
             user.id,
-            "Interest Type",
+            "Interest Type Test",
             inputs.interests[i]
           );
           const interestResult = database.createRecordToTable(
@@ -210,7 +215,6 @@ export default function EnterInfo() {
         }
 
       }
-
     });
   });
 
