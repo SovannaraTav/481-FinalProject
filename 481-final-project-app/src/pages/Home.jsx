@@ -4,15 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import SupabaseDatabase from '../classes/SupabaseDatabase'
 import SupabaseAuthentication from '../classes/SupabaseAuthentication'
 
-/*
-Todo -
-- fix looks (LATER)
-  - fix positioning css
-*/
-
+/* The home page, also known as the explore page, displays the list of users */
 export default function Home() {
-
-  const profile_list = ["Alice","Bob","Charlie","Diana","Ethan","Fiona","George","Hannah","Isaac","Julia"];
   const navigate = useNavigate();
 
   const [accounts, setAccounts] = useState([])
@@ -36,9 +29,11 @@ export default function Home() {
   const[user, setUser] = useState(null)
 
   useEffect(()=>{
+    // Makes sure the page is scrolled to the top when first entering
     window.scrollTo(0, 0)
     const db = new SupabaseDatabase()
 
+    // Gets the accounts, students, and alumni data and sets it to their respective variables
     const fetchData = async () => {
       const obj = await db.readTable("accounts")
       if (obj.data) {
@@ -60,6 +55,7 @@ export default function Home() {
     fetchData()
   }, []);
 
+  // Gets the current user once all the accounts have been retrieved
   useEffect(()=>{
     const auth = new SupabaseAuthentication();
     const getUser = async () => {
@@ -70,6 +66,7 @@ export default function Home() {
   }, [loaded])
 
 
+  // Gets the connections of the current user once the current user has been retrieved
   useEffect(()=>{
     const getConnections = async () => {
       const db = new SupabaseDatabase()
@@ -85,13 +82,15 @@ export default function Home() {
     getConnections()
   }, [user])
 
-
+  // Gets all possible options for the filter dropdowns based on the alumni/student accounts
   const fields = [...new Set(alumni.map(alumn => alumn.currentField))];
   const titles = [...new Set(alumni.map(alumn => alumn.currentJobTitle))];
   const companies = [...new Set(alumni.map(alumn => alumn.currentCompany))];
   const majors = [...new Set(students.map(student => student.major))];
 
+  // The filtering logic for the accoutns shown based on the filters and search bar
   const filteredAccounts = accounts.filter((account) => {
+    // Makes sure your own profile isn't shown on there
     const notYou = account.accountId !== user.id;
     const nameMatches = `${account.firstName.toLowerCase()} ${account.lastName.toLowerCase()}`
       .startsWith(search.toLowerCase());
@@ -107,6 +106,7 @@ export default function Home() {
     return notYou && nameMatches && accountTypeMatches && majorMatches && fieldMatches && titleMatches && companyMatches && notConnection;
   });
 
+  // Handlers for when a filter or the search bar value changes
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
@@ -143,10 +143,12 @@ export default function Home() {
   return (
     <div className="container">
       {/*<div className="title">Make Connections</div>*/}
+      {/*search bar*/}
       <div className="horizontal stacked-block" style={{paddingTop: "20px"}}>
         <input type="text" placeholder="Enter a name..." className="search"
           onChange={handleSearch}
         />
+        {/* alumni and student checkboxes */}
         <div className="nowrap">
           <input type="checkbox" id="alumni" name="people" value="alumni"
           checked={alumniSearch} onChange={handleCheckAlumni}/>
@@ -158,6 +160,7 @@ export default function Home() {
           <label htmlFor="students">Students</label>
         </div>
       </div>
+      {/*alumni related filters*/}
       <div className="flex">
         <div className="filter">
           {
@@ -186,6 +189,7 @@ export default function Home() {
               </select>
             </>
           }
+          {/* student related filters */}
           {studentSearch &&
           <>
             <div>Major: </div>
@@ -197,16 +201,18 @@ export default function Home() {
               </select>
           </>
           }
+          {/* Option to show current connections in the explore page */}
           <div style={{marginTop: "15px", fontSize: "17px"}}>
-          <label htmlFor="placeholder">Show connections:</label>
-          <input type="checkbox" id="placeholder" name="placeholder" value="placeholder"
-           onChange={handleConnectionsChecked} defaultChecked/>
+            <label htmlFor="placeholder">Show connections:</label>
+            <input type="checkbox" id="placeholder" name="placeholder" value="placeholder"
+            onChange={handleConnectionsChecked} defaultChecked/>
           </div>
         </div>
-        {
+        { // handles if no accounts are found
           filteredAccounts.length == 0 ?
           (loaded ? <div>No accounts to show</div> : <div>Loading accounts...</div>)
           :
+          // lists all the accounts via ProfileCard component after filters have been applied
           <div className="card-list">
             {filteredAccounts.map((account, index) => {
               return <div
