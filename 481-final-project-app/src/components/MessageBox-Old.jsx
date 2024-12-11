@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
-import SupabaseRealtime from '../classes/SupabaseRealtime'
+import React, { useState } from 'react';
+import SupabaseRealtime from '../classes/SupabaseRealtime';
 import Message from '../classes/Message';
 
+/*
+Old MessageBox React component meant for the built-in messaging service in the 
+Connections page and no longer in used
+*/
 export default function MessageBox({ message }) {
   const messaging = new SupabaseRealtime();
   const [messageContent, setMessageContent] = useState("");
@@ -9,6 +13,7 @@ export default function MessageBox({ message }) {
   const handleSentMessage = (e) => {
     e.preventDefault();
 
+    // Ensures the current user can't send an empty message to another user
     if (messageContent.trim() !== "") {
       const messageToSend = new Message(
         "", message.message.receiverId, message.message.senderId,
@@ -21,6 +26,7 @@ export default function MessageBox({ message }) {
 
   return (
     <div>
+      {/* Displays the full name of the user that the current user is messaging */}
       <div style={{
         padding: "5px 10px",
         marginBottom: "10px",
@@ -32,6 +38,8 @@ export default function MessageBox({ message }) {
         {message.message.accounts.firstName} {message.message.accounts.lastName}
       </div>
 
+      {/* Displays the current message's content, the user who sent the message, 
+      and at what date and time it was sent */}
       <div>
           <div
             key={message.message.messageId}
@@ -66,6 +74,8 @@ export default function MessageBox({ message }) {
           </div>
       </div>
 
+      {/* Displays an input text field and send button for the current user to 
+      send a new message to another user*/}
       <div>
         <input
           value={messageContent}

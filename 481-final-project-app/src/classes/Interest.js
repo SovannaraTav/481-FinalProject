@@ -53,7 +53,11 @@ class Interest {
     toObject() {
         // Implicity calls the getter functions
         return {
-            //interestId: this.interestId,
+            /*
+            Supabase Database will automatically fill the other data attributes
+            that are comment out
+            */
+            // interestId: this.interestId,
             interestType: this.interestType,
             interest: this.#interest,
             studentId: this.studentId
