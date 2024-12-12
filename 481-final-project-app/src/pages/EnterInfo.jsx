@@ -12,12 +12,22 @@ import Experience from "../classes/Experience.js";
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 import SupabaseStorage from '../classes/SupabaseStorage';
 
+/*
+* EnterInfo.jsx
+* React component representing the page where users can enter their information
+* after a successful sign-up. The Info page also allows users to update their profile
+* after the edit buttion is clicked in the profile page. 
+*/
+
 export default function EnterInfo() {
+
+  // Initialize SupabaseDatabase and SupabaseAuthentication
   const database = new SupabaseDatabase();
   const auth = new SupabaseAuthentication();
   const storage = new SupabaseStorage("profile_pictures");
   const navigate = useNavigate();
 
+  // Initialize state variables
   const [inputs, setInputs] = useState({
     firstName: "",
     lastName: "",
@@ -69,56 +79,18 @@ export default function EnterInfo() {
 
   };
 
+// Handles form submission and updates user information accordingly
   function handleSubmit(event) {
     event.preventDefault();
-    // alert(
-    //     `First Name: ${inputs.firstName}` +
-    //     `Last Name: ${inputs.lastName}` +
-    //     `About: ${inputs.about}` +
-    //     `Education: ${inputs.education}` +
-    //     `Grad Date: ${inputs.gradDate}` +
-    //     `Company: ${inputs.company}` +
-    //     `Position: ${inputs.jobTitle}` +
-    //     `Interests: ${inputs.interests}` +
-    //     `Skills: ${inputs.skills}` +
-    //     `Profile Picture: ${inputs.profilePic}` +
-    //     `Current Field: ${inputs.currentField}` +
-    //     `Current Company: ${inputs.currentCompany}` +
-    //     `Current Job Title: ${inputs.currentJobTitle}`  +
-    //     `Experience Field: ${inputs.experienceField}`  +
-    //     `Location: ${inputs.location}` +
-    //     `Job Type: ${inputs.jobType}` +
-    //     `Description: ${inputs.description}` +
-    //     `Start Date: ${inputs.startDate}` +
-    //     `End date: ${inputs.endDate}` +
-    //     `User Type: ${inputs.userType}` +
-    //     `Major: ${inputs.studentMajor}`
-    // );
-    // let currentUserID = "";
-    // async function getUser() {
-    //   const {data} = await supabase.auth.getUser();
-    //   currentUserID = data.user.id;
-    // }
-    // getUser();
-    // console.log(currentUserID);
-
-    // let user = "";
-    // const fetchUser = async () => {
-    //   user = await auth.retrieveUser();
-    //   if(user) {
-    //     console.log(user.id);
-    //   }
-    // };
-    // fetchUser();
     let user = "";
     auth.retrieveUser().then(fetchedUser => {
+      //current user
       user = fetchedUser;
 
       storage.uploadFileToBucket(inputs.profilePic.name, inputs.profilePic).
         then(uploadResult => {
-          // console.log(uploadResult);
           let profilePictureURL = uploadResult.data.fullPath;
-
+          //create and insert account information
           const account = new Account(
             user.id,
             inputs.firstName,
@@ -136,6 +108,7 @@ export default function EnterInfo() {
 
         
        if(inputs.userType === "Alumni") {
+        //create and insert alumni information
         const alumni = new Alumni(
           user.id,
           inputs.firstName,
@@ -151,9 +124,11 @@ export default function EnterInfo() {
           "uw_alumni",
           alumni.toObject()
         )
+
+        //create and insert skill information
         for(let i = 0; i < inputs.skills.length; i++) {
           const skills = new Skill(
-            457 + i,
+            999 + i,
             user.id,
             inputs.skills[i]
           );
@@ -163,6 +138,7 @@ export default function EnterInfo() {
           );
         }
 
+        //create and insert experience information
         const experience = new Experience(
           4567, 
           user.id,
@@ -184,7 +160,7 @@ export default function EnterInfo() {
       }
 
       if(inputs.userType === "Student") {
-
+        //create and insert student information
         const student = new UWStudent(
           user.id,
           inputs.firstName,
@@ -198,10 +174,11 @@ export default function EnterInfo() {
           "uw_students",
           student.toObject()
         )
-
+        
+        //create and insert interest information
         for(let i = 0; i < inputs.interests.length; i++) {
           const interest = new Interest(
-            7834 + i,
+            9999 + i,
             user.id,
             "Interest Type Test",
             inputs.interests[i]
@@ -218,35 +195,10 @@ export default function EnterInfo() {
     });
   });
 
-  // const { data: { user } } = await supabase.auth.getUser();
-  // const userId = user.id; // Access the user's ID
-  // console.log(userId);`
-    // console.log(currentUser.user.id);
-
-
-
-
-
-    // database.createRecordToTable("accounts", account.toObject());
-
-    // database
-    //   .createRecordToTable("accounts", acccount.toObject())
-    //   .then((accountResult) => {
-    //     console.log(accountResult);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // database.createRecordToTable("accounts", account.toObject());
-
-    // const alumniResult = database.createRecordToTable(
-    //   "uw_alumni",
-    //   alumniObject
-    // );
-
     navigate("../home");
   }
 
+  // Render the form
   return (
     <div className="enterInfoContainer">
       <h2 className="enterInfoHeader" style={{ textAlign: "center" }}> Enter Information </h2>
@@ -330,6 +282,7 @@ export default function EnterInfo() {
           </div>
         )}
 
+        {/* Conditionally Render Alumni Fields (Current Field) */}
         {inputs.userType === "Alumni" && (
           <div>
             <label htmlFor="currentField" className="label">
@@ -347,6 +300,7 @@ export default function EnterInfo() {
           </div>
         )}
 
+        {/* Conditionally Render Alumni Fields (Current Job Title) */}
         {inputs.userType === "Alumni" && (
           <div>
             <label htmlFor="currentJobTitle" className="label">
@@ -364,6 +318,8 @@ export default function EnterInfo() {
           </div>
         )}
 
+
+        {/* Conditionally Render Alumni Fields (Current Company) */}
         {inputs.userType === "Alumni" && (
           <div>
             <label htmlFor="currentCompany" className="label">
@@ -392,6 +348,7 @@ export default function EnterInfo() {
           onChange={handleChange}
         ></textarea>
 
+        {/* Profile Picture */}
         <div>
           <label for="myfile">Select a profile picture: </label>
           <input
@@ -439,6 +396,7 @@ export default function EnterInfo() {
           </label>
         </div>
 
+        {/* Graduation Date */}
         <div>
           <label htmlFor="gradDate" className="label">
             Graduation Date
@@ -627,6 +585,8 @@ export default function EnterInfo() {
             </div>
           )}
 
+          {/* Skills */}
+          {/* Conditionally render Skills section for Alumni */}
           {inputs.userType === "Alumni" && (
           <div>
             <h2>Skills</h2>
