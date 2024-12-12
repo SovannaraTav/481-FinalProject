@@ -1,0 +1,392 @@
+:root {
+  --dark: #4b207e;
+  --dark-medium: #79559e;
+  --medium: #a58bbe;
+  --medium-light: #d2c4e9;
+  --light: #ffffff;
+}
+
+#logo {
+  width: 100px;
+  height: 100px;
+  margin: -20px 50px -50px 50px;
+}
+
+#profile-icon {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.connection-list *, .message-list *, .card-list * {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.navbar {
+  background-color: var(--dark);
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 9999;
+}
+
+.navbar a {
+  float: left;
+  color: var(--medium-light);
+  padding: 12px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar a:hover {
+  color: var(--dark-medium);
+}
+
+.navbar-right {
+  float: right;
+}
+
+.navbar-right:last-child {
+  padding-right: 20px;
+}
+
+.container {
+  background-color: var(--light);
+  margin: 0;
+  margin-top: 50px;
+  width: calc(100vw - 237px);
+  padding: 50px 100px;
+}
+
+#footer {
+  width: 100%;
+  margin: 0px;
+  background-color: var(--dark);
+}
+
+.title {
+  text-align: center;
+  padding-bottom: 50px;
+  font-size: 30px;
+  margin: 0;
+}
+
+.horizontal {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.search {
+  border-radius: 5px;
+  width: 100%;
+  border: .5px solid grey;
+  padding: 5px;
+}
+
+/* TODO: make width back to percentage */
+.filter {
+  width: 175px;
+  max-width: 175px;
+  /*width: 25%;
+  max-width: 200px;*/
+  background-color: var(--dark);
+  border-radius: 15px;
+  /*border: .6px solid var(--dark);*/
+  padding: 30px 10px;
+  text-align: center;
+  color: var(--light);
+}
+
+.filter div {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.filter input[type="checkbox"] {
+  margin-bottom: 15px;
+}
+
+/* TODO: make width back to percentage */
+.filter-dropdown {
+  width: 175px;
+  min-width: 100%;
+  max-width: 100%;
+  margin-bottom: 15px;
+  border-radius: 0px;
+  padding: 5px;
+  border: none
+}
+
+.stacked-block {
+  margin-bottom: 40px;
+}
+
+.card-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.card {
+  padding: 0;
+  border-radius: 5px;
+  width: 150px;
+  background-color: var(--medium);
+}
+
+.card-image{
+  height: 150px;
+  width: 150px;
+  background-color: var(--medium-light);
+  margin: 0
+}
+
+.card-description{
+  padding: 10px;
+  color: white;
+  margin: 0
+}
+
+.title-label{
+  background-color: var(--dark);
+  color: white;
+  font-size: 17px;
+  padding: 5px 10px;
+}
+
+.flex {
+  display: flex;
+  gap: 50px;
+}
+
+.connections-container {
+  align-items: stretch;
+  justify-content: center;
+}
+
+.connection-list {
+  max-height: 330px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.connection-list::-webkit-scrollbar {
+display: none;
+}
+
+.message-box{
+  display: flex;
+  height: 480px;
+}
+
+.message-list{
+  border: 1px solid var(--medium);
+  background-color: var(--medium-light);
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-width: 335px;
+}
+
+.connection-list::-webkit-scrollbar {
+  display: none;
+}
+
+#message-area{
+  border: 1px solid var(--medium);
+  padding: 10px;
+  margin-left: .3px;
+  display: block;
+  width: 32vw;
+  overflow-y: auto;
+}
+
+#grid-item1{
+  grid-area: image;
+}
+
+#grid-item2{
+  grid-area: name;
+}
+
+#grid-item3{
+  grid-area: date;
+  size: 10px;
+  display: flex;
+  flex-direction: right;
+}
+
+#grid-item4{
+  grid-area: message;
+}
+
+.no-messages{
+  text-align: center;
+  color: white;
+  margin-top: 20px;
+}
+
+.message-grid{
+  padding: 10px 20px;
+  border-bottom: 1px solid lightgray;
+  background-color: white;
+  /*display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 50% 50%;
+  grid-template-areas:
+  "image name date",
+  "image message message";*/
+}
+
+.message-grid:hover, .connection:hover, .recommendation:hover{
+  background-color: var(--medium);
+  color: var(--light);
+}
+
+.grid-top {
+  display: flex;
+}
+
+.connection > *{
+  justify-content: space-between
+}
+
+.connections-box {
+  border: 1px solid black;
+  background-color: var(--medium-light);
+  color: black;
+  width: 300px;
+}
+
+.connections-box > div {
+  padding: 10px;
+}
+
+.connection-filters {
+  text-align: center;
+}
+
+.connection {
+  display: flex;
+  gap: 10px;
+  background-color: var(--light);
+  color: black;
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
+}
+
+.banner {
+  display: block;
+  width: 100%;
+  height: 200px;
+  background-color: var(--medium);
+  object-fit: cover;
+}
+
+.profile-picture {
+  position: absolute;
+  top: 200px;
+  left: 200px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: white;
+  text-align: center;
+}
+
+.profile-header{
+  display: block;
+  width: 100%;
+  /*height: 100px;*/
+  background-color: var(--dark);
+  color: #ffffff;
+}
+
+.profile-header-top-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.profile-name {
+  margin: 0 310px;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.connect-button {
+  width: 100px;
+  background-color: rgb(79, 145, 185);
+  margin: 10px 200px
+}
+
+
+.edit-button {
+  width: 100px;
+  background-color: gray;
+  margin: 10px 200px
+}
+
+.sign-out-button {
+  width: 100px;
+  background-color: gray;
+  margin: 10px 200px;
+  white-space: nowrap;
+}
+
+.message-button {
+  width: 100px;
+  background-color: rgb(110, 218, 254);
+  margin: 10px 200px
+}
+
+.profile-container {
+  display: flex;
+  align-items:stretch;
+  justify-content: center;
+  width: calc(100vw - 36px);
+
+}
+
+.profile-container > div {
+  padding: 50px 10%;
+}
+
+.profile-bio {
+  padding: 0px 200px 25px 200px;
+  font-size: 15px;
+}
+
+.profile-information {
+  border: 1px solid lightgray;
+}
+
+.similar-profiles {
+  background-color: var(--medium-light);
+  color: black;
+  padding: 0px;
+}
+
+.similar-profiles-header {
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.recommendation {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  background-color: var(--light);
+  color: black;
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
+  margin-top: 10px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
