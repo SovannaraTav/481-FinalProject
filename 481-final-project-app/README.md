@@ -11,11 +11,14 @@
 
 5. At the root of the repository folder, execute ```npm install``` on the command line to install dependencies which will appeared in a ```node_modules``` folder. This folder contains many files and folders, thus SHOULD NOT be pushed to the GitHub repository and won't be due to being grayed out and indicated in the `.gitignore` file.
 
-6. Download the provided ```.env.local``` file. DO NOT PUSH the file to the GitHub repository as it contains sensitive information. It should be grayed out to prevent this from happening and indicated in the `.gitignore` file.
+6. [Collaborators only] Download the provided ```.env.local``` file. DO NOT PUSH the file to the GitHub repository as it contains sensitive information. It should be grayed out to prevent this from happening and indicated in the `.gitignore` file.
 
 7. To run the development server to test and view your changes, execute ```npm run dev``` on the command line.
 
-## Hosted on Vercel
+## Tools and Technologies
+1. Front-End: HTML, CSS, JavaScript, React, and Vite.
+2. Back-End: Node.js and Supabase with their authentication, database, storage, and realtime services.
+3. Other: Git, GitHub, and hosting on Vercel.
 
 ## React + Vite
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
