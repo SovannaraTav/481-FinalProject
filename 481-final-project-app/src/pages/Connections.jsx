@@ -9,10 +9,13 @@ import defaultPic from '../assets/default.jpg'
 import chatIcon from '../assets/msg.png'
 import { useLocation } from 'react-router-dom';
 
+/* A page that displays all a user's connections as well as the messaging system */
 export default function Connections({ userFrom = null }) {
+
   const db = new SupabaseDatabase();
   const messaging = new SupabaseRealtime();
   const storage = new SupabaseStorage("profile_pictures");
+
   const [messages, setMessages] = useState({});
   const [isListening, setIsListening] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
@@ -25,10 +28,12 @@ export default function Connections({ userFrom = null }) {
   const location = useLocation();
   const { idFrom } = location.state || {};
 
+  // Sets the searh value when the search bar is used
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
 
+  // Filters the connections displayed based on the search bar
   const filteredConnections = connections.filter((connectionId) => {
     const connectionName = connectionNames[connectionId];
     if (!connectionName) return false;
@@ -36,7 +41,10 @@ export default function Connections({ userFrom = null }) {
   });
 
   useEffect(() => {
+    // Makes sure the page is scrolled to the top when first entering
     window.scrollTo(0, 0);
+
+    // Gets the current user
     const getUser = async () => {
       const auth = new SupabaseAuthentication();
       setUser(await auth.retrieveUser());
@@ -47,11 +55,13 @@ export default function Connections({ userFrom = null }) {
   useEffect(() => {
     const getConnections = async () => {
       const msg = new SupabaseRealtime();
+      // gets the user's connections
       if (user) {
         const obj = await db.readRecordFromTable("accounts", "accountId", user.id);
         if (obj.data) {
           setConnections(obj.data[0].connections);
         }
+        // gets all the messages and filters them out to the ones to and from the user
         const obj2 = await msg.retrieveAllMessages();
         if (obj2) {
           const allMessages = {};
@@ -72,6 +82,7 @@ export default function Connections({ userFrom = null }) {
     getConnections();
   }, [user]);
 
+
   useEffect(() => {
     if (user && !isListening) {
       const fetchMessages = async () => {
@@ -91,8 +102,8 @@ export default function Connections({ userFrom = null }) {
     }
   }, [user, isListening]);
 
-  console.log("location.state", location.state);
-  console.log(idFrom)
+  // in the case that the "message" option is clicked from a profile component
+  // the user selected will automatically be displayed as the current message
   useEffect(() => {
     if (idFrom && messages) {
       setSelectedMessage(messages[idFrom]);
@@ -100,6 +111,7 @@ export default function Connections({ userFrom = null }) {
     }
   }, [messages, idFrom]);
 
+  // sets the names and profile pictures for each connection listed
   useEffect(() => {
     if (user) {
       const fetchNames = async () => {
@@ -119,13 +131,13 @@ export default function Connections({ userFrom = null }) {
     }
   }, [connections, user]);
 
+  // gets the name and profile picture of a connection
   const getName = async (id) => {
     const account = await db.readRecordFromTable("accounts", "accountId", id);
     return `${account.data[0].firstName} ${account.data[0].lastName}`;
   };
-
   const getConnectionProfilePicture = async (id) => {
-    const connectionAcount = 
+    const connectionAcount =
       await db.readRecordFromTable("accounts", "accountId", id);
     if (connectionAcount.data) {
       if (connectionAcount.data[0].profilePicture !== "") {
@@ -152,6 +164,7 @@ export default function Connections({ userFrom = null }) {
       <div className="flex connections-container">
         <div>
           <div className="message-box">
+            {/* The list of messages displayed via MessageCard components*/}
             <div className="message-list">
               <div className="title-label">Inbox</div>
               {Object.keys(messages).length === 0 ? (
@@ -180,7 +193,7 @@ export default function Connections({ userFrom = null }) {
                 </>
               )}
             </div>
-
+            {/* The area where the selected message is displayed */}
             <div id="message-area">
               {selectedMessage == null || selectedMessageId == null ? (
                 <p style={{ textAlign: "center" }}>No conversation selected</p>
@@ -191,8 +204,10 @@ export default function Connections({ userFrom = null }) {
           </div>
         </div>
 
+        {/* The list of connections */}
         <div className="connections-box">
           <div className="title-label">Connections</div>
+          {/* The search bar */}
           <input
             className="search"
             style={{
@@ -203,13 +218,14 @@ export default function Connections({ userFrom = null }) {
             placeholder="Search by name"
             onChange={handleSearch}
           ></input>
-
+          {/* The list of connections displayed after the search filter is applied */}
           <div className="connection-list">
             {filteredConnections.length === 0 ? (
               <div style={{ textAlign: "center" }}>No connection found</div>
             ) : (
               filteredConnections.map((connectionId, index) => {
                 const connectionName =
+                // in case the name is too long for the box
                   connectionNames[connectionId] && connectionNames[connectionId].length < 27
                     ? connectionNames[connectionId]
                     : connectionNames[connectionId].substring(0, 26) + "...";

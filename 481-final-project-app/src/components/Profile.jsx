@@ -7,10 +7,10 @@ import defaultBanner from '../assets/banner_default.jpg';
 import defaultPic from '../assets/default.jpg';
 
 /*
-Profile React component to display further information of the current user as 
-well as a similar profiles list and the ability to edit the current profile info 
-and sign out. If the current user is viewing the profile of another user, it will 
-display the other user's info and the abilty to connect with them or message them 
+Profile React component to display further information of the current user as
+well as a similar profiles list and the ability to edit the current profile info
+and sign out. If the current user is viewing the profile of another user, it will
+display the other user's info and the abilty to connect with them or message them
 if they are already connected
 */
 export default function Profile() {
@@ -38,8 +38,8 @@ export default function Profile() {
         setUserInfo(obj.data[0]);
 
         /*
-        Fetches the profile picture of the user on display and sets it in state based 
-        on their profile picture field. If it is empty, then a default profile picture 
+        Fetches the profile picture of the user on display and sets it in state based
+        on their profile picture field. If it is empty, then a default profile picture
         is used instead
         */
         if (obj.data[0].profilePicture !== "") {
@@ -52,7 +52,7 @@ export default function Profile() {
         }
 
         /*
-        If the user on display is a UW alumni, it fetches their experiences and sets 
+        If the user on display is a UW alumni, it fetches their experiences and sets
         it in state. Otherwise, it fetches the interests and sets it in state if the
         user on display is a current UW student
         */
@@ -110,7 +110,7 @@ export default function Profile() {
   }, [loggedInUser]);
 
   /*
-  If the current logged in user is viewing the profile page of another user and 
+  If the current logged in user is viewing the profile page of another user and
   that user is a connection, this is set in the state
   */
   useEffect(() => {
@@ -121,9 +121,9 @@ export default function Profile() {
 
 
   /*
-  If the user on display for the profile picture is a UW alumni, this will return 
-  other similar UW alumni profiles and set in the state. Otherwise, this will 
-  return other similar current UW students profiles and set in the state if the 
+  If the user on display for the profile picture is a UW alumni, this will return
+  other similar UW alumni profiles and set in the state. Otherwise, this will
+  return other similar current UW students profiles and set in the state if the
   user on display is a current UW student
   */
   useEffect(() => {
@@ -138,21 +138,21 @@ export default function Profile() {
           filteredAccounts = accounts.filter((account) => {
             return account.account_type == "Student" && account.accountId != userInfo.accountId
           })
-        } 
+        }
         setRecommendations(filteredAccounts.slice(0, 5));
       }
     }
   }, [accounts]);
 
   /*
-  Fetches the profile picture for each user set in the recommendations state and 
+  Fetches the profile picture for each user set in the recommendations state and
   sets each one in the state to be stored
   */
   useEffect(() => {
     const fetchRecommendationProfilePictures = async () => {
       const profilePictures = {}
       for(let i = 0; i < recommendations.length; i++) {
-        const profilePicture = 
+        const profilePicture =
           await getRecommendationProfilePicture(recommendations[i].profilePicture);
         profilePictures[i] = profilePicture;
       }
@@ -163,7 +163,7 @@ export default function Profile() {
   }, [recommendations]);
 
   /*
-  Function to retrieve the profile picture of an user and return it to where the 
+  Function to retrieve the profile picture of an user and return it to where the
   function was invoked. If the retrieve profile picture is empty, a default picture
   is returned instead
   */
@@ -183,7 +183,7 @@ export default function Profile() {
   }
 
   /*
-  Event handler function for when the current logged in user signs out, thus is 
+  Event handler function for when the current logged in user signs out, thus is
   redirected to the sign in page
   */
   function handleSubmit(event) {
@@ -216,7 +216,7 @@ export default function Profile() {
   }
 
   /*
-  Event handler function for when the current logged in user connects with another 
+  Event handler function for when the current logged in user connects with another
   user, thus updates both of their connections list
   */
   const handleConnect = () => {
@@ -229,7 +229,7 @@ export default function Profile() {
 
   return (
     <div style={{ marginTop: '50px' }}>
-      {/* Displays the default banner, profile picture, and full name of the user 
+      {/* Displays the default banner, profile picture, and full name of the user
       on display for the profile page */}
       <img className="banner" src={defaultBanner} alt="banner" />
       <img className="profile-picture" alt="pfp" src={profilePicture} />
@@ -239,9 +239,9 @@ export default function Profile() {
             {`${userInfo.firstName} ${userInfo.lastName}`}
           </div>
 
-          {/* If the profile page display is the current logged in user, then it 
-          displays the abilty to edit their info and sign out. Otherwise, if the 
-          profile page display is another user, then it displays the ability to 
+          {/* If the profile page display is the current logged in user, then it
+          displays the abilty to edit their info and sign out. Otherwise, if the
+          profile page display is another user, then it displays the ability to
           connect and message if already connected */}
           {loggedInUser?.id === id ? (
             <div className="profile-buttons">
@@ -250,8 +250,8 @@ export default function Profile() {
             </div>
           ) : (
             isConnection ? (
-              <button 
-                className="message-button" 
+              <button
+                className="message-button"
                 onClick={() => navigate("/connections", { state: { idFrom: id } })}
               >
                 Message
@@ -271,7 +271,7 @@ export default function Profile() {
           <div>
             {userInfo.account_type === "Alumni" ? (
               <div>
-                {/* If the profile page display is a UW alumni, it will display each 
+                {/* If the profile page display is a UW alumni, it will display each
                 each of their experiences and relevant information */}
                 <p><strong>Experiences:</strong></p>
                 {experiences.map((experience, index) => {
@@ -292,7 +292,7 @@ export default function Profile() {
               </div>
             ) : (
               <div>
-                {/* If the profile page display is a current UW student, it will 
+                {/* If the profile page display is a current UW student, it will
                 display each each of their interests */}
                 <p><strong>Interests:</strong></p>
                 {interests.map((interestInfo) => {
@@ -307,7 +307,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Displays the profile picture and full name for each user in the similar 
+        {/* Displays the profile picture and full name for each user in the similar
         profiles section */}
         <div className="similar-profiles" style={{padding: "50px",}}>
           <div className="similar-profiles-header">Similar profiles</div>
