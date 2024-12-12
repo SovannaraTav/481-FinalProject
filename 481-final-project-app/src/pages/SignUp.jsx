@@ -4,10 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import "../styles/SignUp.css"
 import SupabaseAuthentication from '../classes/SupabaseAuthentication';
 
+
+/*
+*
+* SignUp.jsx
+* React component representing the page where users can create a new account
+*/
 export default function SignUp() { 
   
+  // Supabase Authentication  
   const auth = new SupabaseAuthentication(); 
   const navigate = useNavigate();
+
+  // declaring states
   const [signUpResult, setSignUpResult] = useState(true);
   
 
@@ -17,13 +26,9 @@ export default function SignUp() {
     })
 
   
+    // handleSubmit() is a function that handles the submission of the sign up form
   function handleSubmit(event){
     event.preventDefault(); 
-    // alert(`Email:  ${inputs.email}\n` + 
-    //        `Password: ${inputs.password}\n` + 
-    //         `User Type: ${inputs.userType}\n`
-    // );
-
     auth.signUp(inputs.email, inputs.password)
     .then(response => {
       if (response.error) {
@@ -38,27 +43,32 @@ export default function SignUp() {
   }
   
 
+  // handleChange() is a function that handles the change of input values
   function handleChange(event) {
     const name = event.target.name;
     const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
     setInputs(values => ({...values, [name]: value}))  
   }
 
+
+  // signUpNewUser() is a function that signs up a new user and inserts them into the database
   async function signUpNewUser() {
     const { data, error } = await supabase.auth.signUp({
       email: inputs.email,
       password: inputs.password,
-      // options: {
-      //   emailRedirectTo: 'https://example.com/welcome',
-      // },
     })
   }
   
+
+  // returning the JSX for the sign up page
   return (
     <div>
+    {/* sign up form */}
       <form className = 'formSignUp' onSubmit ={handleSubmit}>
       <label className='sign'>Sign Up</label>
       <h6>Create your account</h6>
+
+      {/* input fields for email and password */}
       <div> 
         <label htmlFor='email'></label>
         <input type="email" id ="email" name="email" placeholder="Enter Email" value={inputs.email || ""} onChange={handleChange} ></input>
@@ -69,6 +79,7 @@ export default function SignUp() {
       </div> 
  
 
+      {/* error message */}
       <div>
       {signUpResult === false && (
         <p style={{ color: 'red' }}>
