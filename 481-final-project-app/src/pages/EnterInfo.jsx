@@ -89,18 +89,19 @@ export default function EnterInfo() {
 
       storage.uploadFileToBucket(inputs.profilePic.name, inputs.profilePic).
         then(uploadResult => {
-          let profilePictureURL = uploadResult.data.fullPath;
+          inputs.profilePic = uploadResult.data.fullPath;
           //create and insert account information
           const account = new Account(
             user.id,
             inputs.firstName,
             inputs.lastName,
-            profilePictureURL,
+            inputs.profilePic,
             inputs.about,
             inputs.userType,
             []
           );
-          console.log("account", account)
+          // Testing/debugging code
+          // console.log("account", account);
 
           const accountResult =
             database.createRecordToTable("accounts", account.toObject());
@@ -123,40 +124,39 @@ export default function EnterInfo() {
         const alumniResult = database.createRecordToTable(
           "uw_alumni",
           alumni.toObject()
-        )
+        ).then(result => {
+          //create and insert skill information
+          for(let i = 0; i < inputs.skills.length; i++) {
+            const skills = new Skill(
+              "",
+              user.id,
+              inputs.skills[i]
+            );
+            const skillResult = database.createRecordToTable(
+              "skills",
+              skills.toObject()
+            );
+          }
 
-        //create and insert skill information
-        for(let i = 0; i < inputs.skills.length; i++) {
-          const skills = new Skill(
-            999 + i,
+          //create and insert experience information
+          const experience = new Experience(
+            "", 
             user.id,
-            inputs.skills[i]
-          );
-          const skillResult = database.createRecordToTable(
-            "skills",
-            skills.toObject()
-          );
-        }
+            inputs.jobTitle,
+            inputs.jobType,
+            inputs.experienceField,
+            inputs.company,
+            inputs.location,
+            inputs.startDate,
+            inputs.endDate,
+            inputs.description
+          )
 
-        //create and insert experience information
-        const experience = new Experience(
-          4567, 
-          user.id,
-          inputs.jobTitle,
-          inputs.jobType,
-          inputs.experienceField,
-          inputs.company,
-          inputs.location,
-          inputs.startDate,
-          inputs.endDate,
-          inputs.description
-        )
-
-        const experienceResult = database.createRecordToTable(
-          "experiences",
-          experience.toObject()
-        )
-
+          const experienceResult = database.createRecordToTable(
+            "experiences",
+            experience.toObject()
+          )
+        });
       }
 
       if(inputs.userType === "Student") {
@@ -173,24 +173,25 @@ export default function EnterInfo() {
         const studentResult = database.createRecordToTable(
           "uw_students",
           student.toObject()
-        )
-        
-        //create and insert interest information
-        for(let i = 0; i < inputs.interests.length; i++) {
-          const interest = new Interest(
-            9999 + i,
-            user.id,
-            "Interest Type Test",
-            inputs.interests[i]
-          );
-          const interestResult = database.createRecordToTable(
-            "interests",
-            interest.toObject()
-          );
-          console.log("interest", interest)
-          console.log("interest result", interestResult);
-        }
+        ).then(result => {
+          //create and insert interest information
+          for(let i = 0; i < inputs.interests.length; i++) {
+            const interest = new Interest(
+              "",
+              user.id,
+              "Field",
+              inputs.interests[i]
+            );
+            const interestResult = database.createRecordToTable(
+              "interests",
+              interest.toObject()
+            );
 
+            // Testing/debugging code
+            // console.log("interest", interest)
+            // console.log("interest result", interestResult);
+          }
+        });
       }
     });
   });

@@ -43,7 +43,11 @@ class Skill {
     toObject() {
         // Implicity calls the getter functions
         return {
-            skillId: this.skillId,
+            /*
+            Supabase Database will automatically fill the other data attributes
+            that are comment out
+            */
+            // skillId: this.skillId,
             alumniId: this.alumniId,
             skill: this.skill
         };
